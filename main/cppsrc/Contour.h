@@ -2,13 +2,18 @@
 #define CONTOUR_H
 
 #include <QPointF>
+#include <QVector>
+#include <QLineF>
 
 class Contour
 {
 public:
     explicit Contour();
-    Contour(const Contour & other);
-    Contour & operator=(const Contour & other) = default;
+    Contour(const Contour &) = default;
+    Contour & operator=(const Contour &) = default;
+
+    const QLineF * getLines() const;
+    int getLinesCount() const;
 
     const QPointF & getPoint(const int index) const;
     int getPointsCount() const;
@@ -16,10 +21,8 @@ public:
     void addPoint(const QPointF & point);
 
 private:
-    // Первоначально планировалось использовать класс-контейнер, но приложение некорректно работало из-за контейнеров,
-    // ошибка так и не было обнаружена, и было решени использовать массив, потому что он приложение не крашил.
-    QPointF * points;
-    int size;
+    QVector<QPointF> points;
+    QVector<QLineF> lines;
 };
 
 #endif // CONTOUR_H

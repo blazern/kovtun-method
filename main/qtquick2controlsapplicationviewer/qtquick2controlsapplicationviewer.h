@@ -37,6 +37,7 @@ public:
     void addImportPath(const QString &path);
     void show();
     QObject * getObject(const QString & objectName);
+    void setContextProperty(const QString & id, QObject * const property);
 
 private:
     class QtQuick2ApplicationViewerPrivate *d;

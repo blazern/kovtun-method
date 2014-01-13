@@ -4,40 +4,42 @@
 
 KovtunMethodPainter::KovtunMethodPainter(QQuickItem * parent) :
     QQuickPaintedItem(parent),
-    kovtunMethodExecuter(nullptr)
+    kovtunMethodExecuter(nullptr),
+    offset(20)
 {
 }
 
 void KovtunMethodPainter::paint(QPainter * const painter)
 {
     const double scale = calculateScale();
+    painter->scale(scale, scale);
+    painter->translate(scale, scale);
 
     if (kovtunMethodExecuter != nullptr)
     {
-        drawContour(painter, scale);
+        drawContour(painter);
+        drawActiveRectangles(painter);
     }
 }
 
-void KovtunMethodPainter::drawContour(QPainter * const painter, const double scale)
+void KovtunMethodPainter::drawContour(QPainter * const painter)
 {
     const Contour & contour = kovtunMethodExecuter->getContour();
 
     if (contour.getPointsCount() > 1)
     {
-        const QPointF * previousPoint = &contour.getPoint(0);
-
-        for (int index = 1; index < contour.getPointsCount(); index++)
-        {
-            const QPointF * currentPoint = &contour.getPoint(index);
-
-            painter->drawLine(previousPoint->x() * scale, previousPoint->y() * scale, currentPoint->x() * scale, currentPoint->y() * scale);
-            previousPoint = currentPoint;
-        }
+        painter->drawLines(contour.getLines(), contour.getLinesCount());
     }
     else if (contour.getPointsCount() == 1)
     {
         painter->drawPoint(contour.getPoint(0));
     }
+}
+
+void KovtunMethodPainter::drawActiveRectangles(QPainter * const painter)
+{
+    painter->setPen(QColor("blue"));
+    painter->drawRects(kovtunMethodExecuter->getActiveRectangles(), kovtunMethodExecuter->getActiveRectanglesCount());
 }
 
 void KovtunMethodPainter::setKovtunMethodExecuter(const KovtunMethodExecuter & kovtunMethodExecuter)
@@ -50,36 +52,28 @@ double KovtunMethodPainter::calculateScale() const
     const Contour & contour = kovtunMethodExecuter->getContour();
     if (contour.getPointsCount() > 0)
     {
-        double biggestX = contour.getPoint(0).x();
+        const QPointF * pointWithBiggerX = &contour.getPoint(0);
+        const QPointF * pointWithBiggerY = &contour.getPoint(0);
 
         for (int index = 1; index < contour.getPointsCount(); index++)
         {
-            const double currentX = contour.getPoint(index).x();
-            if (currentX > biggestX)
+            const QPointF * currentPoint = &contour.getPoint(index);
+
+            if (currentPoint->x() > pointWithBiggerX->x())
             {
-                biggestX = currentX;
+                pointWithBiggerX = currentPoint;
+            }
+
+            if (currentPoint->y() > pointWithBiggerY->y())
+            {
+                pointWithBiggerY = currentPoint;
             }
         }
 
-        double biggestY = contour.getPoint(0).y();
+        const double scaleByX = (width() - offset * 2) / pointWithBiggerX->x();
+        const double scaleByY = (height() - offset * 2) / pointWithBiggerY->y();
 
-        for (int index = 1; index < contour.getPointsCount(); index++)
-        {
-            const double currentY = contour.getPoint(index).y();
-            if (currentY > biggestY)
-            {
-                biggestY = currentY;
-            }
-        }
-
-        if (biggestX > biggestY)
-        {
-            return (width() / biggestX);
-        }
-        else
-        {
-            return (height() / biggestY);
-        }
+        return scaleByX < scaleByY ? scaleByX : scaleByY;
     }
 
     return 1;

@@ -10,10 +10,9 @@ TARGET = kovtun-method
 QML_IMPORT_PATH =
 
 # The .cpp file which was generated for your project. Feel free to hack it.
-SOURCES += main.cpp \
-    cppsrc/KovtunMethodExectuter.cpp \
-    cppsrc/Contour.cpp \
-    cppsrc/KovtunMethodPainter.cpp
+SOURCES += main.cpp
+
+include(../common.pri)
 
 # Installation path
 # target.path =
@@ -21,10 +20,3 @@ SOURCES += main.cpp \
 # Please do not modify the following two lines. Required for deployment.
 include(qtquick2controlsapplicationviewer/qtquick2controlsapplicationviewer.pri)
 qtcAddDeployment()
-
-HEADERS += \
-    cppsrc/KovtunMethodExectuter.h \
-    cppsrc/Contour.h \
-    cppsrc/KovtunMethodPainter.h
-
-QMAKE_CXXFLAGS += -std=c++11

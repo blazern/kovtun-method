@@ -1,5 +1,6 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    main
+    main \
+    tests/TestKovtunMethodExecuter
 

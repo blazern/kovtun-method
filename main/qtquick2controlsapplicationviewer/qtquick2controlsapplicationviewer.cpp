@@ -106,3 +106,8 @@ QObject *QtQuick2ControlsApplicationViewer::getObject(const QString & objectName
 {
     return d->window->findChild<QObject*>(objectName);
 }
+
+void QtQuick2ControlsApplicationViewer::setContextProperty(const QString & id, QObject * const property)
+{
+    d->engine.rootContext()->setContextProperty(id, property);
+}

@@ -1,43 +1,35 @@
 #include "Contour.h"
 
 Contour::Contour() :
-    points(nullptr),
-    size(0)
+    points()
 {
 }
 
-Contour::Contour(const Contour & other)
+const QLineF * Contour::getLines() const
 {
-    size = other.size;
-    if (points == nullptr)
-    {
-        delete[] points;
-    }
+    return lines.data();
+}
 
-    points = new QPointF[other.getPointsCount()];
-
-    for (int index = 0; index < other.getPointsCount(); index++)
-    {
-        points[index] = other.points[index];
-    }
+int Contour::getLinesCount() const
+{
+    return lines.size();
 }
 
 void Contour::addPoint(const QPointF & point)
 {
-    QPointF * temp = new QPointF[size + 1];
-
-    for (int index = 0; index < size; index++)
+    if (points.size() >= 1)
     {
-        temp[index] = points[index];
+        if (lines.size() >= 1)
+        {
+            lines.removeLast();
+        }
+
+        const QPointF & lastPoint = points[points.size() - 1];
+        lines.push_back(QLineF(lastPoint, point));
+        lines.push_back(QLineF(point, points[0]));
     }
 
-    temp[size] = point;
-
-    delete[] points;
-
-    points = temp;
-
-    size++;
+    points.push_back(point);
 }
 
 const QPointF & Contour::getPoint(const int index) const
@@ -47,5 +39,5 @@ const QPointF & Contour::getPoint(const int index) const
 
 int Contour::getPointsCount() const
 {
-    return size;
+    return points.size();
 }
