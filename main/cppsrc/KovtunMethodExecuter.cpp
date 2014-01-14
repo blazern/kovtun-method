@@ -21,8 +21,17 @@ void KovtunMethodExecuter::performNextStep()
     else
     {
         QVector<QRectF> newActiveRectangles;
-        for (const auto & activeRectangle : activeRectangles)
+
+        for (QVector<QRectF>::iterator iterator = activeRectangles.begin(); iterator != activeRectangles.end(); )
         {
+            const QRectF & activeRectangle = *iterator;
+
+            if (!RectangleToolKit::isAnyPointOfRectangleInsideOfContour(contour, activeRectangle))
+            {
+                iterator = activeRectangles.erase(iterator);
+                continue;
+            }
+
             const QPointF gravityCenter = RectangleToolKit::calculateGravityCenter(contour, activeRectangle);
 
             newActiveRectangles.push_back(QRectF(
@@ -49,6 +58,7 @@ void KovtunMethodExecuter::performNextStep()
                                               gravityCenter.x() - activeRectangle.left(),
                                               activeRectangle.bottom() - gravityCenter.y()));
 
+            iterator++;
         }
 
         activeRectangles << newActiveRectangles;
@@ -59,38 +69,8 @@ void KovtunMethodExecuter::calculateFirstActiveRectangle()
 {
     if (contour.getPointsCount() > 0)
     {
-        const QPointF * mostNorthPoint = &contour.getPoint(0);
-        const QPointF * mostEastPoint = &contour.getPoint(0);
-        const QPointF * mostSouthPoint = &contour.getPoint(0);
-        const QPointF * mostWestPoint = &contour.getPoint(0);
-
-        for (int index = 1; index < contour.getPointsCount(); index++)
-        {
-            const QPointF * currentPoint = &contour.getPoint(index);
-
-            if (currentPoint->y() > mostNorthPoint->y())
-            {
-                mostNorthPoint = currentPoint;
-            }
-
-            if (currentPoint->x() > mostEastPoint->x())
-            {
-                mostEastPoint = currentPoint;
-            }
-
-            if (currentPoint->y() < mostSouthPoint->y())
-            {
-                mostSouthPoint = currentPoint;
-            }
-
-            if (currentPoint->x() < mostSouthPoint->x())
-            {
-                mostWestPoint = currentPoint;
-            }
-        }
-
-        activeRectangles.push_back(QRectF(QPointF(mostWestPoint->x(), mostNorthPoint->y()),
-                                          QPointF(mostEastPoint->x(), mostSouthPoint->y())));
+        activeRectangles.push_back(QRectF(QPointF(contour.getWest(), contour.getNorth()),
+                                          QPointF(contour.getEast(), contour.getSouth())));
     }
 #ifdef QT_DEBUG
     else

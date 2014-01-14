@@ -2,5 +2,7 @@ TEMPLATE = subdirs
 
 SUBDIRS += \
     main \
-    tests/TestKovtunMethodExecuter
+    tests/TestKovtunMethodExecuter \
+    tests/TestContour \
+    tests/TestRectangleToolKit
 

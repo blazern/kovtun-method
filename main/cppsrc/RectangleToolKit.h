@@ -13,6 +13,8 @@ class RectangleToolKit
 
 public:
     static QPointF calculateGravityCenter(const Contour & contour, const QRectF & rectangle);
+
+    static bool isAnyPointOfRectangleInsideOfContour(const Contour & contour, const QRectF & rectangle);
 };
 
 #endif // RECTANGLETOOLKIT_H

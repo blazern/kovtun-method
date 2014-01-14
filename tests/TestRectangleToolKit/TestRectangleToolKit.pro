@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2014-01-13T13:22:41
+# Project created by QtCreator 2014-01-14T22:48:52
 #
 #-------------------------------------------------
 
@@ -10,11 +10,12 @@ QT       += testlib
 
 QT       -= gui
 
-TARGET = tst_TestKovtunMethodExecuterTest
+TARGET = tst_TestRectangleToolKit
 CONFIG   += console
 CONFIG   -= app_bundle
 
 TEMPLATE = app
 
-SOURCES += tst_TestKovtunMethodExecuterTest.cpp
+
+SOURCES += tst_TestRectangleToolKit.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
