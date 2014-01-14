@@ -8,9 +8,9 @@ KovtunMethodExecuterQmlInterface::KovtunMethodExecuterQmlInterface(KovtunMethodE
 {
 }
 
-void KovtunMethodExecuterQmlInterface::setKovtunMethodPainter(KovtunMethodPainter * const kovtunMethodPainter)
+void KovtunMethodExecuterQmlInterface::setKovtunMethodPainter(KovtunMethodPainter & kovtunMethodPainter)
 {
-    this->kovtunMethodPainter = kovtunMethodPainter;
+    this->kovtunMethodPainter = &kovtunMethodPainter;
 }
 
 void KovtunMethodExecuterQmlInterface::performNextStep()

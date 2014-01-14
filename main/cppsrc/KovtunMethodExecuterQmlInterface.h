@@ -13,7 +13,7 @@ public:
             KovtunMethodExecuter & kovtunMethodExecuter,
             QObject * parent = 0);
 
-    void setKovtunMethodPainter(KovtunMethodPainter * const kovtunMethodPainter);
+    void setKovtunMethodPainter(KovtunMethodPainter & kovtunMethodPainter);
 
     Q_INVOKABLE void performNextStep();
 

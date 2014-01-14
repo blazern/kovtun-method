@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     if (kovtunMethodPainter != nullptr)
     {
         kovtunMethodPainter->setKovtunMethodExecuter(kovtunMethodExecuter);
-        kovtunMethodExecuterQmlInterface.setKovtunMethodPainter(kovtunMethodPainter);
+        kovtunMethodExecuterQmlInterface.setKovtunMethodPainter(*kovtunMethodPainter);
     }
 
     return app.exec();
