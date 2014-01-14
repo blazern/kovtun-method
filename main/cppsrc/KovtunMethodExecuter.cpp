@@ -1,4 +1,5 @@
 #include "KovtunMethodExecuter.h"
+#include "RectangleToolKit.h"
 
 #ifdef QT_DEBUG
 #include <QDebug>
@@ -16,6 +17,41 @@ void KovtunMethodExecuter::performNextStep()
     if (activeRectangles.size() == 0)
     {
         calculateFirstActiveRectangle();
+    }
+    else
+    {
+        QVector<QRectF> newActiveRectangles;
+        for (const auto & activeRectangle : activeRectangles)
+        {
+            const QPointF gravityCenter = RectangleToolKit::calculateGravityCenter(contour, activeRectangle);
+
+            newActiveRectangles.push_back(QRectF(
+                                              activeRectangle.left(),
+                                              activeRectangle.top(),
+                                              gravityCenter.x() - activeRectangle.left(),
+                                              gravityCenter.y() - activeRectangle.top()));
+
+            newActiveRectangles.push_back(QRectF(
+                                              gravityCenter.x(),
+                                              activeRectangle.top(),
+                                              activeRectangle.right() - gravityCenter.x(),
+                                              gravityCenter.y() - activeRectangle.top()));
+
+            newActiveRectangles.push_back(QRectF(
+                                              gravityCenter.x(),
+                                              gravityCenter.y(),
+                                              activeRectangle.right() - gravityCenter.x(),
+                                              activeRectangle.bottom() - gravityCenter.y()));
+
+            newActiveRectangles.push_back(QRectF(
+                                              activeRectangle.left(),
+                                              gravityCenter.y(),
+                                              gravityCenter.x() - activeRectangle.left(),
+                                              activeRectangle.bottom() - gravityCenter.y()));
+
+        }
+
+        activeRectangles << newActiveRectangles;
     }
 }
 

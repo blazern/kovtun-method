@@ -50,8 +50,13 @@ void TestKovtunMethodExecuterTest::cleanupTestCase()
 
 void TestKovtunMethodExecuterTest::hasCorrectFirstActiveRectangle()
 {
-    QVERIFY2(kovtunMethodExecuter->getActiveRectanglesCount() > 0,
-             "По какой-то причине kovtunMethodExecuter не содержит ни одного active rectangle!");
+    QVERIFY2(kovtunMethodExecuter->getActiveRectanglesCount() == 0,
+             "По какой-то причине kovtunMethodExecuter о первого шага содержит active rectangles!");
+
+    kovtunMethodExecuter->performNextStep();
+
+    QVERIFY2(kovtunMethodExecuter->getActiveRectanglesCount() == 1,
+             "По какой-то причине число active rectangles в kovtunMethodExecuter после первого шага не равно 1!");
 
     const QRectF & mainActiveRectangle = kovtunMethodExecuter->getActiveRectangles()[0];
 
