@@ -16,6 +16,7 @@ public:
     int getLinesCount() const;
 
     const QPointF & getPoint(const int index) const;
+    const QPointF * getPoints() const;
     int getPointsCount() const;
 
     // Содержит точку строго внутри, не на границе

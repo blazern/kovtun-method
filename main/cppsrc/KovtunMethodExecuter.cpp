@@ -28,6 +28,7 @@ void KovtunMethodExecuter::performNextStep()
 
             if (!RectangleToolKit::isAnyPointOfRectangleInsideOfContour(contour, activeRectangle))
             {
+                filledRectangles.push_back(*iterator);
                 iterator = activeRectangles.erase(iterator);
                 continue;
             }

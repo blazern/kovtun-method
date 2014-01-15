@@ -89,6 +89,11 @@ const QPointF & Contour::getPoint(const int index) const
     return points[index];
 }
 
+const QPointF * Contour::getPoints() const
+{
+    return points.data();
+}
+
 int Contour::getPointsCount() const
 {
     return points.size();
