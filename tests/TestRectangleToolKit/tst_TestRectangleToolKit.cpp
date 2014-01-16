@@ -28,15 +28,19 @@ private Q_SLOTS:
     void gravityCenterOfContourPieceLyingOnSideOfRectangleIsCorrect();
     void gravityCenterOfContourLyingInsideOfRectangleIsCorrect();
 
+    void contourInsideOfRectangleIsReallyInside();
+
 private:
     Contour contourForIntersectionsTesting;
     Contour contourForGravityCenterTesting;
+    Contour contourForBelongingToRectangleTesting;
 
 };
 
 TestRectangleToolKit::TestRectangleToolKit() :
     contourForIntersectionsTesting(),
-    contourForGravityCenterTesting()
+    contourForGravityCenterTesting(),
+    contourForBelongingToRectangleTesting()
 {
     contourForIntersectionsTesting.addPoint(0, 0);
     contourForIntersectionsTesting.addPoint(100, 0);
@@ -46,6 +50,11 @@ TestRectangleToolKit::TestRectangleToolKit() :
     contourForGravityCenterTesting.addPoint(0, 0);
     contourForGravityCenterTesting.addPoint(10, 0);
     contourForGravityCenterTesting.addPoint(0, 10);
+
+    contourForBelongingToRectangleTesting.addPoint(0, 0);
+    contourForBelongingToRectangleTesting.addPoint(100, 0);
+    contourForBelongingToRectangleTesting.addPoint(100, 100);
+    contourForBelongingToRectangleTesting.addPoint(0, 100);
 }
 
 void TestRectangleToolKit::innerRectangleIsInside()
@@ -163,6 +172,15 @@ void TestRectangleToolKit::gravityCenterOfContourLyingInsideOfRectangleIsCorrect
              "Почему-то центр тяжести некорректен!");
 }
 
-QTEST_APPLESS_MAIN(TestRectangleToolKit)
+void TestRectangleToolKit::contourInsideOfRectangleIsReallyInside()
+{
+    const QRectF rectangle(QPointF(-10, 110), QPointF(110, -10));
+
+    const bool contourIsInside = RectangleToolKit::isAnyPointOfAnyLineOfContourInsideOfRectangle(contourForBelongingToRectangleTesting, rectangle);
+
+    QVERIFY2(contourIsInside, "Почему-то ни одна точка контура не лежит в прямоугольнике, хотя он целиком должен лежить в нём!");
+}
+
+QTEST_MAIN(TestRectangleToolKit)
 
 #include "tst_TestRectangleToolKit.moc"

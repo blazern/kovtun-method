@@ -21,3 +21,12 @@ void KovtunMethodExecuterQmlInterface::performNextStep()
         kovtunMethodPainter->update();
     }
 }
+
+void KovtunMethodExecuterQmlInterface::reset()
+{
+    kovtunMethodExecuter.reset();
+    if (kovtunMethodPainter != nullptr)
+    {
+        kovtunMethodPainter->update();
+    }
+}

@@ -22,6 +22,7 @@ private:
     double calculateScale() const;
     void drawContour(QPainter * const painter);
     void drawActiveRectangles(QPainter * const painter);
+    void drawFilledRectangles(QPainter * const painter);
 };
 
 #endif // KOVTUNMETHODPAINTER_H

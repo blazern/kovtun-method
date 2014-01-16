@@ -14,6 +14,16 @@ bool RectangleToolKit::isAnyPointOfRectangleInsideOfContour(const Contour & cont
 
 bool RectangleToolKit::isAnyPointOfAnyLineOfContourInsideOfRectangle(const Contour & contour, const QRectF & rectangle)
 {
+    const QPointF * const points = contour.getPoints();
+    for (int index = 0; index < contour.getPointsCount(); index++)
+    {
+        const QPointF & currentPoint = points[index];
+        if (rectangleContainsInside(rectangle, currentPoint))
+        {
+            return true;
+        }
+    }
+
     const QLineF northLine(rectangle.topLeft(), rectangle.topRight());
     const QLineF eastLine(rectangle.topRight(), rectangle.bottomRight());
     const QLineF southLine(rectangle.bottomRight(), rectangle.bottomLeft());
@@ -102,8 +112,8 @@ QPointF RectangleToolKit::calculateGravityCenter(const Contour & contour, const 
 
     if (!innerPoints.isEmpty())
     {
-        qreal sumX;
-        qreal sumY;
+        qreal sumX = 0;
+        qreal sumY = 0;
 
         for (const auto & innerPoint : innerPoints)
         {
@@ -111,9 +121,7 @@ QPointF RectangleToolKit::calculateGravityCenter(const Contour & contour, const 
             sumY += innerPoint.y();
         }
 
-        const QPointF result(sumX / innerPoints.size(), sumY / innerPoints.size());
-        qDebug() << result << " points count: " << innerPoints.size();
-        return result;
+        return QPointF(sumX / innerPoints.size(), sumY / innerPoints.size());;
     }
     else
     {

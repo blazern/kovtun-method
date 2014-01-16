@@ -16,6 +16,7 @@ public:
     explicit KovtunMethodExecuter(const Contour & contour);
 
     void performNextStep();
+    void reset();
 
     inline const Contour & getContour() const           { return contour; }
 

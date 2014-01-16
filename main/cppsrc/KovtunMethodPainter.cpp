@@ -17,13 +17,15 @@ void KovtunMethodPainter::paint(QPainter * const painter)
 
     if (kovtunMethodExecuter != nullptr)
     {
-        drawContour(painter);
         drawActiveRectangles(painter);
+        drawFilledRectangles(painter);
+        drawContour(painter);
     }
 }
 
 void KovtunMethodPainter::drawContour(QPainter * const painter)
 {
+    painter->setPen(QColor("black"));
     const Contour & contour = kovtunMethodExecuter->getContour();
 
     if (contour.getPointsCount() > 1)
@@ -38,8 +40,15 @@ void KovtunMethodPainter::drawContour(QPainter * const painter)
 
 void KovtunMethodPainter::drawActiveRectangles(QPainter * const painter)
 {
-    painter->setPen(QColor("blue"));
+    painter->setPen(QColor("gray"));
     painter->drawRects(kovtunMethodExecuter->getActiveRectangles(), kovtunMethodExecuter->getActiveRectanglesCount());
+}
+
+void KovtunMethodPainter::drawFilledRectangles(QPainter * const painter)
+{
+    painter->setPen(QColor("green"));
+    painter->setBrush(QColor("green"));
+    painter->drawRects(kovtunMethodExecuter->getFilledRectangles(), kovtunMethodExecuter->getFilledRectanglesCount());
 }
 
 void KovtunMethodPainter::setKovtunMethodExecuter(const KovtunMethodExecuter & kovtunMethodExecuter)

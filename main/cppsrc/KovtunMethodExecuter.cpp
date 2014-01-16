@@ -26,9 +26,12 @@ void KovtunMethodExecuter::performNextStep()
         {
             const QRectF & activeRectangle = *iterator;
 
-            if (!RectangleToolKit::isAnyPointOfRectangleInsideOfContour(contour, activeRectangle))
+            if (!RectangleToolKit::isAnyPointOfAnyLineOfContourInsideOfRectangle(contour, activeRectangle))
             {
-                filledRectangles.push_back(*iterator);
+                if (RectangleToolKit::isAnyPointOfRectangleInsideOfContour(contour, activeRectangle))
+                {
+                    filledRectangles.push_back(*iterator);
+                }
                 iterator = activeRectangles.erase(iterator);
                 continue;
             }
@@ -66,12 +69,18 @@ void KovtunMethodExecuter::performNextStep()
     }
 }
 
+void KovtunMethodExecuter::reset()
+{
+    activeRectangles.clear();
+    filledRectangles.clear();
+}
+
 void KovtunMethodExecuter::calculateFirstActiveRectangle()
 {
     if (contour.getPointsCount() > 0)
     {
-        activeRectangles.push_back(QRectF(QPointF(contour.getWest(), contour.getNorth()),
-                                          QPointF(contour.getEast(), contour.getSouth())));
+        activeRectangles.push_back(QRectF(QPointF(contour.getWest() - 1, contour.getNorth() + 1),
+                                          QPointF(contour.getEast() + 1, contour.getSouth() - 1)));
     }
 #ifdef QT_DEBUG
     else

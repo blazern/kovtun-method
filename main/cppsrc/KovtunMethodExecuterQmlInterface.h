@@ -16,6 +16,7 @@ public:
     void setKovtunMethodPainter(KovtunMethodPainter & kovtunMethodPainter);
 
     Q_INVOKABLE void performNextStep();
+    Q_INVOKABLE void reset();
 
 private:
     KovtunMethodExecuter & kovtunMethodExecuter;

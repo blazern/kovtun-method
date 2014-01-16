@@ -24,6 +24,17 @@ ApplicationWindow {
             }
         }
 
+        Button {
+            id: resetButton
+            anchors.top: performStepButton.bottom
+            text: "Сбросить"
+            action: Action {
+                onTriggered: {
+                    kovtunMethodExecuterQmlInterface.reset();
+                }
+            }
+        }
+
         KovtunMethodPainter {
             anchors.left: performStepButton.right
             anchors.leftMargin: 10
