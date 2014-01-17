@@ -21,7 +21,7 @@ public:
 
     // Возвращаемое значение для случая, когда контур не лежит в прямоугольнике (либо лежит на его границе), не определено
     // Используйте isAnyPointOfAnyLineOfContourInsideOfRectangle() для проверки.
-    static QPointF calculateGravityCenter(const Contour & contour, const QRectF & rectangle);
+    static QPointF calculateGravityCenter(const Contour & contour, const QRectF & rectangle, const int maximumUnits = 25);
 
 private:
     static bool rectangleContainsInside(const QRectF & rectangle, const QPointF & point);

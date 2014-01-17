@@ -20,6 +20,7 @@ ApplicationWindow {
             action: Action {
                 onTriggered: {
                     kovtunMethodExecuterQmlInterface.performNextStep();
+                    kovtunMethodExecuterQmlInterface.setUnitsDimension(unitsDimensionTextField.text);
                 }
             }
         }
@@ -32,6 +33,25 @@ ApplicationWindow {
                 onTriggered: {
                     kovtunMethodExecuterQmlInterface.reset();
                 }
+            }
+        }
+
+        Text {
+            id: unitsDimensionText
+            anchors.top: resetButton.bottom
+            text: "Размерность юнитов:"
+        }
+
+        TextField {
+            id: unitsDimensionTextField
+            anchors.top: unitsDimensionText.bottom
+
+            onAccepted: {
+                kovtunMethodExecuterQmlInterface.setUnitsDimension(text);
+            }
+
+            Component.onCompleted: {
+                text = kovtunMethodExecuterQmlInterface.getUnitsDimension();
             }
         }
 

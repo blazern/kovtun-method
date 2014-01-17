@@ -8,7 +8,8 @@
 KovtunMethodExecuter::KovtunMethodExecuter(const Contour & contour) :
     contour(contour),
     activeRectangles(),
-    filledRectangles()
+    filledRectangles(),
+    unitDimension(20)
 {
 }
 
@@ -36,7 +37,7 @@ void KovtunMethodExecuter::performNextStep()
                 continue;
             }
 
-            const QPointF gravityCenter = RectangleToolKit::calculateGravityCenter(contour, activeRectangle);
+            const QPointF gravityCenter = RectangleToolKit::calculateGravityCenter(contour, activeRectangle, unitDimension);
 
             newActiveRectangles.push_back(QRectF(
                                               activeRectangle.left(),
@@ -79,8 +80,8 @@ void KovtunMethodExecuter::calculateFirstActiveRectangle()
 {
     if (contour.getPointsCount() > 0)
     {
-        activeRectangles.push_back(QRectF(QPointF(contour.getWest() - 1, contour.getNorth() + 1),
-                                          QPointF(contour.getEast() + 1, contour.getSouth() - 1)));
+        activeRectangles.push_back(QRectF(QPointF(contour.getWest(), contour.getNorth()),
+                                          QPointF(contour.getEast(), contour.getSouth())));
     }
 #ifdef QT_DEBUG
     else

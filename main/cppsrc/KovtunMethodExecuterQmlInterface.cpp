@@ -30,3 +30,13 @@ void KovtunMethodExecuterQmlInterface::reset()
         kovtunMethodPainter->update();
     }
 }
+
+void KovtunMethodExecuterQmlInterface::setUnitsDimension(const int dimension)
+{
+    kovtunMethodExecuter.setUnitsDimension(dimension);
+}
+
+int KovtunMethodExecuterQmlInterface::getUnitsDimension()
+{
+    return kovtunMethodExecuter.getUnitsDimension();
+}

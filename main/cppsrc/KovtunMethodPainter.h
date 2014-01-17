@@ -2,6 +2,7 @@
 #define KOVTUNMETHODPAINTER_H
 
 #include <QQuickPaintedItem>
+#include <QPen>
 #include "KovtunMethodExecuter.h"
 
 class KovtunMethodPainter : public QQuickPaintedItem
@@ -18,6 +19,7 @@ public:
 private:
     const KovtunMethodExecuter * kovtunMethodExecuter;
     const int offset;   // Отступ от краёв области рисования
+    QPen pen;
 
     double calculateScale() const;
     void drawContour(QPainter * const painter);

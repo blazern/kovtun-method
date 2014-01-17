@@ -18,6 +18,9 @@ public:
     void performNextStep();
     void reset();
 
+    void setUnitsDimension(const int dimension)         { unitDimension = dimension; }
+    int getUnitsDimension() const                        { return unitDimension; }
+
     inline const Contour & getContour() const           { return contour; }
 
     inline const QRectF * getActiveRectangles() const   { return activeRectangles.data(); }
@@ -37,6 +40,7 @@ private:
     const Contour contour;
     QVector<QRectF> activeRectangles;
     QVector<QRectF> filledRectangles;
+    int unitDimension;
 
     mutable QMutex mutex;
 

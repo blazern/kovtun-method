@@ -27,6 +27,9 @@ public:
     inline qreal getSouth() const   { return south; }
     inline qreal getWest() const    { return west; }
 
+    inline qreal getWidth() const   { return north - south; }
+    inline qreal getHeight() const  { return east - west; }
+
     void addPoint(const qreal x, const qreal y);
     void addPoint(const QPointF & point);
 

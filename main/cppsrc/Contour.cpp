@@ -109,8 +109,9 @@ bool Contour::containsInside(const QPointF & point) const
     const QLineF * const lines = getLines();
     for (int index = 0; index < getLinesCount(); index++)
     {
+        const QLineF & currentLine = lines[index];
         QPointF intersectionPoint;
-        const QLineF::IntersectType intersectType = lines[index].intersect(lineToEast, &intersectionPoint);
+        const QLineF::IntersectType intersectType = currentLine.intersect(lineToEast, &intersectionPoint);
 
         if (intersectType == QLineF::BoundedIntersection)
         {

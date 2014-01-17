@@ -17,6 +17,8 @@ public:
 
     Q_INVOKABLE void performNextStep();
     Q_INVOKABLE void reset();
+    Q_INVOKABLE void setUnitsDimension(const int dimension);
+    Q_INVOKABLE int getUnitsDimension();
 
 private:
     KovtunMethodExecuter & kovtunMethodExecuter;

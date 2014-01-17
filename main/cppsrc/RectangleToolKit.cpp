@@ -67,66 +67,47 @@ bool RectangleToolKit::doLinesIntersectWithoutLyingOnEachOther(const QLineF & fi
     return false;
 }
 
-QPointF RectangleToolKit::calculateGravityCenter(const Contour & contour, const QRectF & rectangle)
+QPointF RectangleToolKit::calculateGravityCenter(const Contour & contour, const QRectF & rectangle, const int maximumUnits)
 {
-    QVector<QPointF> innerPoints;
+    qreal rectWidth = rectangle.width();
+    qreal rectHeight = rectangle.height();
 
-    const QPointF * const points = contour.getPoints();
-    for (int index = 0; index < contour.getPointsCount(); index++)
+    qreal unitWidth = rectWidth / maximumUnits;
+    qreal unitHeight = rectHeight / maximumUnits;
+
+    QRectF unit;
+
+    QVector<QPointF> insidePoints;
+
+    for (int horIndex = 0; horIndex < maximumUnits; horIndex++)
     {
-        const QPointF & currentPoint = points[index];
-        if (rectangleContainsInside(rectangle, currentPoint))
+        const qreal newX = rectangle.left() + horIndex * unitWidth;
+        unit.setX(newX);
+
+        for (int vertIndex = 0; vertIndex < maximumUnits; vertIndex++)
         {
-            innerPoints.push_back(currentPoint);
-        }
-        else
-        {
-            if (rectangle.contains(currentPoint))
+            const qreal newY = rectangle.top() + vertIndex * unitHeight;
+            unit.setY(newY);
+            unit.setWidth(unitWidth);
+            unit.setHeight(unitHeight);
+
+            if (isAnyPointOfRectangleInsideOfContour(contour, unit))
             {
-                if (index - 1 >= 0 && rectangleContainsInside(rectangle, points[index - 1]))
-                {
-                    innerPoints.push_back(currentPoint);
-                }
-                else if (index + 1 < contour.getPointsCount() && rectangleContainsInside(rectangle, points[index + 1]))
-                {
-                    innerPoints.push_back(currentPoint);
-                }
+                insidePoints.push_back(unit.center());
             }
         }
     }
 
-    const QLineF northLine(rectangle.topLeft(), rectangle.topRight());
-    const QLineF eastLine(rectangle.topRight(), rectangle.bottomRight());
-    const QLineF southLine(rectangle.bottomRight(), rectangle.bottomLeft());
-    const QLineF westLine(rectangle.bottomLeft(), rectangle.topLeft());
-
-    const QLineF * const lines = contour.getLines();
-    for (int index = 0; index < contour.getLinesCount(); index++)
+    qreal averageX = 0;
+    qreal averageY = 0;
+    const int pointsCount = insidePoints.size();
+    for (const auto & point : insidePoints)
     {
-        const QLineF & currentLine = lines[index];
-        addIntersectionIfExistsToVector(currentLine, northLine, innerPoints);
-        addIntersectionIfExistsToVector(currentLine, eastLine, innerPoints);
-        addIntersectionIfExistsToVector(currentLine, southLine, innerPoints);
-        addIntersectionIfExistsToVector(currentLine, westLine, innerPoints);
+        averageX += point.x() / pointsCount;
+        averageY += point.y() / pointsCount;
     }
 
-    if (!innerPoints.isEmpty())
-    {
-        qreal sumX = 0;
-        qreal sumY = 0;
-
-        for (const auto & innerPoint : innerPoints)
-        {
-            sumX += innerPoint.x();
-            sumY += innerPoint.y();
-        }
-
-        return QPointF(sumX / innerPoints.size(), sumY / innerPoints.size());;
-    }
-    else
-    {
-        return QPointF();
-    }
+    return QPointF(averageX, averageY);
 }
 
 bool RectangleToolKit::rectangleContainsInside(const QRectF & rectangle, const QPointF & point)

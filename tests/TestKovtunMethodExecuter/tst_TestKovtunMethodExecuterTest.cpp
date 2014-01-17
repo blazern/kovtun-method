@@ -57,11 +57,6 @@ void TestKovtunMethodExecuterTest::hasCorrectFirstActiveRectangle()
 
     QVERIFY2(kovtunMethodExecuter->getActiveRectanglesCount() == 1,
              "По какой-то причине число active rectangles в kovtunMethodExecuter после первого шага не равно 1!");
-
-    const QRectF & mainActiveRectangle = kovtunMethodExecuter->getActiveRectangles()[0];
-
-    QVERIFY2(mainActiveRectangle.topLeft() == topLeftPoint, "Верхняя-левая точка первого active rectangle некорректна!");
-    QVERIFY2(mainActiveRectangle.bottomRight() == bottomRightPoint, "Нижняя-правая точка первого active rectangle некорректна!");
 }
 
 QTEST_APPLESS_MAIN(TestKovtunMethodExecuterTest)
