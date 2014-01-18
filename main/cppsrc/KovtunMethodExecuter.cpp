@@ -80,8 +80,8 @@ void KovtunMethodExecuter::calculateFirstActiveRectangle()
 {
     if (contour.getPointsCount() > 0)
     {
-        activeRectangles.push_back(QRectF(QPointF(contour.getWest(), contour.getNorth()),
-                                          QPointF(contour.getEast(), contour.getSouth())));
+        activeRectangles.push_back(QRectF(QPointF(contour.getWest(), contour.getSouth()),
+                                          QPointF(contour.getEast(), contour.getNorth())));
     }
 #ifdef QT_DEBUG
     else
