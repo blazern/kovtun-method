@@ -19,3 +19,9 @@ TEMPLATE = app
 
 SOURCES += tst_TestRectangleToolKit_calculateGravityCenterTest.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
+
+DESTDIR = $$OUT_PWD/../../main
+OBJECTS_DIR = $$OUT_PWD/../../main
+MOC_DIR = $$OUT_PWD/../../main
+RCC_DIR = $$OUT_PWD/../../main
+UI_DIR = $$OUT_PWD/../../main

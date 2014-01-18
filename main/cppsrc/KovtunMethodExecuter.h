@@ -19,7 +19,7 @@ public:
     void reset();
 
     void setUnitsDimension(const int dimension)         { unitDimension = dimension; }
-    int getUnitsDimension() const                        { return unitDimension; }
+    int getUnitsDimension() const                       { return unitDimension; }
 
     inline const Contour & getContour() const           { return contour; }
 

@@ -18,7 +18,7 @@ public:
 
 private:
     const KovtunMethodExecuter * kovtunMethodExecuter;
-    const int offset;   // Отступ от краёв области рисования
+    const int offsetFromItemEdges;   // Отступ от краёв области рисования
     QPen pen;
 
     double calculateScale() const;

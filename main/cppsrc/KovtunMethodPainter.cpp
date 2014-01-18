@@ -5,7 +5,7 @@
 KovtunMethodPainter::KovtunMethodPainter(QQuickItem * parent) :
     QQuickPaintedItem(parent),
     kovtunMethodExecuter(nullptr),
-    offset(20),
+    offsetFromItemEdges(20),
     pen()
 {
 }
@@ -14,7 +14,7 @@ void KovtunMethodPainter::paint(QPainter * const painter)
 {
     const double scale = calculateScale();
     painter->scale(scale, scale);
-    painter->translate(offset / scale, offset / scale);
+    painter->translate(offsetFromItemEdges / scale, offsetFromItemEdges / scale);
     pen.setWidth(1 / scale);
 
     if (kovtunMethodExecuter != nullptr)
@@ -84,8 +84,8 @@ double KovtunMethodPainter::calculateScale() const
             }
         }
 
-        const double scaleByX = (width() - offset * 2) / pointWithBiggerX->x();
-        const double scaleByY = (height() - offset * 2) / pointWithBiggerY->y();
+        const double scaleByX = (width() - offsetFromItemEdges * 2) / pointWithBiggerX->x();
+        const double scaleByY = (height() - offsetFromItemEdges * 2) / pointWithBiggerY->y();
 
         return scaleByX < scaleByY ? scaleByX : scaleByY;
     }
