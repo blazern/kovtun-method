@@ -5,12 +5,19 @@
 #include <QVector>
 #include <QLineF>
 
-class Contour
+// Класс является представлением закрытого контура с отсутствием самопересечений.
+//
+// Наличие самопересечений никак не проверяется, поэтому если пользователь класса их создаст,
+// то поведение некоторых методов (например containsInside()) может быть некорректно.
+//
+// Ручное замыкание контура не требуется, т.е. первая и последняя точка контура соединяются автоматически,
+// и вызов getLines()[getLinesCount() - 1] вернёт линию, соединяющую их.
+class ClosedContour
 {
 public:
-    explicit Contour();
-    Contour(const Contour &) = default;
-    Contour & operator=(const Contour &) = default;
+    explicit ClosedContour();
+    ClosedContour(const ClosedContour &) = default;
+    ClosedContour & operator=(const ClosedContour &) = default;
 
     const QLineF * getLines() const;
     int getLinesCount() const;

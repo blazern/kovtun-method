@@ -1,7 +1,7 @@
 #include "RectangleToolKit.h"
 #include <QDebug>
 
-bool RectangleToolKit::isAnyPointOfRectangleInsideOfContour(const Contour & contour, const QRectF & rectangle)
+bool RectangleToolKit::isAnyPointOfRectangleInsideOfContour(const ClosedContour & contour, const QRectF & rectangle)
 {
     if (contour.containsInside(rectangle.topLeft()) || contour.containsInside(rectangle.topRight())
         || contour.containsInside(rectangle.bottomLeft()) || contour.containsInside(rectangle.bottomRight()))
@@ -12,7 +12,7 @@ bool RectangleToolKit::isAnyPointOfRectangleInsideOfContour(const Contour & cont
     return isAnyPointOfAnyLineOfContourInsideOfRectangle(contour, rectangle);
 }
 
-bool RectangleToolKit::isAnyPointOfAnyLineOfContourInsideOfRectangle(const Contour & contour, const QRectF & rectangle)
+bool RectangleToolKit::isAnyPointOfAnyLineOfContourInsideOfRectangle(const ClosedContour & contour, const QRectF & rectangle)
 {
     const QPointF * const points = contour.getPoints();
     for (int index = 0; index < contour.getPointsCount(); index++)
@@ -67,7 +67,7 @@ bool RectangleToolKit::doLinesIntersectWithoutLyingOnEachOther(const QLineF & fi
     return false;
 }
 
-QPointF RectangleToolKit::calculateGravityCenter(const Contour & contour, const QRectF & rectangle, const int maximumUnits)
+QPointF RectangleToolKit::calculateGravityCenter(const ClosedContour & contour, const QRectF & rectangle, const int maximumUnits)
 {
     qreal rectWidth = rectangle.width();
     qreal rectHeight = rectangle.height();

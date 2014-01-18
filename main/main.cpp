@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 
     Application app(argc, argv);
 
-    Contour contour;
+    ClosedContour contour;
 
     contour.addPoint(QPointF(0,0));
     contour.addPoint(QPointF(100,0));

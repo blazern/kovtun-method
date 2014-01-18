@@ -15,7 +15,7 @@ private Q_SLOTS:
     void contourInsideOfRectangleIsReallyInside();
 
 private:
-    Contour contour;
+    ClosedContour contour;
 };
 
 TestRectangleToolKit_isAnyPointOfAnyLineOfContourInsideOfRectangleTest::TestRectangleToolKit_isAnyPointOfAnyLineOfContourInsideOfRectangleTest():

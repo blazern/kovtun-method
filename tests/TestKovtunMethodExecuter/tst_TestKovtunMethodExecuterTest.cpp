@@ -19,7 +19,7 @@ private Q_SLOTS:
 private:
     QPointF topLeftPoint;
     QPointF bottomRightPoint;
-    Contour contour;
+    ClosedContour contour;
     KovtunMethodExecuter * kovtunMethodExecuter;
 };
 

@@ -15,7 +15,7 @@ private Q_SLOTS:
     void doesntContainInsidePointFromHole();
 
 private:
-    Contour contour;
+    ClosedContour contour;
 };
 
 TestContour::TestContour() :

@@ -5,7 +5,7 @@
 #include <QDebug>
 #endif
 
-KovtunMethodExecuter::KovtunMethodExecuter(const Contour & contour) :
+KovtunMethodExecuter::KovtunMethodExecuter(const ClosedContour & contour) :
     contour(contour),
     activeRectangles(),
     filledRectangles(),

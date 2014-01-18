@@ -19,7 +19,7 @@ private Q_SLOTS:
     void rectangleTakesFourthOfContour();
 
 private:
-    Contour contour;
+    ClosedContour contour;
 };
 
 TestRectangleToolKit_calculateGravityCenterTest::TestRectangleToolKit_calculateGravityCenterTest() :

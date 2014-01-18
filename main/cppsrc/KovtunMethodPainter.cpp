@@ -29,7 +29,7 @@ void KovtunMethodPainter::drawContour(QPainter * const painter)
 {
     pen.setColor("black");
     painter->setPen(pen);
-    const Contour & contour = kovtunMethodExecuter->getContour();
+    const ClosedContour & contour = kovtunMethodExecuter->getContour();
 
     if (contour.getPointsCount() > 1)
     {
@@ -63,7 +63,7 @@ void KovtunMethodPainter::setKovtunMethodExecuter(const KovtunMethodExecuter & k
 
 double KovtunMethodPainter::calculateScale() const
 {
-    const Contour & contour = kovtunMethodExecuter->getContour();
+    const ClosedContour & contour = kovtunMethodExecuter->getContour();
     if (contour.getPointsCount() > 0)
     {
         const QPointF * pointWithBiggerX = &contour.getPoint(0);

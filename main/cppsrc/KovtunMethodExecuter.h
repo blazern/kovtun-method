@@ -13,7 +13,7 @@ class KovtunMethodExecuter
     KovtunMethodExecuter & operator=(const KovtunMethodExecuter & other) = delete;
 
 public:
-    explicit KovtunMethodExecuter(const Contour & contour);
+    explicit KovtunMethodExecuter(const ClosedContour & contour);
 
     void performNextStep();
     void reset();
@@ -21,7 +21,7 @@ public:
     void setUnitsDimension(const int dimension)         { unitDimension = dimension; }
     int getUnitsDimension() const                       { return unitDimension; }
 
-    inline const Contour & getContour() const           { return contour; }
+    inline const ClosedContour & getContour() const           { return contour; }
 
     inline const QRectF * getActiveRectangles() const   { return activeRectangles.data(); }
     inline int getActiveRectanglesCount() const         { return activeRectangles.size(); }
@@ -37,7 +37,7 @@ public:
     void unlock() const         { mutex.unlock(); }
 
 private:
-    const Contour contour;
+    const ClosedContour contour;
     QVector<QRectF> activeRectangles;
     QVector<QRectF> filledRectangles;
     int unitDimension;

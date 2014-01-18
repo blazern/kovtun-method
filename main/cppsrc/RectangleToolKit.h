@@ -13,15 +13,15 @@ class RectangleToolKit
     RectangleToolKit & operator=(const RectangleToolKit &) = delete;
 
 public:
-    static bool isAnyPointOfRectangleInsideOfContour(const Contour & contour, const QRectF & rectangle);
+    static bool isAnyPointOfRectangleInsideOfContour(const ClosedContour & contour, const QRectF & rectangle);
 
-    static bool isAnyPointOfAnyLineOfContourInsideOfRectangle(const Contour & contour, const QRectF & rectangle);
+    static bool isAnyPointOfAnyLineOfContourInsideOfRectangle(const ClosedContour & contour, const QRectF & rectangle);
 
     static bool doLinesIntersectWithoutLyingOnEachOther(const QLineF & firstLine, const QLineF & secondLine);
 
     // Возвращаемое значение для случая, когда контур не лежит в прямоугольнике (либо лежит на его границе), не определено
     // Используйте isAnyPointOfAnyLineOfContourInsideOfRectangle() для проверки.
-    static QPointF calculateGravityCenter(const Contour & contour, const QRectF & rectangle, const int maximumUnits = 25);
+    static QPointF calculateGravityCenter(const ClosedContour & contour, const QRectF & rectangle, const int maximumUnits = 20);
 
 private:
     static bool rectangleContainsInside(const QRectF & rectangle, const QPointF & point);
