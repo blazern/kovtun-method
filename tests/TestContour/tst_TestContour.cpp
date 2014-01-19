@@ -1,6 +1,6 @@
 #include <QString>
 #include <QtTest>
-#include "../../main/cppsrc/Contour.h"
+#include "../../main/cppsrc/ClosedContour.h"
 
 class TestContour : public QObject
 {

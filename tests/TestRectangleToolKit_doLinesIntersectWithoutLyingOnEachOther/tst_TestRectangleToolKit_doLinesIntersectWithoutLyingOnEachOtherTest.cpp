@@ -3,7 +3,7 @@
 #include <QCoreApplication>
 
 #include "../../main/cppsrc/RectangleToolKit.h"
-#include "../../main/cppsrc/Contour.h"
+#include "../../main/cppsrc/ClosedContour.h"
 
 class TestRectangleToolKit_doLinesIntersectWithoutLyingOnEachOtherTest : public QObject
 {

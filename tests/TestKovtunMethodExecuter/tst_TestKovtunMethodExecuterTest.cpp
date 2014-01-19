@@ -2,7 +2,7 @@
 #include <QtTest>
 
 #include "../../main/cppsrc/KovtunMethodExecuter.h"
-#include "../../main/cppsrc/Contour.h"
+#include "../../main/cppsrc/ClosedContour.h"
 
 class TestKovtunMethodExecuterTest : public QObject
 {

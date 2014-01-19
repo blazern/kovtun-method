@@ -3,7 +3,7 @@
 
 #include <QRectF>
 #include <QVector>
-#include "Contour.h"
+#include "ClosedContour.h"
 
 class RectangleToolKit
 {
@@ -23,9 +23,13 @@ public:
     // Используйте isAnyPointOfAnyLineOfContourInsideOfRectangle() для проверки.
     static QPointF calculateGravityCenter(const ClosedContour & contour, const QRectF & rectangle, const int maximumUnits = 20);
 
+    // Имеется в виду только касание, т.е. вызов функции для пересекающихся прямо угольников вернёт false
+    static bool doRectanglesTouchEachOther(const QRectF & firstRectangle, const QRectF & secondRectangle);
+
 private:
     static bool rectangleContainsInside(const QRectF & rectangle, const QPointF & point);
-    static void addIntersectionIfExistsToVector(const QLineF & firstLine, const QLineF & secondLine, QVector<QPointF> & vector);
+
+    static bool doLeftAndRightOrTopAndBottomSidesTouchEachOther(const QRectF & firstRectangle, const QRectF & secondRectangle);
 };
 
 #endif // RECTANGLETOOLKIT_H

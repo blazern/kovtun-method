@@ -6,4 +6,5 @@ SUBDIRS += \
     tests/TestContour \
     tests/TestRectangleToolKit_doLinesIntersectWithoutLyingOnEachOther \
     tests/TestRectangleToolKit_isAnyPointOfAnyLineOfContourInsideOfRectangle \
-    tests/TestRectangleToolKit_calculateGravityCenter
+    tests/TestRectangleToolKit_calculateGravityCenter \
+    tests/TestRectangleToolKit_doRectanglesTouchEachOther

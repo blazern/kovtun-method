@@ -1,4 +1,4 @@
-#include "Contour.h"
+#include "ClosedContour.h"
 
 ClosedContour::ClosedContour() :
     points(),

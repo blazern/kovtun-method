@@ -45,6 +45,21 @@ bool RectangleToolKit::isAnyPointOfAnyLineOfContourInsideOfRectangle(const Close
     return false;
 }
 
+bool RectangleToolKit::rectangleContainsInside(const QRectF & rectangle, const QPointF & point)
+{
+    if (rectangle.contains(point))
+    {
+        if (point.x() != rectangle.left()
+            && point.x() != rectangle.right()
+            && point.y() != rectangle.top()
+            && point.y() != rectangle.bottom())
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool RectangleToolKit::doLinesIntersectWithoutLyingOnEachOther(const QLineF & firstLine, const QLineF & secondLine)
 {
     QPointF intersection;
@@ -110,27 +125,36 @@ QPointF RectangleToolKit::calculateGravityCenter(const ClosedContour & contour, 
     return QPointF(averageX, averageY);
 }
 
-bool RectangleToolKit::rectangleContainsInside(const QRectF & rectangle, const QPointF & point)
+bool RectangleToolKit::doRectanglesTouchEachOther(const QRectF & firstRectangle, const QRectF & secondRectangle)
 {
-    if (rectangle.contains(point))
+    const bool touched = doLeftAndRightOrTopAndBottomSidesTouchEachOther(firstRectangle, secondRectangle);
+
+    return touched ? true : doLeftAndRightOrTopAndBottomSidesTouchEachOther(secondRectangle, firstRectangle);
+}
+
+bool RectangleToolKit::doLeftAndRightOrTopAndBottomSidesTouchEachOther(const QRectF & firstRectangle, const QRectF & secondRectangle)
+{
+    if (secondRectangle.right() == firstRectangle.left())
     {
-        if (point.x() != rectangle.left()
-            && point.x() != rectangle.right()
-            && point.y() != rectangle.top()
-            && point.y() != rectangle.bottom())
+        if (secondRectangle.top() >= firstRectangle.top()
+            || secondRectangle.bottom() <= firstRectangle.bottom()
+            || secondRectangle.center().y() > firstRectangle.top()
+            || secondRectangle.center().y() < firstRectangle.bottom())
         {
             return true;
         }
     }
-    return false;
-}
 
-void RectangleToolKit::addIntersectionIfExistsToVector(const QLineF & firstLine, const QLineF & secondLine, QVector<QPointF> & vector)
-{
-    if (doLinesIntersectWithoutLyingOnEachOther(firstLine, secondLine))
+    if (secondRectangle.bottom() == firstRectangle.top())
     {
-        QPointF intersection;
-        firstLine.intersect(secondLine, &intersection);
-        vector.push_back(intersection);
+        if (secondRectangle.right() >= firstRectangle.right()
+            || secondRectangle.left() <= firstRectangle.left()
+            || secondRectangle.center().x() > firstRectangle.right()
+            || secondRectangle.center().x() < firstRectangle.left())
+        {
+            return true;
+        }
     }
+
+    return false;
 }

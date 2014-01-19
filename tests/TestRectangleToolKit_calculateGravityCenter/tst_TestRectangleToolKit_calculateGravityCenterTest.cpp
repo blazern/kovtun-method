@@ -2,7 +2,7 @@
 #include <QtTest>
 #include <QCoreApplication>
 
-#include "../../main/cppsrc/Contour.h"
+#include "../../main/cppsrc/ClosedContour.h"
 #include "../../main/cppsrc/RectangleToolKit.h"
 
 class TestRectangleToolKit_calculateGravityCenterTest : public QObject

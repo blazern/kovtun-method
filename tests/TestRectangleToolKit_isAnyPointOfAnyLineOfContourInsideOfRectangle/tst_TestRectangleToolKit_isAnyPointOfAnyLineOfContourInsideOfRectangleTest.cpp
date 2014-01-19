@@ -2,7 +2,7 @@
 #include <QtTest>
 
 #include "../../main/cppsrc/RectangleToolKit.h"
-#include "../../main/cppsrc/Contour.h"
+#include "../../main/cppsrc/ClosedContour.h"
 
 class TestRectangleToolKit_isAnyPointOfAnyLineOfContourInsideOfRectangleTest : public QObject
 {

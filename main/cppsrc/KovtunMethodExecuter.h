@@ -1,7 +1,7 @@
 #ifndef KOVTUNMETHODEXECTUTER_H
 #define KOVTUNMETHODEXECTUTER_H
 
-#include "Contour.h"
+#include "ClosedContour.h"
 #include <QObject>
 #include <QVector>
 #include <QRectF>
@@ -21,7 +21,7 @@ public:
     void setUnitsDimension(const int dimension)         { unitDimension = dimension; }
     int getUnitsDimension() const                       { return unitDimension; }
 
-    inline const ClosedContour & getContour() const           { return contour; }
+    inline const ClosedContour & getContour() const     { return contour; }
 
     inline const QRectF * getActiveRectangles() const   { return activeRectangles.data(); }
     inline int getActiveRectanglesCount() const         { return activeRectangles.size(); }
