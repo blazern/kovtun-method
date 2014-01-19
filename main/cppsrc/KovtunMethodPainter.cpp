@@ -45,15 +45,26 @@ void KovtunMethodPainter::drawActiveRectangles(QPainter * const painter)
 {
     pen.setColor("gray");
     painter->setPen(pen);
-    painter->drawRects(kovtunMethodExecuter->getActiveRectangles(), kovtunMethodExecuter->getActiveRectanglesCount());
+
+    for (int index = 0; index < kovtunMethodExecuter->getActiveRectanglesCount(); index++)
+    {
+        painter->drawRect(kovtunMethodExecuter->getActiveRectangle(index));
+    }
 }
 
 void KovtunMethodPainter::drawFilledRectangles(QPainter * const painter)
 {
-    pen.setColor("green");
-    painter->setPen(pen);
-    painter->setBrush(QColor("green"));
-    painter->drawRects(kovtunMethodExecuter->getFilledRectangles(), kovtunMethodExecuter->getFilledRectanglesCount());
+    for (int index = 0; index < kovtunMethodExecuter->getFilledRectanglesCount(); index++)
+    {
+        const KovtunQRectF & filledRectangle = kovtunMethodExecuter->getFilledRectangle(index);
+
+        const QColor color = filledRectangle.getColor();
+
+        painter->setBrush(color);
+        painter->setPen(color);
+
+        painter->drawRect(filledRectangle);
+    }
 }
 
 void KovtunMethodPainter::setKovtunMethodExecuter(const KovtunMethodExecuter & kovtunMethodExecuter)

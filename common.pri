@@ -7,11 +7,15 @@ SOURCES += \
     $$PWD/main/cppsrc/ClosedContour.cpp \
     $$PWD/main/cppsrc/KovtunMethodPainter.cpp \
     $$PWD/main/cppsrc/KovtunMethodExecuterQmlInterface.cpp \
-    $$PWD/main/cppsrc/RectangleToolKit.cpp
+    $$PWD/main/cppsrc/RectangleToolKit.cpp \
+    $$PWD/main/cppsrc/KovtunQRectF.cpp \
+    $$PWD/main/cppsrc/ColorsDictionary.cpp
 
 HEADERS += \
     $$PWD/main/cppsrc/KovtunMethodExecuter.h \
-    $$PWD/main/cppsrc/ClosedBContour.h \
+    $$PWD/main/cppsrc/ClosedContour.h \
     $$PWD/main/cppsrc/KovtunMethodPainter.h \
     $$PWD/main/cppsrc/KovtunMethodExecuterQmlInterface.h \
-    $$PWD/main/cppsrc/RectangleToolKit.h
+    $$PWD/main/cppsrc/RectangleToolKit.h \
+    $$PWD/main/cppsrc/KovtunQRectF.h \
+    $$PWD/main/cppsrc/ColorsDictionary.h

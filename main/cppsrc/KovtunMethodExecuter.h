@@ -2,10 +2,12 @@
 #define KOVTUNMETHODEXECTUTER_H
 
 #include "ClosedContour.h"
+#include "KovtunQRectF.h"
+#include "ColorsDictionary.h"
 #include <QObject>
 #include <QVector>
 #include <QRectF>
-#include <QMutex>
+#include <QSharedPointer>
 
 class KovtunMethodExecuter
 {
@@ -18,33 +20,28 @@ public:
     void performNextStep();
     void reset();
 
-    void setUnitsDimension(const int dimension)         { unitDimension = dimension; }
-    int getUnitsDimension() const                       { return unitDimension; }
+    void setUnitsDimension(const int dimension)                                     { unitDimension = dimension; }
+    int getUnitsDimension() const                                                   { return unitDimension; }
 
-    inline const ClosedContour & getContour() const     { return contour; }
+    inline const ClosedContour & getContour() const                                 { return contour; }
 
-    inline const QRectF * getActiveRectangles() const   { return activeRectangles.data(); }
-    inline int getActiveRectanglesCount() const         { return activeRectangles.size(); }
+    inline const KovtunQRectF & getActiveRectangle(const int index) const    { return *activeRectangles[index]; }
+    inline int getActiveRectanglesCount() const                                     { return activeRectangles.size(); }
 
-    inline const QRectF * getFilledRectangles() const   { return filledRectangles.data(); }
-    inline int getFilledRectanglesCount() const         { return filledRectangles.size(); }
-
-
-    // Если объект класса будет использоваться в многопоточной среде, то рекомендованно вызывать lock()
-    // при начале обработки данных объекта, и unlock() при окончании.
-    // Несоблюдение этого правила в многопоточной среде ведёт к неопределённому поведению.
-    inline void lock() const    { mutex.lock(); }
-    void unlock() const         { mutex.unlock(); }
+    inline const KovtunQRectF & getFilledRectangle(const int index) const    { return *filledRectangles[index]; }
+    inline int getFilledRectanglesCount() const                                     { return filledRectangles.size(); }
 
 private:
     const ClosedContour contour;
-    QVector<QRectF> activeRectangles;
-    QVector<QRectF> filledRectangles;
+    QVector<QSharedPointer<KovtunQRectF> > activeRectangles;
+    QVector<QSharedPointer<KovtunQRectF> > filledRectangles;
     int unitDimension;
+    ColorsDictionary colorDictionary;
 
-    mutable QMutex mutex;
 
     void calculateFirstActiveRectangle();
+    void calculateNewActiveRectangles();
+    void shareNeighbors(const KovtunQRectF & source, KovtunQRectF & destination) const;
 };
 
 #endif // KOVTUNMETHODEXECTUTER_H

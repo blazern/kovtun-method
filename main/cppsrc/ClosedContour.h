@@ -1,5 +1,5 @@
-#ifndef CONTOUR_H
-#define CONTOUR_H
+#ifndef CLOSEDCONTOUR_H
+#define CLOSEDCONTOUR_H
 
 #include <QPointF>
 #include <QVector>
@@ -52,4 +52,4 @@ private:
     void recalculateSides();
 };
 
-#endif // CONTOUR_H
+#endif // CLOSEDCONTOUR_H
