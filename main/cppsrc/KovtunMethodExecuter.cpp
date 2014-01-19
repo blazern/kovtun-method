@@ -23,7 +23,7 @@ void KovtunMethodExecuter::performNextStep()
     {
         QVector<QRectF> newActiveRectangles;
 
-        for (QVector<QRectF>::iterator iterator = activeRectangles.begin(); iterator != activeRectangles.end(); )
+        for (QVector<QRectF>::iterator iterator = activeRectangles.begin(); iterator != activeRectangles.end(); iterator = activeRectangles.erase(iterator))
         {
             const QRectF & activeRectangle = *iterator;
 
@@ -33,7 +33,6 @@ void KovtunMethodExecuter::performNextStep()
                 {
                     filledRectangles.push_back(*iterator);
                 }
-                iterator = activeRectangles.erase(iterator);
                 continue;
             }
 
@@ -62,8 +61,6 @@ void KovtunMethodExecuter::performNextStep()
                                               gravityCenter.y(),
                                               gravityCenter.x() - activeRectangle.left(),
                                               activeRectangle.bottom() - gravityCenter.y()));
-
-            iterator++;
         }
 
         activeRectangles << newActiveRectangles;
