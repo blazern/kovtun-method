@@ -20,11 +20,6 @@ public:
     neighborsIterator neighborsBegin() const    { return neighbors.constBegin(); }
     neighborsIterator neighborsEnd() const      { return neighbors.constEnd(); }
 
-    // Делает other соседом this, но не делает this соседом other!
-    // Т.е. вызов данного метода не делает отношение симметричным.
-    // Если Вы хотите задать симметричное отношение, то желательно использовать makeNeighbors()
-    void addNeighbor(const QSharedPointer<KovtunQRectF> & other);
-
     static void makeNeighbors(QSharedPointer<KovtunQRectF> & firstRectangle, QSharedPointer<KovtunQRectF> & secondRectangle);
 
     const QColor getColor() const;
@@ -36,6 +31,11 @@ private:
     QSet<QSharedPointer<KovtunQRectF> > neighbors;
     QColor color;
     bool colorInitialized;
+
+    // Делает other соседом this, но не делает this соседом other!
+    // Т.е. вызов данного метода не делает отношение симметричным.
+    // Если Вы хотите задать симметричное отношение, то желательно использовать makeNeighbors()
+    void addNeighbor(const QSharedPointer<KovtunQRectF> & other);
 };
 
 #endif // KOVTUNQRECTF_H

@@ -54,6 +54,9 @@ void KovtunMethodPainter::drawActiveRectangles(QPainter * const painter)
 
 void KovtunMethodPainter::drawFilledRectangles(QPainter * const painter)
 {
+//    pen.setColor("green");
+//    painter->setPen(pen);
+//    painter->setBrush(QColor("green"));
     for (int index = 0; index < kovtunMethodExecuter->getFilledRectanglesCount(); index++)
     {
         const KovtunQRectF & filledRectangle = kovtunMethodExecuter->getFilledRectangle(index);

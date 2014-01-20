@@ -29,7 +29,11 @@ public:
 private:
     static bool rectangleContainsInside(const QRectF & rectangle, const QPointF & point);
 
-    static bool doLeftAndRightOrTopAndBottomSidesTouchEachOther(const QRectF & firstRectangle, const QRectF & secondRectangle);
+    static bool doLeftAndRightOSidesTouchEachOther(const QRectF & firstRectangle, const QRectF & secondRectangle);
+    static bool doLeftAndRightSidesTouchEeachOtherRespectively(const QRectF & firstRectangle, const QRectF & secondRectangle);
+
+    static bool doTopAndBottomSidesTouchEachOther(const QRectF & firstRectangle, const QRectF & secondRectangle);
+    static bool doTopAndBottomSidesTouchEeachOtherRespectively(const QRectF & firstRectangle, const QRectF & secondRectangle);
 };
 
 #endif // RECTANGLETOOLKIT_H

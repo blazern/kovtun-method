@@ -12,7 +12,7 @@ const QColor ColorsDictionary::getColorFor(const KovtunQRectF & rectangle) const
 
     if (anyNeighborIsColored)
     {
-        const int newRed = neighborColor.red() + 10;
+        const int newRed = neighborColor.red() + 20;
 
         if (newRed <= 255)
         {
@@ -20,7 +20,7 @@ const QColor ColorsDictionary::getColorFor(const KovtunQRectF & rectangle) const
         }
         else
         {
-            const int newGreen = neighborColor.green() + 10;
+            const int newGreen = neighborColor.green() + 20;
 
             if (newGreen <= 255)
             {

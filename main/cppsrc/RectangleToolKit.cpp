@@ -127,30 +127,78 @@ QPointF RectangleToolKit::calculateGravityCenter(const ClosedContour & contour, 
 
 bool RectangleToolKit::doRectanglesTouchEachOther(const QRectF & firstRectangle, const QRectF & secondRectangle)
 {
-    const bool touched = doLeftAndRightOrTopAndBottomSidesTouchEachOther(firstRectangle, secondRectangle);
+    bool touched = doLeftAndRightOSidesTouchEachOther(firstRectangle, secondRectangle);
 
-    return touched ? true : doLeftAndRightOrTopAndBottomSidesTouchEachOther(secondRectangle, firstRectangle);
+    if (touched) {
+        return true;
+    }
+
+    touched = doLeftAndRightOSidesTouchEachOther(secondRectangle, firstRectangle);
+
+    if (touched) {
+        return true;
+    }
+
+    touched = doTopAndBottomSidesTouchEachOther(firstRectangle, secondRectangle);
+
+    if (touched) {
+        return true;
+    }
+
+    return doTopAndBottomSidesTouchEachOther(secondRectangle, firstRectangle);
 }
 
-bool RectangleToolKit::doLeftAndRightOrTopAndBottomSidesTouchEachOther(const QRectF & firstRectangle, const QRectF & secondRectangle)
+bool RectangleToolKit::doLeftAndRightOSidesTouchEachOther(const QRectF & firstRectangle, const QRectF & secondRectangle)
 {
-    if (secondRectangle.right() == firstRectangle.left())
+
+    if (doLeftAndRightSidesTouchEeachOtherRespectively(firstRectangle, secondRectangle)
+        || doLeftAndRightSidesTouchEeachOtherRespectively(secondRectangle, firstRectangle))
     {
-        if (secondRectangle.top() >= firstRectangle.top()
-            || secondRectangle.bottom() <= firstRectangle.bottom()
-            || secondRectangle.center().y() > firstRectangle.top()
-            || secondRectangle.center().y() < firstRectangle.bottom())
+        return true;
+    }
+
+    return false;
+}
+
+bool RectangleToolKit::doLeftAndRightSidesTouchEeachOtherRespectively(const QRectF & firstRectangle, const QRectF & secondRectangle)
+{
+    if (firstRectangle.right() == secondRectangle.left())
+    {
+        if (firstRectangle.top() >= secondRectangle.top() && firstRectangle.top() <= secondRectangle.bottom())
+        {
+            return true;
+        }
+
+        if (firstRectangle.bottom() <= secondRectangle.bottom() && firstRectangle.bottom() >= secondRectangle.top())
         {
             return true;
         }
     }
 
-    if (secondRectangle.bottom() == firstRectangle.top())
+    return false;
+}
+
+bool RectangleToolKit::doTopAndBottomSidesTouchEachOther(const QRectF & firstRectangle, const QRectF & secondRectangle)
+{
+    if (doTopAndBottomSidesTouchEeachOtherRespectively(firstRectangle, secondRectangle)
+        || doTopAndBottomSidesTouchEeachOtherRespectively(secondRectangle, firstRectangle))
     {
-        if (secondRectangle.right() >= firstRectangle.right()
-            || secondRectangle.left() <= firstRectangle.left()
-            || secondRectangle.center().x() > firstRectangle.right()
-            || secondRectangle.center().x() < firstRectangle.left())
+        return true;
+    }
+
+    return false;
+}
+
+bool RectangleToolKit::doTopAndBottomSidesTouchEeachOtherRespectively(const QRectF & firstRectangle, const QRectF & secondRectangle)
+{
+    if (firstRectangle.bottom() == secondRectangle.top())
+    {
+        if (firstRectangle.left() >= secondRectangle.left() && firstRectangle.left() <= secondRectangle.right())
+        {
+            return true;
+        }
+
+        if (firstRectangle.right() <= secondRectangle.right() && firstRectangle.right() >= secondRectangle.left())
         {
             return true;
         }

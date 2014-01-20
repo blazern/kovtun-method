@@ -38,10 +38,13 @@ private:
     int unitDimension;
     ColorsDictionary colorDictionary;
 
+    QVector<QSharedPointer<KovtunQRectF> > previousActiveRectangles;
+    QVector<QSharedPointer<KovtunQRectF> > previousFilledRectangles;
+
 
     void calculateFirstActiveRectangle();
     void calculateNewActiveRectangles();
-    void shareNeighbors(const KovtunQRectF & source, KovtunQRectF & destination) const;
+    void shareNeighbors(QSharedPointer<KovtunQRectF> & source, QSharedPointer<KovtunQRectF> & destination) const;
 };
 
 #endif // KOVTUNMETHODEXECTUTER_H

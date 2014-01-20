@@ -16,7 +16,7 @@ ApplicationWindow {
         Button {
             id: performStepButton
             anchors.verticalCenter: parent.verticalCenter
-            text: "Выполнить шаг"
+            text: "Шаг вперед"
             action: Action {
                 onTriggered: {
                     kovtunMethodExecuterQmlInterface.performNextStep();
