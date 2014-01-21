@@ -9,18 +9,20 @@
 class KovtunQRectF : public QRectF
 {
 public:
-    explicit KovtunQRectF();
-    explicit KovtunQRectF(const QPointF & topLeft, const QSizeF & size);
-    explicit KovtunQRectF(const QPointF & topLeft, const QPointF & bottomRight);
-    explicit KovtunQRectF(const qreal x, const qreal y, const qreal width, const qreal height);
-    explicit KovtunQRectF(const QRect & rectangle);
+    explicit KovtunQRectF(const QString name);
+    explicit KovtunQRectF(const QPointF & topLeft, const QSizeF & size, const QString name);
+    explicit KovtunQRectF(const QPointF & topLeft, const QPointF & bottomRight, const QString name);
+    explicit KovtunQRectF(const qreal x, const qreal y, const qreal width, const qreal height, const QString name);
+    explicit KovtunQRectF(const QRect & rectangle, const QString name);
+
+    static void makeNeighbors(QSharedPointer<KovtunQRectF> & firstRectangle, QSharedPointer<KovtunQRectF> & secondRectangle);
 
     typedef QSet<QSharedPointer<KovtunQRectF> >::const_iterator neighborsIterator;
 
     neighborsIterator neighborsBegin() const    { return neighbors.constBegin(); }
     neighborsIterator neighborsEnd() const      { return neighbors.constEnd(); }
 
-    static void makeNeighbors(QSharedPointer<KovtunQRectF> & firstRectangle, QSharedPointer<KovtunQRectF> & secondRectangle);
+    const QString & getName() const             { return name; }
 
     const QColor getColor() const;
     void setColor(const QColor & color);
@@ -28,6 +30,7 @@ public:
     bool isColorInitialized() const;
 
 private:
+    const QString name;
     QSet<QSharedPointer<KovtunQRectF> > neighbors;
     QColor color;
     bool colorInitialized;

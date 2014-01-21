@@ -1,40 +1,45 @@
 #include "KovtunQRectF.h"
 #include <QDebug>
 
-KovtunQRectF::KovtunQRectF() :
+KovtunQRectF::KovtunQRectF(const QString name) :
     QRectF(),
+    name(name),
     neighbors(),
     color(0, 0, 0),
     colorInitialized(false)
 {
 }
 
-KovtunQRectF::KovtunQRectF(const QPointF & topLeft, const QSizeF & size) :
+KovtunQRectF::KovtunQRectF(const QPointF & topLeft, const QSizeF & size, const QString name) :
     QRectF(topLeft, size),
+    name(name),
     neighbors(),
     color(0, 0, 0),
     colorInitialized(false)
 {
 }
 
-KovtunQRectF::KovtunQRectF(const QPointF & topLeft, const QPointF & bottomRight) :
+KovtunQRectF::KovtunQRectF(const QPointF & topLeft, const QPointF & bottomRight, const QString name) :
     QRectF(topLeft, bottomRight),
+    name(name),
     neighbors(),
     color(0, 0, 0),
     colorInitialized(false)
 {
 }
 
-KovtunQRectF::KovtunQRectF(const qreal x, const qreal y, const qreal width, const qreal height) :
+KovtunQRectF::KovtunQRectF(const qreal x, const qreal y, const qreal width, const qreal height, const QString name) :
     QRectF(x, y, width, height),
+    name(name),
     neighbors(),
     color(0, 0, 0),
     colorInitialized(false)
 {
 }
 
-KovtunQRectF::KovtunQRectF(const QRect & rectangle) :
+KovtunQRectF::KovtunQRectF(const QRect & rectangle, const QString name) :
     QRectF(rectangle),
+    name(name),
     neighbors(),
     color(0, 0, 0),
     colorInitialized(false)

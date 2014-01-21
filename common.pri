@@ -9,7 +9,8 @@ SOURCES += \
     $$PWD/main/cppsrc/KovtunMethodExecuterQmlInterface.cpp \
     $$PWD/main/cppsrc/RectangleToolKit.cpp \
     $$PWD/main/cppsrc/KovtunQRectF.cpp \
-    $$PWD/main/cppsrc/ColorsDictionary.cpp
+    $$PWD/main/cppsrc/ColorsDictionary.cpp \
+    $$PWD/main/cppsrc/KovtunMethodExecuterFileLogger.cpp
 
 HEADERS += \
     $$PWD/main/cppsrc/KovtunMethodExecuter.h \
@@ -18,4 +19,6 @@ HEADERS += \
     $$PWD/main/cppsrc/KovtunMethodExecuterQmlInterface.h \
     $$PWD/main/cppsrc/RectangleToolKit.h \
     $$PWD/main/cppsrc/KovtunQRectF.h \
-    $$PWD/main/cppsrc/ColorsDictionary.h
+    $$PWD/main/cppsrc/ColorsDictionary.h \
+    $$PWD/main/cppsrc/KovtunMethodExecuterListener.h \
+    $$PWD/main/cppsrc/KovtunMethodExecuterFileLogger.h

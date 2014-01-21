@@ -2,6 +2,7 @@
 #include "cppsrc/KovtunMethodPainter.h"
 #include "cppsrc/KovtunMethodExecuter.h"
 #include "cppsrc/KovtunMethodExecuterQmlInterface.h"
+#include "cppsrc/KovtunMethodExecuterFileLogger.h"
 #include <QtQml>
 
 int main(int argc, char *argv[])
@@ -35,6 +36,9 @@ int main(int argc, char *argv[])
     contour.addPoint(QPointF(0,100));
 
     KovtunMethodExecuter kovtunMethodExecuter(contour);
+
+    KovtunMethodExecuterFileLogger fileLogger;
+    kovtunMethodExecuter.addListener(fileLogger);
 
     QtQuick2ControlsApplicationViewer viewer;
     viewer.setMainQmlFile(QStringLiteral("qml/kovtun-method/main.qml"));

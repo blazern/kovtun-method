@@ -4,10 +4,12 @@
 #include "ClosedContour.h"
 #include "KovtunQRectF.h"
 #include "ColorsDictionary.h"
+#include "KovtunMethodExecuterListener.h"
 #include <QObject>
 #include <QVector>
 #include <QRectF>
 #include <QSharedPointer>
+#include <QSet>
 
 class KovtunMethodExecuter
 {
@@ -31,6 +33,9 @@ public:
     inline const KovtunQRectF & getFilledRectangle(const int index) const           { return *filledRectangles[index]; }
     inline int getFilledRectanglesCount() const                                     { return filledRectangles.size(); }
 
+    inline void addListener(KovtunMethodExecuterListener & listener)                { listeners.insert(&listener); }
+    inline void removeListener(KovtunMethodExecuterListener & listener);
+
     static const int defaultUnitDimension = 20;
 
 private:
@@ -39,6 +44,8 @@ private:
     QVector<QSharedPointer<KovtunQRectF> > filledRectangles;
     int unitDimension;
     ColorsDictionary colorDictionary;
+
+    QSet<KovtunMethodExecuterListener *> listeners;
 
     void calculateFirstActiveRectangle();
     void calculateNewActiveRectangles();
