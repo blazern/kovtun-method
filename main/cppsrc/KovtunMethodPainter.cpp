@@ -15,19 +15,20 @@ void KovtunMethodPainter::paint(QPainter * const painter)
     const double scale = calculateScale();
     painter->scale(scale, scale);
     painter->translate(offsetFromItemEdges / scale, offsetFromItemEdges / scale);
-    pen.setWidth(1 / scale);
+    pen.setWidthF(1 / scale);
 
     if (kovtunMethodExecuter != nullptr)
     {
         drawActiveRectangles(painter);
         drawFilledRectangles(painter);
-        drawContour(painter);
+        drawContour(painter, scale);
     }
 }
 
-void KovtunMethodPainter::drawContour(QPainter * const painter)
+void KovtunMethodPainter::drawContour(QPainter * const painter, const double scale)
 {
     pen.setColor("black");
+    pen.setWidthF(3 / scale);
     painter->setPen(pen);
     const ClosedContour & contour = kovtunMethodExecuter->getContour();
 
@@ -54,9 +55,6 @@ void KovtunMethodPainter::drawActiveRectangles(QPainter * const painter)
 
 void KovtunMethodPainter::drawFilledRectangles(QPainter * const painter)
 {
-//    pen.setColor("green");
-//    painter->setPen(pen);
-//    painter->setBrush(QColor("green"));
     for (int index = 0; index < kovtunMethodExecuter->getFilledRectanglesCount(); index++)
     {
         const KovtunQRectF & filledRectangle = kovtunMethodExecuter->getFilledRectangle(index);

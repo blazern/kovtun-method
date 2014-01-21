@@ -22,7 +22,7 @@ private:
     QPen pen;
 
     double calculateScale() const;
-    void drawContour(QPainter * const painter);
+    void drawContour(QPainter * const painter, const double scale);
     void drawActiveRectangles(QPainter * const painter);
     void drawFilledRectangles(QPainter * const painter);
 };
