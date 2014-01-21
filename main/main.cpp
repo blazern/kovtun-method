@@ -7,6 +7,7 @@
 int main(int argc, char *argv[])
 {
     qmlRegisterType<KovtunMethodPainter>("KovtunMethod", 1, 0, "KovtunMethodPainter");
+    qmlRegisterType<KovtunMethodExecuterQmlInterface>("KovtunMethod", 1, 0, "KovtunMethodExecuterQmlInterface");
 
     Application app(argc, argv);
 
@@ -33,43 +34,22 @@ int main(int argc, char *argv[])
     contour.addPoint(QPointF(100,100));
     contour.addPoint(QPointF(0,100));
 
-//    contour.addPoint(QPointF(0,0));
-//    contour.addPoint(QPointF(1000,0));
-//    contour.addPoint(QPointF(1000,400));
-//    contour.addPoint(QPointF(1050,400));
-//    contour.addPoint(QPointF(1050,300));
-//    contour.addPoint(QPointF(1550,300));
-//    contour.addPoint(QPointF(1550,500));
-//    contour.addPoint(QPointF(1650,500));
-//    contour.addPoint(QPointF(1650,100));
-//    contour.addPoint(QPointF(2150,100));
-//    contour.addPoint(QPointF(2150,1100));
-//    contour.addPoint(QPointF(1650,1100));
-//    contour.addPoint(QPointF(1650,600));
-//    contour.addPoint(QPointF(1550,600));
-//    contour.addPoint(QPointF(1550,800));
-//    contour.addPoint(QPointF(1050,800));
-//    contour.addPoint(QPointF(1050,700));
-//    contour.addPoint(QPointF(1000,700));
-//    contour.addPoint(QPointF(1000,1000));
-//    contour.addPoint(QPointF(0,1000));
-
     KovtunMethodExecuter kovtunMethodExecuter(contour);
 
-    KovtunMethodExecuterQmlInterface kovtunMethodExecuterQmlInterface(kovtunMethodExecuter);
-
     QtQuick2ControlsApplicationViewer viewer;
-    viewer.setContextProperty("kovtunMethodExecuterQmlInterface", &kovtunMethodExecuterQmlInterface);
     viewer.setMainQmlFile(QStringLiteral("qml/kovtun-method/main.qml"));
     viewer.show();
 
     KovtunMethodPainter * const kovtunMethodPainter =
             dynamic_cast<KovtunMethodPainter*>(viewer.getObject("kovtunMethodPainter"));
 
-    if (kovtunMethodPainter != nullptr)
+    KovtunMethodExecuterQmlInterface * const kovtunMethodQmlInterface =
+            dynamic_cast<KovtunMethodExecuterQmlInterface*>(viewer.getObject("kovtunMethodExecuter"));
+
+    if (kovtunMethodPainter != nullptr && kovtunMethodQmlInterface != nullptr)
     {
         kovtunMethodPainter->setKovtunMethodExecuter(kovtunMethodExecuter);
-        kovtunMethodExecuterQmlInterface.setKovtunMethodPainter(*kovtunMethodPainter);
+        kovtunMethodQmlInterface->setKovtunMethodExecuter(kovtunMethodExecuter);
     }
 
     return app.exec();

@@ -9,16 +9,13 @@ KovtunMethodExecuter::KovtunMethodExecuter(const ClosedContour & contour) :
     contour(contour),
     activeRectangles(),
     filledRectangles(),
-    unitDimension(20),
+    unitDimension(defaultUnitDimension),
     colorDictionary()
 {
 }
 
 void KovtunMethodExecuter::performNextStep()
 {
-    previousActiveRectangles.clear();
-    previousFilledRectangles.clear();
-
     if (activeRectangles.size() == 0)
     {
         calculateFirstActiveRectangle();

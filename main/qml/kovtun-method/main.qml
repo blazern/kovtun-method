@@ -19,8 +19,9 @@ ApplicationWindow {
             text: "Шаг вперед"
             action: Action {
                 onTriggered: {
-                    kovtunMethodExecuterQmlInterface.performNextStep();
-                    kovtunMethodExecuterQmlInterface.setUnitsDimension(unitsDimensionTextField.text);
+                    loadingText.visible = true;
+                    kovtunMethodExecuter.setUnitsDimension(unitsDimensionTextField.text);
+                    kovtunMethodExecuter.performNextStep();
                 }
             }
         }
@@ -31,7 +32,7 @@ ApplicationWindow {
             text: "Сбросить"
             action: Action {
                 onTriggered: {
-                    kovtunMethodExecuterQmlInterface.reset();
+                    kovtunMethodExecuter.reset();
                 }
             }
         }
@@ -47,22 +48,40 @@ ApplicationWindow {
             anchors.top: unitsDimensionText.bottom
 
             onAccepted: {
-                kovtunMethodExecuterQmlInterface.setUnitsDimension(text);
+                kovtunMethodExecuter.setUnitsDimension(text);
             }
 
             Component.onCompleted: {
-                text = kovtunMethodExecuterQmlInterface.getUnitsDimension();
+                text = kovtunMethodExecuter.getUnitsDimension();
             }
         }
 
         KovtunMethodPainter {
+            id: kovtunMethodPainter
             anchors.left: performStepButton.right
             anchors.leftMargin: 10
             height: parent.height
             width: parent.width - x
             objectName: "kovtunMethodPainter"
         }
+
+        Text {
+            id: loadingText
+            text: "Подождите, выполняются расчёты..."
+            color: "red"
+            font.pointSize: 0.035 * kovtunMethodPainter.width
+            anchors.centerIn: kovtunMethodPainter
+            visible: false
+        }
     }
 
-
+    KovtunMethodExecuterQmlInterface {
+        id: kovtunMethodExecuter
+        onExecutionReset: kovtunMethodPainter.update();
+        onStepPerformed: {
+            kovtunMethodPainter.update();
+            loadingText.visible = false;
+        }
+        objectName: "kovtunMethodExecuter"
+    }
 }

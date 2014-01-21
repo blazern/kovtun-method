@@ -11,8 +11,8 @@
 
 class KovtunMethodExecuter
 {
-    KovtunMethodExecuter(const KovtunMethodExecuter & other) = delete;
-    KovtunMethodExecuter & operator=(const KovtunMethodExecuter & other) = delete;
+    KovtunMethodExecuter(const KovtunMethodExecuter &) = delete;
+    KovtunMethodExecuter & operator=(const KovtunMethodExecuter &) = delete;
 
 public:
     explicit KovtunMethodExecuter(const ClosedContour & contour);
@@ -25,11 +25,13 @@ public:
 
     inline const ClosedContour & getContour() const                                 { return contour; }
 
-    inline const KovtunQRectF & getActiveRectangle(const int index) const    { return *activeRectangles[index]; }
+    inline const KovtunQRectF & getActiveRectangle(const int index) const           { return *activeRectangles[index]; }
     inline int getActiveRectanglesCount() const                                     { return activeRectangles.size(); }
 
-    inline const KovtunQRectF & getFilledRectangle(const int index) const    { return *filledRectangles[index]; }
+    inline const KovtunQRectF & getFilledRectangle(const int index) const           { return *filledRectangles[index]; }
     inline int getFilledRectanglesCount() const                                     { return filledRectangles.size(); }
+
+    static const int defaultUnitDimension = 20;
 
 private:
     const ClosedContour contour;
@@ -37,10 +39,6 @@ private:
     QVector<QSharedPointer<KovtunQRectF> > filledRectangles;
     int unitDimension;
     ColorsDictionary colorDictionary;
-
-    QVector<QSharedPointer<KovtunQRectF> > previousActiveRectangles;
-    QVector<QSharedPointer<KovtunQRectF> > previousFilledRectangles;
-
 
     void calculateFirstActiveRectangle();
     void calculateNewActiveRectangles();

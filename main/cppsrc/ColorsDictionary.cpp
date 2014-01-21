@@ -12,29 +12,11 @@ const QColor ColorsDictionary::getColorFor(const KovtunQRectF & rectangle) const
 
     if (anyNeighborIsColored)
     {
-        const int newRed = neighborColor.red() + 20;
-
-        if (newRed <= 255)
-        {
-            return QColor(newRed, neighborColor.green(), neighborColor.blue());
-        }
-        else
-        {
-            const int newGreen = neighborColor.green() + 20;
-
-            if (newGreen <= 255)
-            {
-                return QColor(neighborColor.red(), newGreen, neighborColor.blue());
-            }
-            else
-            {
-                return neighborColor;
-            }
-        }
+        return neighborColor;
     }
     else
     {
-        return QColor(qrand() % 255, qrand() % 255, qrand() % 255);
+        return QColor(0, qrand() % 255, qrand() % 255);
     }
 }
 

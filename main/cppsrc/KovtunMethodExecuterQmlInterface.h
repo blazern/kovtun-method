@@ -2,6 +2,7 @@
 #define KOVTUNMETHODEXECUTERQMLINTERFACE_H
 
 #include <QObject>
+#include <QFutureWatcher>
 #include "KovtunMethodExecuter.h"
 #include "KovtunMethodPainter.h"
 
@@ -9,20 +10,30 @@ class KovtunMethodExecuterQmlInterface : public QObject
 {
     Q_OBJECT
 public:
-    explicit KovtunMethodExecuterQmlInterface(
-            KovtunMethodExecuter & kovtunMethodExecuter,
-            QObject * parent = 0);
+    explicit KovtunMethodExecuterQmlInterface(QObject * parent = 0);
 
-    void setKovtunMethodPainter(KovtunMethodPainter & kovtunMethodPainter);
+    void setKovtunMethodExecuter(KovtunMethodExecuter & kovtunMethodExecuter);
 
     Q_INVOKABLE void performNextStep();
     Q_INVOKABLE void reset();
-    Q_INVOKABLE void setUnitsDimension(const int dimension);
-    Q_INVOKABLE int getUnitsDimension();
+    Q_INVOKABLE void setUnitsDimension(const int dimension) const;
+    Q_INVOKABLE int getUnitsDimension() const;
+
+signals:
+    void stepPerformed();
+    void executionReset();
+
+private slots:
+    void onStepPerformed();
 
 private:
-    KovtunMethodExecuter & kovtunMethodExecuter;
-    KovtunMethodPainter * kovtunMethodPainter;
+    KovtunMethodExecuter * kovtunMethodExecuter;
+
+    bool inProgress;
+
+    QFutureWatcher<void> futureWatcher;
+
+    void performNextStepNotConcurrently();
 };
 
 #endif // KOVTUNMETHODEXECUTERQMLINTERFACE_H
