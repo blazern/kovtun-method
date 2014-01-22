@@ -19,10 +19,12 @@ public:
 
     typedef QSet<QSharedPointer<KovtunQRectF> >::const_iterator neighborsIterator;
 
-    neighborsIterator neighborsBegin() const    { return neighbors.constBegin(); }
-    neighborsIterator neighborsEnd() const      { return neighbors.constEnd(); }
+    inline neighborsIterator neighborsBegin() const     { return neighbors.constBegin(); }
+    inline neighborsIterator neighborsEnd() const       { return neighbors.constEnd(); }
 
-    const QString & getName() const             { return name; }
+    inline const QString & getName() const              { return name; }
+
+    inline double getSquare() const                     { return width() * height(); }
 
     const QColor getColor() const;
     void setColor(const QColor & color);

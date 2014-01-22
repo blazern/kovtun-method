@@ -82,7 +82,7 @@ bool RectangleToolKit::doLinesIntersectWithoutLyingOnEachOther(const QLineF & fi
     return false;
 }
 
-QPointF RectangleToolKit::calculateGravityCenter(const ClosedContour & contour, const QRectF & rectangle, const int maximumUnits)
+QPair<QPointF, double> RectangleToolKit::calculateGravityCenter(const ClosedContour & contour, const QRectF & rectangle, const int maximumUnits)
 {
     qreal rectWidth = rectangle.width();
     qreal rectHeight = rectangle.height();
@@ -92,7 +92,10 @@ QPointF RectangleToolKit::calculateGravityCenter(const ClosedContour & contour, 
 
     QRectF unit;
 
-    QVector<QPointF> insidePoints;
+    QVector<QPointF> insideUnits;
+
+    int errorUnitsCount = 0;
+    int goodUnitsCount = 0;
 
     for (int horIndex = 0; horIndex < maximumUnits; horIndex++)
     {
@@ -108,21 +111,32 @@ QPointF RectangleToolKit::calculateGravityCenter(const ClosedContour & contour, 
 
             if (isAnyPointOfRectangleInsideOfContour(contour, unit))
             {
-                insidePoints.push_back(unit.center());
+                if (isAnyPointOfAnyLineOfContourInsideOfRectangle(contour, unit))
+                {
+                    insideUnits.push_back(unit.center());
+                    errorUnitsCount++;
+                }
+                else
+                {
+                    goodUnitsCount++;
+                }
             }
         }
     }
 
     qreal averageX = 0;
     qreal averageY = 0;
-    const int pointsCount = insidePoints.size();
-    for (const auto & point : insidePoints)
+    const int pointsCount = insideUnits.size();
+    for (const auto & point : insideUnits)
     {
         averageX += point.x() / pointsCount;
         averageY += point.y() / pointsCount;
     }
 
-    return QPointF(averageX, averageY);
+    const QPointF gravityCenter(averageX, averageY);
+    const double error = goodUnitsCount > 0 ? (double ((double)errorUnitsCount / (double)goodUnitsCount)) : errorUnitsCount;
+
+    return QPair<QPointF, double>(gravityCenter, error);
 }
 
 bool RectangleToolKit::doRectanglesTouchEachOther(const QRectF & firstRectangle, const QRectF & secondRectangle)

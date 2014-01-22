@@ -16,14 +16,23 @@ KovtunMethodExecuterFileLogger::KovtunMethodExecuterFileLogger() :
 {
 }
 
-void KovtunMethodExecuterFileLogger::onGravityCenterCalculated(const QPointF & gravityCenter, const KovtunQRectF & rectangle)
+void KovtunMethodExecuterFileLogger::onGravityCenterCalculated(const QPointF & gravityCenter, const double error, const KovtunQRectF & rectangle)
 {
-    output += "rect name: " + rectangle.getName() + "; gravity center: (" + QString::number(gravityCenter.x()) + ", " + QString::number(gravityCenter.y()) + ");\n";
+    output +=
+            "rect name: "
+            + rectangle.getName()
+            + ";\tgravity center:\t("
+            + QString::number(gravityCenter.x())
+            + ", "
+            + QString::number(gravityCenter.y())
+            + ");\terror: "
+            + QString::number(error)
+            + "\n";
 }
 
 void KovtunMethodExecuterFileLogger::onColorGathered(const QColor & color, const KovtunQRectF & rectangle)
 {
-    output += "rect name: " + rectangle.getName() + "; color: (" + QString::number(color.red()) + ", " + QString::number(color.green()) + ", " + QString::number(color.blue()) + ");\n";
+    output += "rect name: " + rectangle.getName() + ";\tcolor:\t\t(" + QString::number(color.red()) + ", " + QString::number(color.green()) + ", " + QString::number(color.blue()) + ");\n";
 }
 
 void KovtunMethodExecuterFileLogger::onStepFinished()

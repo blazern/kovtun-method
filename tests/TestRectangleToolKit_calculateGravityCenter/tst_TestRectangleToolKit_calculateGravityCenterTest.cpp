@@ -39,7 +39,7 @@ void TestRectangleToolKit_calculateGravityCenterTest::gravityCenterIsInCenterOfR
 
     const double maxDiff = 0.0001;
 
-    const QPointF gravityCenter = RectangleToolKit::calculateGravityCenter(contour, rectangle, 200);
+    const QPointF gravityCenter = RectangleToolKit::calculateGravityCenter(contour, rectangle, 200).first;
 
 //    qDebug() << gravityCenter;
 
@@ -57,7 +57,7 @@ void TestRectangleToolKit_calculateGravityCenterTest::gravityCenterIsInCenterOfR
 
     const double maxDiff = 0.0001;
 
-    const QPointF gravityCenter = RectangleToolKit::calculateGravityCenter(contour, rectangle, 200);
+    const QPointF gravityCenter = RectangleToolKit::calculateGravityCenter(contour, rectangle, 200).first;
 
 //    qDebug() << gravityCenter;
 
@@ -75,7 +75,7 @@ void TestRectangleToolKit_calculateGravityCenterTest::rectangleTakesHalfOfContou
 
     const double maxDiff = 0.0001;
 
-    const QPointF gravityCenter = RectangleToolKit::calculateGravityCenter(contour, rectangle, 200);
+    const QPointF gravityCenter = RectangleToolKit::calculateGravityCenter(contour, rectangle, 200).first;
 
 //    qDebug() << gravityCenter;
 
@@ -93,7 +93,7 @@ void TestRectangleToolKit_calculateGravityCenterTest::rectangleTakesFourthOfCont
 
     const double maxDiff = 0.0001;
 
-    const QPointF gravityCenter = RectangleToolKit::calculateGravityCenter(contour, rectangle, 200);
+    const QPointF gravityCenter = RectangleToolKit::calculateGravityCenter(contour, rectangle, 200).first;
 
 //    qDebug() << gravityCenter;
 

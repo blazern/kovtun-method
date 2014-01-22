@@ -33,6 +33,7 @@ ApplicationWindow {
             action: Action {
                 onTriggered: {
                     kovtunMethodExecuter.reset();
+                    errorValue.text = "0";
                 }
             }
         }
@@ -73,6 +74,19 @@ ApplicationWindow {
             anchors.centerIn: kovtunMethodPainter
             visible: false
         }
+
+        Text {
+            id: errorText
+            text: "погрешность:"
+            anchors.bottom: parent.bottom
+        }
+
+        Text {
+            id: errorValue
+            text: "0"
+            anchors.left: errorText.right
+            y: errorText.y
+        }
     }
 
     KovtunMethodExecuterQmlInterface {
@@ -81,6 +95,7 @@ ApplicationWindow {
         onStepPerformed: {
             kovtunMethodPainter.update();
             loadingText.visible = false;
+            errorValue.text = getCurrentError();
         }
         objectName: "kovtunMethodExecuter"
     }

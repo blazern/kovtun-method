@@ -3,6 +3,7 @@
 
 #include <QRectF>
 #include <QVector>
+#include <QPair>
 #include "ClosedContour.h"
 
 class RectangleToolKit
@@ -21,7 +22,8 @@ public:
 
     // Возвращаемое значение для случая, когда контур не лежит в прямоугольнике (либо лежит на его границе), не определено
     // Используйте isAnyPointOfAnyLineOfContourInsideOfRectangle() для проверки.
-    static QPointF calculateGravityCenter(const ClosedContour & contour, const QRectF & rectangle, const int maximumUnits = 20);
+    // Возвращает центр тяжести и погрешность вычислений.
+    static QPair<QPointF, double> calculateGravityCenter(const ClosedContour & contour, const QRectF & rectangle, const int maximumUnits = 20);
 
     // Имеется в виду только касание, т.е. вызов функции для пересекающихся прямо угольников вернёт false
     static bool doRectanglesTouchEachOther(const QRectF & firstRectangle, const QRectF & secondRectangle);

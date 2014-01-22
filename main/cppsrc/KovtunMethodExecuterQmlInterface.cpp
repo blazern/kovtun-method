@@ -55,6 +55,18 @@ int KovtunMethodExecuterQmlInterface::getUnitsDimension() const
     }
 }
 
+double KovtunMethodExecuterQmlInterface::getCurrentError() const
+{
+    if (kovtunMethodExecuter != nullptr)
+    {
+        return kovtunMethodExecuter->getCurrentError();
+    }
+    else
+    {
+        return -1;
+    }
+}
+
 void KovtunMethodExecuterQmlInterface::onStepPerformed()
 {
     inProgress = false;

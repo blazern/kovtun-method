@@ -10,7 +10,7 @@ class KovtunMethodExecuterListener
     friend class KovtunMethodExecuter;
 
 protected:
-    virtual void onGravityCenterCalculated(const QPointF & gravityCenter, const KovtunQRectF & rectangle) = 0;
+    virtual void onGravityCenterCalculated(const QPointF & gravityCenter, const double error, const KovtunQRectF & rectangle) = 0;
     virtual void onColorGathered(const QColor & color, const KovtunQRectF & rectangle) = 0;
     virtual void onStepFinished() = 0;
     virtual void onReset() = 0;

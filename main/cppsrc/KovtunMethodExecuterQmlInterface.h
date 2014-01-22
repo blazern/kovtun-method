@@ -18,6 +18,7 @@ public:
     Q_INVOKABLE void reset();
     Q_INVOKABLE void setUnitsDimension(const int dimension) const;
     Q_INVOKABLE int getUnitsDimension() const;
+    Q_INVOKABLE double getCurrentError() const;
 
 signals:
     void stepPerformed();

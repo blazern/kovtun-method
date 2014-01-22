@@ -33,8 +33,10 @@ public:
     inline const KovtunQRectF & getFilledRectangle(const int index) const           { return *filledRectangles[index]; }
     inline int getFilledRectanglesCount() const                                     { return filledRectangles.size(); }
 
+    double getCurrentError() const;
+
     inline void addListener(KovtunMethodExecuterListener & listener)                { listeners.insert(&listener); }
-    inline void removeListener(KovtunMethodExecuterListener & listener);
+    void removeListener(KovtunMethodExecuterListener & listener);
 
     static const int defaultUnitDimension = 20;
 
@@ -44,6 +46,8 @@ private:
     QVector<QSharedPointer<KovtunQRectF> > filledRectangles;
     int unitDimension;
     ColorsDictionary colorDictionary;
+    QVector<double> errors;
+    double firstRectangleArea;
 
     QSet<KovtunMethodExecuterListener *> listeners;
 

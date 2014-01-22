@@ -10,7 +10,9 @@ KovtunMethodExecuter::KovtunMethodExecuter(const ClosedContour & contour) :
     activeRectangles(),
     filledRectangles(),
     unitDimension(defaultUnitDimension),
-    colorDictionary()
+    colorDictionary(),
+    errors(),
+    firstRectangleArea(-1)
 {
 }
 
@@ -19,6 +21,8 @@ void KovtunMethodExecuter::performNextStep()
     if (activeRectangles.size() == 0)
     {
         calculateFirstActiveRectangle();
+
+        firstRectangleArea = activeRectangles[0]->getSquare();
     }
     else
     {
@@ -56,11 +60,15 @@ void KovtunMethodExecuter::calculateNewActiveRectangles()
             continue;
         }
 
-        const QPointF gravityCenter = RectangleToolKit::calculateGravityCenter(contour, *activeRectangle, unitDimension);
+        const QPair<QPointF, double> gravityCenterWithError = RectangleToolKit::calculateGravityCenter(contour, *activeRectangle, unitDimension);
+        const QPointF & gravityCenter = gravityCenterWithError.first;
+        const double error = gravityCenterWithError.second;
+
+        errors << (error * (activeRectangle->getSquare() / firstRectangleArea)) / (activeRectangles.size() + filledRectangles.size());
 
         for (auto & listener : listeners)
         {
-            listener->onGravityCenterCalculated(gravityCenter, *activeRectangle);
+            listener->onGravityCenterCalculated(gravityCenter, error, *activeRectangle);
         }
 
         QSharedPointer<KovtunQRectF> topLeftRectangle(
@@ -138,11 +146,24 @@ void KovtunMethodExecuter::reset()
 {
     activeRectangles.clear();
     filledRectangles.clear();
+    errors.clear();
 
     for (auto & listener : listeners)
     {
         listener->onReset();
     }
+}
+
+double KovtunMethodExecuter::getCurrentError() const
+{
+    double resultError = 0;
+
+    for (auto error : errors)
+    {
+        resultError += error;
+    }
+
+    return resultError;
 }
 
 void KovtunMethodExecuter::removeListener(KovtunMethodExecuterListener & listener)
@@ -166,6 +187,7 @@ void KovtunMethodExecuter::calculateFirstActiveRectangle()
                         new KovtunQRectF(QPointF(contour.getWest(), contour.getSouth()),
                                          QPointF(contour.getEast(), contour.getNorth()),
                                          "0")));
+
     }
 #ifdef QT_DEBUG
     else
