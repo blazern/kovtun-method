@@ -18,6 +18,8 @@ public:
 
     static bool isAnyPointOfAnyLineOfContourInsideOfRectangle(const ClosedContour & contour, const QRectF & rectangle);
 
+    static bool doesLineIntersectRectangle(const QLineF & line, const QRectF & rectangle);
+
     static bool doLinesIntersectWithoutLyingOnEachOther(const QLineF & firstLine, const QLineF & secondLine);
 
     // Возвращаемое значение для случая, когда контур не лежит в прямоугольнике (либо лежит на его границе), не определено

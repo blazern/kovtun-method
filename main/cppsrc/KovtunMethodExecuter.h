@@ -54,6 +54,7 @@ private:
     void calculateFirstActiveRectangle();
     void calculateNewActiveRectangles();
     void shareNeighbors(QSharedPointer<KovtunQRectF> & source, QSharedPointer<KovtunQRectF> & destination) const;
+    bool tryToFill(QSharedPointer<KovtunQRectF> & rectangle, const QPointF * gravityCenterOfGrandParent);
 };
 
 #endif // KOVTUNMETHODEXECTUTER_H

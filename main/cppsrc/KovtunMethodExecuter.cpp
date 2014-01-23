@@ -43,23 +43,6 @@ void KovtunMethodExecuter::calculateNewActiveRectangles()
     {
         QSharedPointer<KovtunQRectF> & activeRectangle = *iterator;
 
-        if (!RectangleToolKit::isAnyPointOfAnyLineOfContourInsideOfRectangle(contour, *activeRectangle))
-        {
-            if (RectangleToolKit::isAnyPointOfRectangleInsideOfContour(contour, *activeRectangle))
-            {
-                const QColor color = colorDictionary.getColorFor(*activeRectangle);
-                activeRectangle->setColor(color);
-
-                filledRectangles.push_back(activeRectangle);
-
-                for (auto & listener : listeners)
-                {
-                    listener->onColorGathered(color, *activeRectangle);
-                }
-            }
-            continue;
-        }
-
         const QPair<QPointF, double> gravityCenterWithError = RectangleToolKit::calculateGravityCenter(contour, *activeRectangle, unitDimension);
         const QPointF & gravityCenter = gravityCenterWithError.first;
         const double error = gravityCenterWithError.second;
@@ -77,7 +60,8 @@ void KovtunMethodExecuter::calculateNewActiveRectangles()
                         activeRectangle->top(),
                         gravityCenter.x() - activeRectangle->left(),
                         gravityCenter.y() - activeRectangle->top(),
-                        activeRectangle->getName() + " 2"));
+                        activeRectangle->getName() + " 2",
+                        &gravityCenter));
 
         QSharedPointer<KovtunQRectF> topRightRectangle(
                     new KovtunQRectF(
@@ -85,7 +69,8 @@ void KovtunMethodExecuter::calculateNewActiveRectangles()
                         activeRectangle->top(),
                         activeRectangle->right() - gravityCenter.x(),
                         gravityCenter.y() - activeRectangle->top(),
-                        activeRectangle->getName() + " 1"));
+                        activeRectangle->getName() + " 1",
+                        &gravityCenter));
 
         QSharedPointer<KovtunQRectF> bottomRightRectangle(
                     new KovtunQRectF(
@@ -93,7 +78,8 @@ void KovtunMethodExecuter::calculateNewActiveRectangles()
                         gravityCenter.y(),
                         activeRectangle->right() - gravityCenter.x(),
                         activeRectangle->bottom() - gravityCenter.y(),
-                        activeRectangle->getName() + " 4"));
+                        activeRectangle->getName() + " 4",
+                        &gravityCenter));
 
         QSharedPointer<KovtunQRectF> bottomLeftRectangle(
                     new KovtunQRectF(
@@ -101,7 +87,8 @@ void KovtunMethodExecuter::calculateNewActiveRectangles()
                         gravityCenter.y(),
                         gravityCenter.x() - activeRectangle->left(),
                         activeRectangle->bottom() - gravityCenter.y(),
-                        activeRectangle->getName() + " 3"));
+                        activeRectangle->getName() + " 3",
+                        &gravityCenter));
 
         KovtunQRectF::makeNeighbors(topLeftRectangle, topRightRectangle);
         KovtunQRectF::makeNeighbors(topLeftRectangle, bottomLeftRectangle);
@@ -117,14 +104,44 @@ void KovtunMethodExecuter::calculateNewActiveRectangles()
         shareNeighbors(activeRectangle, bottomRightRectangle);
         shareNeighbors(activeRectangle, bottomLeftRectangle);
 
-        newActiveRectangles.push_back(topRightRectangle);
-        newActiveRectangles.push_back(topLeftRectangle);
-        newActiveRectangles.push_back(bottomLeftRectangle);
-        newActiveRectangles.push_back(bottomRightRectangle);
+        if(!tryToFill(topRightRectangle, activeRectangle->getParentsGravityCenter())) newActiveRectangles << topRightRectangle;
+        if(!tryToFill(topLeftRectangle, activeRectangle->getParentsGravityCenter())) newActiveRectangles << topLeftRectangle;
+        if(!tryToFill(bottomLeftRectangle, activeRectangle->getParentsGravityCenter())) newActiveRectangles << bottomLeftRectangle;
+        if(!tryToFill(bottomRightRectangle, activeRectangle->getParentsGravityCenter())) newActiveRectangles << bottomRightRectangle;
     }
 
     activeRectangles.clear();
     activeRectangles << newActiveRectangles;
+}
+
+bool KovtunMethodExecuter::tryToFill(QSharedPointer<KovtunQRectF> & rectangle, const QPointF * gravityCenterOfGrandParent)
+{
+    if (rectangle->getParentsGravityCenter() != nullptr && gravityCenterOfGrandParent != nullptr)
+    {
+        if (!RectangleToolKit::isAnyPointOfAnyLineOfContourInsideOfRectangle(contour, *rectangle))
+        {
+            if (RectangleToolKit::isAnyPointOfRectangleInsideOfContour(contour, *rectangle))
+            {
+                const QLineF gravityCentersLine(*gravityCenterOfGrandParent, *rectangle->getParentsGravityCenter());
+
+                if (RectangleToolKit::doesLineIntersectRectangle(gravityCentersLine, *rectangle))
+                {
+                    const QColor color = colorDictionary.getColorFor(*rectangle);
+                    rectangle->setColor(color);
+
+                    filledRectangles.push_back(rectangle);
+
+                    for (auto & listener : listeners)
+                    {
+                        listener->onColorGathered(color, *rectangle);
+                    }
+
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 void KovtunMethodExecuter::shareNeighbors(QSharedPointer<KovtunQRectF> & source, QSharedPointer<KovtunQRectF> & destination) const
@@ -186,7 +203,8 @@ void KovtunMethodExecuter::calculateFirstActiveRectangle()
                     QSharedPointer<KovtunQRectF>(
                         new KovtunQRectF(QPointF(contour.getWest(), contour.getSouth()),
                                          QPointF(contour.getEast(), contour.getNorth()),
-                                         "0")));
+                                         "0",
+                                         nullptr)));
 
     }
 #ifdef QT_DEBUG
