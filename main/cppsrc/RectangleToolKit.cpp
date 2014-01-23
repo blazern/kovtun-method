@@ -111,9 +111,9 @@ QPair<QPointF, double> RectangleToolKit::calculateGravityCenter(const ClosedCont
 
             if (isAnyPointOfRectangleInsideOfContour(contour, unit))
             {
+                insideUnits.push_back(unit.center());
                 if (isAnyPointOfAnyLineOfContourInsideOfRectangle(contour, unit))
                 {
-                    insideUnits.push_back(unit.center());
                     errorUnitsCount++;
                 }
                 else
