@@ -22,7 +22,6 @@ ApplicationWindow {
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.right: parent.right
-//            anchors.bottom: errorText.bottom
             height: parent.height / 8
 
             Button {

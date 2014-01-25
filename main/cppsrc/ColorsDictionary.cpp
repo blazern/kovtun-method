@@ -1,14 +1,28 @@
 #include "ColorsDictionary.h"
 #include <QDebug>
+#include <utility>
 
 namespace KovtunMethod
 {
 
-ColorsDictionary::ColorsDictionary()
+ColorsDictionary::ColorsDictionary() :
+    alphabet(),
+    currentLetter(0)
 {
+    for (int index = 0; index < ALPHABET_SIZE; index++)
+    {
+        QColor newColor(qrand() % 200, qrand() % 200, 50 + qrand() % 150);
+
+        while (alphabet.contains(newColor))
+        {
+            newColor = QColor(qrand() % 200, qrand() % 200, 50 + qrand() % 150);
+        }
+
+        alphabet << newColor;
+    }
 }
 
-const QColor ColorsDictionary::getColorFor(const MyQRectF & rectangle) const
+const QColor ColorsDictionary::getColorFor(const MyQRectF & rectangle)
 {
     QColor neighborColor;
     const bool anyNeighborIsColored = getAnyNeighborColor(rectangle, neighborColor);
@@ -19,7 +33,11 @@ const QColor ColorsDictionary::getColorFor(const MyQRectF & rectangle) const
     }
     else
     {
-        return QColor(0, qrand() % 255, qrand() % 255);
+        if (currentLetter >= alphabet.size())
+        {
+            currentLetter = 0;
+        }
+        return alphabet[currentLetter++];
     }
 }
 

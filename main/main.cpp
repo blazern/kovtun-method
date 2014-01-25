@@ -4,11 +4,14 @@
 #include "cppsrc/ExecuterQmlInterface.h"
 #include "cppsrc/ExecuterFileLogger.h"
 #include <QtQml>
+#include <QTime>
 
 using namespace KovtunMethod;
 
 int main(int argc, char *argv[])
 {
+    qsrand(QTime::currentTime().msec());
+
     qmlRegisterType<Painter>("KovtunMethod", 1, 0, "KovtunMethodPainter");
     qmlRegisterType<ExecuterQmlInterface>("KovtunMethod", 1, 0, "KovtunMethodExecuterQmlInterface");
 
