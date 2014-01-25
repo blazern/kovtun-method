@@ -5,9 +5,9 @@ namespace KovtunMethod
 
 ClosedContour::ClosedContour() :
     points(),
-    south(0),
-    east(0),
     north(0),
+    east(0),
+    south(0),
     west(0)
 {
 }
@@ -50,18 +50,18 @@ void ClosedContour::recalculateSides()
 {
     if (getPointsCount() > 0)
     {
-        const QPointF * mostNorthPoint = &getPoint(0);
+        const QPointF * mostSouthPointW = &getPoint(0);
         const QPointF * mostEastPoint = &getPoint(0);
-        const QPointF * mostSouthPoint = &getPoint(0);
+        const QPointF * mostNorthPoint = &getPoint(0);
         const QPointF * mostWestPoint = &getPoint(0);
 
         for (int index = 1; index < getPointsCount(); index++)
         {
             const QPointF * currentPoint = &getPoint(index);
 
-            if (currentPoint->y() > mostNorthPoint->y())
+            if (currentPoint->y() > mostSouthPointW->y())
             {
-                mostNorthPoint = currentPoint;
+                mostSouthPointW = currentPoint;
             }
 
             if (currentPoint->x() > mostEastPoint->x())
@@ -69,20 +69,20 @@ void ClosedContour::recalculateSides()
                 mostEastPoint = currentPoint;
             }
 
-            if (currentPoint->y() < mostSouthPoint->y())
+            if (currentPoint->y() < mostNorthPoint->y())
             {
-                mostSouthPoint = currentPoint;
+                mostNorthPoint = currentPoint;
             }
 
-            if (currentPoint->x() < mostSouthPoint->x())
+            if (currentPoint->x() < mostNorthPoint->x())
             {
                 mostWestPoint = currentPoint;
             }
         }
 
-        north = mostNorthPoint->y();
+        south = mostSouthPointW->y();
         east = mostEastPoint->x();
-        south = mostSouthPoint->y();
+        north = mostNorthPoint->y();
         west = mostWestPoint->x();
     }
 }

@@ -239,11 +239,11 @@ void Executer::calculateFirstActiveRectangle()
     {
         activeRectangles.push_back(
                     QSharedPointer<MyQRectF>(
-                        new MyQRectF(QPointF(contour.getWest(), contour.getSouth()),
-                                         QPointF(contour.getEast(), contour.getNorth()),
-                                         "0",
-                                         nullptr,
-                                         nullptr)));
+                        new MyQRectF(QPointF(contour.getWest(), contour.getNorth()),
+                                     QPointF(contour.getEast(), contour.getSouth()),
+                                     "0",
+                                     nullptr,
+                                     nullptr)));
 
     }
 #ifdef QT_DEBUG
