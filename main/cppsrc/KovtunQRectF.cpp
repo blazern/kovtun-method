@@ -1,53 +1,25 @@
 #include "KovtunQRectF.h"
 #include <QDebug>
 
-KovtunQRectF::KovtunQRectF(const QString & name, const QPointF * parentsGravityCenter) :
-    QRectF(),
-    name(name),
-    neighbors(),
-    color(0, 0, 0),
-    colorInitialized(false),
-    parentsGravityCenter(copy(parentsGravityCenter))
-{
-}
-
-KovtunQRectF::KovtunQRectF(const QPointF & topLeft, const QSizeF & size, const QString & name, const QPointF * parentsGravityCenter) :
-    QRectF(topLeft, size),
-    name(name),
-    neighbors(),
-    color(0, 0, 0),
-    colorInitialized(false),
-    parentsGravityCenter(copy(parentsGravityCenter))
-{
-}
-
-KovtunQRectF::KovtunQRectF(const QPointF & topLeft, const QPointF & bottomRight, const QString & name, const QPointF * parentsGravityCenter) :
+KovtunQRectF::KovtunQRectF(const QPointF & topLeft, const QPointF & bottomRight, const QString & name, const QPointF * parentsGravityCenter, const QPointF * grandParentsGravityCenter) :
     QRectF(topLeft, bottomRight),
     name(name),
     neighbors(),
     color(0, 0, 0),
     colorInitialized(false),
-    parentsGravityCenter(copy(parentsGravityCenter))
+    parentsGravityCenter(copy(parentsGravityCenter)),
+    grandParentsGravityCenter(copy(grandParentsGravityCenter))
 {
 }
 
-KovtunQRectF::KovtunQRectF(const qreal x, const qreal y, const qreal width, const qreal height, const QString & name, const QPointF * parentsGravityCenter) :
+KovtunQRectF::KovtunQRectF(const qreal x, const qreal y, const qreal width, const qreal height, const QString & name, const QPointF * parentsGravityCenter, const QPointF * grandParentsGravityCenter) :
     QRectF(x, y, width, height),
     name(name),
     neighbors(),
     color(0, 0, 0),
     colorInitialized(false),
-    parentsGravityCenter(copy(parentsGravityCenter))
-{
-}
-
-KovtunQRectF::KovtunQRectF(const QRect & rectangle, const QString & name, const QPointF * parentsGravityCenter) :
-    QRectF(rectangle),
-    name(name),
-    neighbors(),
-    color(0, 0, 0),
-    colorInitialized(false),
-    parentsGravityCenter(copy(parentsGravityCenter))
+    parentsGravityCenter(copy(parentsGravityCenter)),
+    grandParentsGravityCenter(copy(grandParentsGravityCenter))
 {
 }
 

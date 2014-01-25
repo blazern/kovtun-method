@@ -53,10 +53,13 @@ bool RectangleToolKit::doesLineIntersectRectangle(const QLineF & line, const QRe
     const QLineF southLine(rectangle.bottomRight(), rectangle.bottomLeft());
     const QLineF westLine(rectangle.bottomLeft(), rectangle.topLeft());
 
+    const QPointF lineCenterQPointF((line.x1() + line.x2()) / 2, (line.y1() + line.y2()) / 2);
+
     if (doLinesIntersectWithoutLyingOnEachOther(line, northLine)
         || doLinesIntersectWithoutLyingOnEachOther(line, eastLine)
         || doLinesIntersectWithoutLyingOnEachOther(line, southLine)
-        || doLinesIntersectWithoutLyingOnEachOther(line, westLine))
+        || doLinesIntersectWithoutLyingOnEachOther(line, westLine)
+        || rectangle.contains(lineCenterQPointF))
     {
         return true;
     }
@@ -86,9 +89,9 @@ bool RectangleToolKit::doLinesIntersectWithoutLyingOnEachOther(const QLineF & fi
     QPointF intersection;
     if (firstLine.intersect(secondLine, &intersection) == QLineF::BoundedIntersection)
     {
-//        if (intersection != secondLine.p1() && intersection != secondLine.p2()
-//            && intersection != secondLine.p1() && intersection != secondLine.p2())
-//        {
+        if (intersection != secondLine.p1() && intersection != secondLine.p2()
+            && intersection != secondLine.p1() && intersection != secondLine.p2())
+        {
             // Если линии пересекаются, то они могут лежать друг на друге.
             // Чтобы сделать проверку ещё и на это, мы сдвигаем одну из линий и проверяем, параллельны ли линии,
             // если да - то они лежали друг на друге.
@@ -97,7 +100,7 @@ bool RectangleToolKit::doLinesIntersectWithoutLyingOnEachOther(const QLineF & fi
             {
                 return true;
             }
-//        }
+        }
     }
 
     return false;

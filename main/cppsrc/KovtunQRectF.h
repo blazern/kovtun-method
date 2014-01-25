@@ -9,11 +9,8 @@
 class KovtunQRectF : public QRectF
 {
 public:
-    explicit KovtunQRectF(const QString & name, const QPointF * parentsGravityCenter);
-    explicit KovtunQRectF(const QPointF & topLeft, const QSizeF & size, const QString & name, const QPointF * parentsGravityCenter);
-    explicit KovtunQRectF(const QPointF & topLeft, const QPointF & bottomRight, const QString & name, const QPointF * parentsGravityCenter);
-    explicit KovtunQRectF(const qreal x, const qreal y, const qreal width, const qreal height, const QString & name, const QPointF * parentsGravityCenter);
-    explicit KovtunQRectF(const QRect & rectangle, const QString & name, const QPointF * parentsGravityCenter);
+    explicit KovtunQRectF(const QPointF & topLeft, const QPointF & bottomRight, const QString & name, const QPointF * parentsGravityCenter, const QPointF * grandParentsGravityCenter);
+    explicit KovtunQRectF(const qreal x, const qreal y, const qreal width, const qreal height, const QString & name, const QPointF * parentsGravityCenter, const QPointF * grandParentsGravityCenter);
 
     static void makeNeighbors(QSharedPointer<KovtunQRectF> & firstRectangle, QSharedPointer<KovtunQRectF> & secondRectangle);
 
@@ -31,7 +28,8 @@ public:
 
     bool isColorInitialized() const;
 
-    const QPointF * getParentsGravityCenter() const      { return parentsGravityCenter; }
+    const QPointF * getParentsGravityCenter() const         { return parentsGravityCenter; }
+    const QPointF * getGrandParentsGravityCenter() const    { return grandParentsGravityCenter; }
 
 private:
     const QString name;
@@ -39,6 +37,7 @@ private:
     QColor color;
     bool colorInitialized;
     const QPointF * parentsGravityCenter;
+    const QPointF * grandParentsGravityCenter;
 
     // Делает other соседом this, но не делает this соседом other!
     // Т.е. вызов данного метода не делает отношение симметричным.

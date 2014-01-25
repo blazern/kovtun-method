@@ -49,12 +49,15 @@ private:
     QVector<double> errors;
     double firstRectangleArea;
 
+    int count;
+
     QSet<KovtunMethodExecuterListener *> listeners;
 
     void calculateFirstActiveRectangle();
     void calculateNewActiveRectangles();
     void shareNeighbors(QSharedPointer<KovtunQRectF> & source, QSharedPointer<KovtunQRectF> & destination) const;
-    bool tryToFill(QSharedPointer<KovtunQRectF> & rectangle, const QPointF * gravityCenterOfGrandParent);
+    bool tryToFill(QSharedPointer<KovtunQRectF> & rectangle);
+    void makeNeighbors(QVector<QSharedPointer<KovtunQRectF> > & futureNeighbors) const;
 };
 
 #endif // KOVTUNMETHODEXECTUTER_H

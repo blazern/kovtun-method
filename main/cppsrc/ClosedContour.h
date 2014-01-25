@@ -29,12 +29,12 @@ public:
     // Содержит точку строго внутри, не на границе
     bool containsInside(const QPointF & point) const;
 
-    inline qreal getNorth() const   { return north; }
-    inline qreal getEast() const    { return east; }
     inline qreal getSouth() const   { return south; }
+    inline qreal getEast() const    { return east; }
+    inline qreal getNorth() const   { return north; }
     inline qreal getWest() const    { return west; }
 
-    inline qreal getWidth() const   { return north - south; }
+    inline qreal getWidth() const   { return south - north; }
     inline qreal getHeight() const  { return east - west; }
 
     void addPoint(const qreal x, const qreal y);
@@ -44,9 +44,9 @@ private:
     QVector<QPointF> points;
     QVector<QLineF> lines;
 
-    qreal north;
-    qreal east;
     qreal south;
+    qreal east;
+    qreal north;
     qreal west;
 
     void recalculateSides();

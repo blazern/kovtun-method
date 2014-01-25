@@ -2,9 +2,9 @@
 
 ClosedContour::ClosedContour() :
     points(),
-    north(0),
-    east(0),
     south(0),
+    east(0),
+    north(0),
     west(0)
 {
 }
