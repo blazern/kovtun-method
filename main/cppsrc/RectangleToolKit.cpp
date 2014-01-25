@@ -48,6 +48,18 @@ bool RectangleToolKit::isAnyPointOfAnyLineOfContourInsideOfRectangle(const Close
     return false;
 }
 
+bool RectangleToolKit::isRectangleInsideOfContour(const ClosedContour & contour, const QRectF & rectangle)
+{
+    if (!RectangleToolKit::isAnyPointOfAnyLineOfContourInsideOfRectangle(contour, rectangle))
+    {
+        if (RectangleToolKit::isAnyPointOfRectangleInsideOfContour(contour, rectangle))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool RectangleToolKit::doesLineIntersectRectangle(const QLineF & line, const QRectF & rectangle)
 {
     // Дублирование кода функции isAnyPointOfAnyLineOfContourInsideOfRectangle()

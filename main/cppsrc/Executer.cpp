@@ -50,6 +50,7 @@ void Executer::calculateNewActiveRectangles()
 
         if (tryToFill(activeRectangle))
         {
+            filledRectangles.push_back(activeRectangle);
             continue;
         }
 
@@ -64,80 +65,96 @@ void Executer::calculateNewActiveRectangles()
             listener->onGravityCenterCalculated(gravityCenter, error, *activeRectangle);
         }
 
-        QSharedPointer<MyQRectF> topLeftRectangle(
-                    new MyQRectF(
-                        activeRectangle->left(),
-                        activeRectangle->top(),
-                        gravityCenter.x() - activeRectangle->left(),
-                        gravityCenter.y() - activeRectangle->top(),
-                        activeRectangle->getName() + " 2",
-                        &gravityCenter,
-                        activeRectangle->getParentsGravityCenter()));
-
-        QSharedPointer<MyQRectF> topRightRectangle(
-                    new MyQRectF(
-                        gravityCenter.x(),
-                        activeRectangle->top(),
-                        activeRectangle->right() - gravityCenter.x(),
-                        gravityCenter.y() - activeRectangle->top(),
-                        activeRectangle->getName() + " 1",
-                        &gravityCenter,
-                        activeRectangle->getParentsGravityCenter()));
-
-        QSharedPointer<MyQRectF> bottomRightRectangle(
-                    new MyQRectF(
-                        gravityCenter.x(),
-                        gravityCenter.y(),
-                        activeRectangle->right() - gravityCenter.x(),
-                        activeRectangle->bottom() - gravityCenter.y(),
-                        activeRectangle->getName() + " 4",
-                        &gravityCenter,
-                        activeRectangle->getParentsGravityCenter()));
-
-        QSharedPointer<MyQRectF> bottomLeftRectangle(
-                    new MyQRectF(
-                        activeRectangle->left(),
-                        gravityCenter.y(),
-                        gravityCenter.x() - activeRectangle->left(),
-                        activeRectangle->bottom() - gravityCenter.y(),
-                        activeRectangle->getName() + " 3",
-                        &gravityCenter,
-                        activeRectangle->getParentsGravityCenter()));
-
         QVector<QSharedPointer<MyQRectF> > potentialActiveRectangles;
 
-        if (RectangleToolKit::isAnyPointOfRectangleInsideOfContour(contour, *topLeftRectangle))
-        {
-            potentialActiveRectangles << topLeftRectangle;
-        }
+        potentialActiveRectangles
+                << createTopLeftRectangleFrom(*activeRectangle, gravityCenter)
+                   << createTopRightRectangleFrom(*activeRectangle, gravityCenter)
+                      << createBottomRightRectangleFrom(*activeRectangle, gravityCenter)
+                         << createBottomLeftRectangleFrom(*activeRectangle, gravityCenter);
 
-        if (RectangleToolKit::isAnyPointOfRectangleInsideOfContour(contour, *topRightRectangle))
-        {
-            potentialActiveRectangles << topRightRectangle;
-        }
-
-        if (RectangleToolKit::isAnyPointOfRectangleInsideOfContour(contour, *bottomRightRectangle))
-        {
-            potentialActiveRectangles << bottomRightRectangle;
-        }
-
-        if (RectangleToolKit::isAnyPointOfRectangleInsideOfContour(contour, *bottomLeftRectangle))
-        {
-            potentialActiveRectangles << bottomLeftRectangle;
-        }
-
+        leaveOnlyInsideOfContourRectangles(potentialActiveRectangles, contour);
         makeNeighbors(potentialActiveRectangles);
-
-        for (auto & rectangle : potentialActiveRectangles)
-        {
-            shareNeighbors(activeRectangle, rectangle);
-        }
+        shareNeighbors(activeRectangle, potentialActiveRectangles);
 
         newActiveRectangles << potentialActiveRectangles;
     }
 
     activeRectangles.clear();
     activeRectangles << newActiveRectangles;
+}
+
+QSharedPointer<MyQRectF> Executer::createTopLeftRectangleFrom(const MyQRectF & parent, const QPointF & parentGravityCenter) const
+{
+    return QSharedPointer<MyQRectF>(
+                new MyQRectF(
+                    parent.left(),
+                    parent.top(),
+                    parentGravityCenter.x() - parent.left(),
+                    parentGravityCenter.y() - parent.top(),
+                    parent.getName() + " 2",
+                    &parentGravityCenter,
+                    parent.getParentsGravityCenter()));
+}
+
+QSharedPointer<MyQRectF> Executer::createTopRightRectangleFrom(const MyQRectF & parent, const QPointF & parentGravityCenter) const
+{
+    return QSharedPointer<MyQRectF>(
+                new MyQRectF(
+                    parentGravityCenter.x(),
+                    parent.top(),
+                    parent.right() - parentGravityCenter.x(),
+                    parentGravityCenter.y() - parent.top(),
+                    parent.getName() + " 1",
+                    &parentGravityCenter,
+                    parent.getParentsGravityCenter()));
+}
+
+QSharedPointer<MyQRectF> Executer::createBottomRightRectangleFrom(const MyQRectF & parent, const QPointF & parentGravityCenter) const
+{
+    return QSharedPointer<MyQRectF>(
+                new MyQRectF(
+                    parentGravityCenter.x(),
+                    parentGravityCenter.y(),
+                    parent.right() - parentGravityCenter.x(),
+                    parent.bottom() - parentGravityCenter.y(),
+                    parent.getName() + " 4",
+                    &parentGravityCenter,
+                    parent.getParentsGravityCenter()));
+}
+
+QSharedPointer<MyQRectF> Executer::createBottomLeftRectangleFrom(const MyQRectF & parent, const QPointF & parentGravityCenter) const
+{
+    return QSharedPointer<MyQRectF>(
+                new MyQRectF(
+                    parent.left(),
+                    parentGravityCenter.y(),
+                    parentGravityCenter.x() - parent.left(),
+                    parent.bottom() - parentGravityCenter.y(),
+                    parent.getName() + " 3",
+                    &parentGravityCenter,
+                    parent.getParentsGravityCenter()));
+}
+
+void Executer::leaveOnlyInsideOfContourRectangles(QVector<QSharedPointer<MyQRectF> > & rectangles, const ClosedContour & contour) const
+{
+    for (auto iterator = rectangles.begin(); iterator != rectangles.end();)
+    {
+        if (!RectangleToolKit::isAnyPointOfRectangleInsideOfContour(contour, **iterator))
+        {
+            iterator = rectangles.erase(iterator);
+            continue;
+        }
+        iterator++;
+    }
+}
+
+void Executer::shareNeighbors(QSharedPointer<MyQRectF> & source, QVector<QSharedPointer<MyQRectF> > & destinations) const
+{
+    for (auto & destination : destinations)
+    {
+        shareNeighbors(source, destination);
+    }
 }
 
 void Executer::makeNeighbors(QVector<QSharedPointer<MyQRectF> > & futureNeighbors) const
@@ -153,30 +170,29 @@ void Executer::makeNeighbors(QVector<QSharedPointer<MyQRectF> > & futureNeighbor
 
 bool Executer::tryToFill(QSharedPointer<MyQRectF> & rectangle)
 {
+    const QPointF * gravityCenterOfParent = rectangle->getParentsGravityCenter();
     const QPointF * gravityCenterOfGrandParent = rectangle->getGrandParentsGravityCenter();
-    if (rectangle->getParentsGravityCenter() != nullptr && gravityCenterOfGrandParent != nullptr)
+
+    if (gravityCenterOfParent == nullptr || gravityCenterOfGrandParent == nullptr)
     {
-        if (!RectangleToolKit::isAnyPointOfAnyLineOfContourInsideOfRectangle(contour, *rectangle))
+        return false;
+    }
+
+    if (RectangleToolKit::isRectangleInsideOfContour(contour, *rectangle))
+    {
+        const QLineF gravityCentersLine(*gravityCenterOfGrandParent, *gravityCenterOfParent);
+
+        if (RectangleToolKit::doesLineIntersectRectangle(gravityCentersLine, *rectangle))
         {
-            if (RectangleToolKit::isAnyPointOfRectangleInsideOfContour(contour, *rectangle))
+            const QColor color = colorDictionary.getColorFor(*rectangle);
+            rectangle->setColor(color);
+
+            for (auto & listener : listeners)
             {
-                const QLineF gravityCentersLine(*gravityCenterOfGrandParent, *rectangle->getParentsGravityCenter());
-
-                if (RectangleToolKit::doesLineIntersectRectangle(gravityCentersLine, *rectangle))
-                {
-                    const QColor color = colorDictionary.getColorFor(*rectangle);
-                    rectangle->setColor(color);
-
-                    filledRectangles.push_back(rectangle);
-
-                    for (auto & listener : listeners)
-                    {
-                        listener->onColorGathered(color, *rectangle);
-                    }
-
-                    return true;
-                }
+                listener->onColorGathered(color, *rectangle);
             }
+
+            return true;
         }
     }
     return false;

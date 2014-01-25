@@ -58,6 +58,12 @@ private:
 
     void calculateFirstActiveRectangle();
     void calculateNewActiveRectangles();
+    QSharedPointer<MyQRectF> createTopLeftRectangleFrom(const MyQRectF & parent, const QPointF & parentGravityCenter) const;
+    QSharedPointer<MyQRectF> createTopRightRectangleFrom(const MyQRectF & parent, const QPointF & parentGravityCenter) const;
+    QSharedPointer<MyQRectF> createBottomRightRectangleFrom(const MyQRectF & parent, const QPointF & parentGravityCenter) const;
+    QSharedPointer<MyQRectF> createBottomLeftRectangleFrom(const MyQRectF & parent, const QPointF & parentGravityCenter) const;
+    void leaveOnlyInsideOfContourRectangles(QVector<QSharedPointer<MyQRectF> > & rectangles, const ClosedContour & contour) const;
+    void shareNeighbors(QSharedPointer<MyQRectF> & source, QVector<QSharedPointer<MyQRectF> > & destination) const;
     void shareNeighbors(QSharedPointer<MyQRectF> & source, QSharedPointer<MyQRectF> & destination) const;
     bool tryToFill(QSharedPointer<MyQRectF> & rectangle);
     void makeNeighbors(QVector<QSharedPointer<MyQRectF> > & futureNeighbors) const;

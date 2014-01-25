@@ -21,6 +21,8 @@ public:
 
     static bool isAnyPointOfAnyLineOfContourInsideOfRectangle(const ClosedContour & contour, const QRectF & rectangle);
 
+    static bool isRectangleInsideOfContour(const ClosedContour & contour, const QRectF & rectangle);
+
     static bool doesLineIntersectRectangle(const QLineF & line, const QRectF & rectangle);
 
     static bool doLinesIntersectWithoutLyingOnEachOther(const QLineF & firstLine, const QLineF & secondLine);
