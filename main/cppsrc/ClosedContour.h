@@ -5,6 +5,9 @@
 #include <QVector>
 #include <QLineF>
 
+namespace KovtunMethod
+{
+
 // Класс является представлением закрытого контура с отсутствием самопересечений.
 //
 // Наличие самопересечений никак не проверяется, поэтому если пользователь класса их создаст,
@@ -51,5 +54,7 @@ private:
 
     void recalculateSides();
 };
+
+}
 
 #endif // CLOSEDCONTOUR_H

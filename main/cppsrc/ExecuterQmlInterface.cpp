@@ -1,31 +1,34 @@
-#include "KovtunMethodExecuterQmlInterface.h"
+#include "ExecuterQmlInterface.h"
 #include <QtConcurrent/QtConcurrent>
 
-KovtunMethodExecuterQmlInterface::KovtunMethodExecuterQmlInterface(QObject * parent) :
+namespace KovtunMethod
+{
+
+ExecuterQmlInterface::ExecuterQmlInterface(QObject * parent) :
     QObject(parent),
     kovtunMethodExecuter(nullptr),
     inProgress(false),
     futureWatcher()
 {
     QObject::connect(&futureWatcher, &QFutureWatcher<void>::finished,
-                     this, &KovtunMethodExecuterQmlInterface::onStepPerformed);
+                     this, &ExecuterQmlInterface::onStepPerformed);
 }
 
-void KovtunMethodExecuterQmlInterface::setKovtunMethodExecuter(KovtunMethodExecuter & kovtunMethodExecuter)
+void ExecuterQmlInterface::setKovtunMethodExecuter(Executer & kovtunMethodExecuter)
 {
     this->kovtunMethodExecuter = &kovtunMethodExecuter;
 }
 
-void KovtunMethodExecuterQmlInterface::performNextStep()
+void ExecuterQmlInterface::performNextStep()
 {
     if (kovtunMethodExecuter != nullptr && !inProgress)
     {
         inProgress = true;
-        futureWatcher.setFuture(QtConcurrent::run(this, &KovtunMethodExecuterQmlInterface::performNextStepNotConcurrently));
+        futureWatcher.setFuture(QtConcurrent::run(this, &ExecuterQmlInterface::performNextStepNotConcurrently));
     }
 }
 
-void KovtunMethodExecuterQmlInterface::reset()
+void ExecuterQmlInterface::reset()
 {
     if (kovtunMethodExecuter != nullptr && !inProgress)
     {
@@ -35,7 +38,7 @@ void KovtunMethodExecuterQmlInterface::reset()
     }
 }
 
-void KovtunMethodExecuterQmlInterface::setUnitsDimension(const int dimension) const
+void ExecuterQmlInterface::setUnitsDimension(const int dimension) const
 {
     if (kovtunMethodExecuter != nullptr && !inProgress)
     {
@@ -43,7 +46,7 @@ void KovtunMethodExecuterQmlInterface::setUnitsDimension(const int dimension) co
     }
 }
 
-int KovtunMethodExecuterQmlInterface::getUnitsDimension() const
+int ExecuterQmlInterface::getUnitsDimension() const
 {
     if (kovtunMethodExecuter != nullptr && !inProgress)
     {
@@ -51,11 +54,11 @@ int KovtunMethodExecuterQmlInterface::getUnitsDimension() const
     }
     else
     {
-        return KovtunMethodExecuter::defaultUnitDimension;
+        return Executer::defaultUnitDimension;
     }
 }
 
-double KovtunMethodExecuterQmlInterface::getCurrentError() const
+double ExecuterQmlInterface::getCurrentError() const
 {
     if (kovtunMethodExecuter != nullptr)
     {
@@ -67,16 +70,18 @@ double KovtunMethodExecuterQmlInterface::getCurrentError() const
     }
 }
 
-void KovtunMethodExecuterQmlInterface::onStepPerformed()
+void ExecuterQmlInterface::onStepPerformed()
 {
     inProgress = false;
     emit stepPerformed();
 }
 
-void KovtunMethodExecuterQmlInterface::performNextStepNotConcurrently()
+void ExecuterQmlInterface::performNextStepNotConcurrently()
 {
     if (kovtunMethodExecuter != nullptr)
     {
         kovtunMethodExecuter->performNextStep();
     }
+}
+
 }

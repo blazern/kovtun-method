@@ -3,22 +3,22 @@ QMAKE_CXXFLAGS += -std=c++11
 QT += qml quick widgets
 
 SOURCES += \
-    $$PWD/main/cppsrc/KovtunMethodExecuter.cpp \
+    $$PWD/main/cppsrc/Executer.cpp \
     $$PWD/main/cppsrc/ClosedContour.cpp \
-    $$PWD/main/cppsrc/KovtunMethodPainter.cpp \
-    $$PWD/main/cppsrc/KovtunMethodExecuterQmlInterface.cpp \
+    $$PWD/main/cppsrc/Painter.cpp \
+    $$PWD/main/cppsrc/ExecuterQmlInterface.cpp \
     $$PWD/main/cppsrc/RectangleToolKit.cpp \
-    $$PWD/main/cppsrc/KovtunQRectF.cpp \
+    $$PWD/main/cppsrc/MyQRectF.cpp \
     $$PWD/main/cppsrc/ColorsDictionary.cpp \
-    $$PWD/main/cppsrc/KovtunMethodExecuterFileLogger.cpp
+    $$PWD/main/cppsrc/ExecuterFileLogger.cpp
 
 HEADERS += \
-    $$PWD/main/cppsrc/KovtunMethodExecuter.h \
+    $$PWD/main/cppsrc/Executer.h \
     $$PWD/main/cppsrc/ClosedContour.h \
-    $$PWD/main/cppsrc/KovtunMethodPainter.h \
-    $$PWD/main/cppsrc/KovtunMethodExecuterQmlInterface.h \
+    $$PWD/main/cppsrc/Painter.h \
+    $$PWD/main/cppsrc/ExecuterQmlInterface.h \
     $$PWD/main/cppsrc/RectangleToolKit.h \
-    $$PWD/main/cppsrc/KovtunQRectF.h \
+    $$PWD/main/cppsrc/MyQRectF.h \
     $$PWD/main/cppsrc/ColorsDictionary.h \
-    $$PWD/main/cppsrc/KovtunMethodExecuterListener.h \
-    $$PWD/main/cppsrc/KovtunMethodExecuterFileLogger.h
+    $$PWD/main/cppsrc/ExecuterListener.h \
+    $$PWD/main/cppsrc/ExecuterFileLogger.h

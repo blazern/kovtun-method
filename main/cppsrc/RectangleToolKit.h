@@ -6,6 +6,9 @@
 #include <QPair>
 #include "ClosedContour.h"
 
+namespace KovtunMethod
+{
+
 class RectangleToolKit
 {
     RectangleToolKit() = delete;
@@ -39,5 +42,7 @@ private:
     static bool doTopAndBottomSidesTouchEachOther(const QRectF & firstRectangle, const QRectF & secondRectangle);
     static bool doTopAndBottomSidesTouchEeachOtherRespectively(const QRectF & firstRectangle, const QRectF & secondRectangle);
 };
+
+}
 
 #endif // RECTANGLETOOLKIT_H

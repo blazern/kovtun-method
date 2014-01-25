@@ -6,15 +6,18 @@
 #include <QColor>
 #include <QSharedPointer>
 
-class KovtunQRectF : public QRectF
+namespace KovtunMethod
+{
+
+class MyQRectF : public QRectF
 {
 public:
-    explicit KovtunQRectF(const QPointF & topLeft, const QPointF & bottomRight, const QString & name, const QPointF * parentsGravityCenter, const QPointF * grandParentsGravityCenter);
-    explicit KovtunQRectF(const qreal x, const qreal y, const qreal width, const qreal height, const QString & name, const QPointF * parentsGravityCenter, const QPointF * grandParentsGravityCenter);
+    explicit MyQRectF(const QPointF & topLeft, const QPointF & bottomRight, const QString & name, const QPointF * parentsGravityCenter, const QPointF * grandParentsGravityCenter);
+    explicit MyQRectF(const qreal x, const qreal y, const qreal width, const qreal height, const QString & name, const QPointF * parentsGravityCenter, const QPointF * grandParentsGravityCenter);
 
-    static void makeNeighbors(QSharedPointer<KovtunQRectF> & firstRectangle, QSharedPointer<KovtunQRectF> & secondRectangle);
+    static void makeNeighbors(QSharedPointer<MyQRectF> & firstRectangle, QSharedPointer<MyQRectF> & secondRectangle);
 
-    typedef QSet<QSharedPointer<KovtunQRectF> >::const_iterator neighborsIterator;
+    typedef QSet<QSharedPointer<MyQRectF> >::const_iterator neighborsIterator;
 
     inline neighborsIterator neighborsBegin() const     { return neighbors.constBegin(); }
     inline neighborsIterator neighborsEnd() const       { return neighbors.constEnd(); }
@@ -33,7 +36,7 @@ public:
 
 private:
     const QString name;
-    QSet<QSharedPointer<KovtunQRectF> > neighbors;
+    QSet<QSharedPointer<MyQRectF> > neighbors;
     QColor color;
     bool colorInitialized;
     const QPointF * parentsGravityCenter;
@@ -42,9 +45,11 @@ private:
     // Делает other соседом this, но не делает this соседом other!
     // Т.е. вызов данного метода не делает отношение симметричным.
     // Если Вы хотите задать симметричное отношение, то желательно использовать makeNeighbors()
-    void addNeighbor(const QSharedPointer<KovtunQRectF> & other);
+    void addNeighbor(const QSharedPointer<MyQRectF> & other);
 
     QPointF * copy(const QPointF * point) const;
 };
+
+}
 
 #endif // KOVTUNQRECTF_H

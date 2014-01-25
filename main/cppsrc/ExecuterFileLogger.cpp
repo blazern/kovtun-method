@@ -1,4 +1,4 @@
-#include "KovtunMethodExecuterFileLogger.h"
+#include "ExecuterFileLogger.h"
 
 #include <QFile>
 #include <QTextStream>
@@ -9,14 +9,17 @@
 #include <QDebug>
 #endif
 
-KovtunMethodExecuterFileLogger::KovtunMethodExecuterFileLogger() :
-    KovtunMethodExecuterListener(),
+namespace KovtunMethod
+{
+
+ExecuterFileLogger::ExecuterFileLogger() :
+    ExecuterListener(),
     stepIndex(0),
     output()
 {
 }
 
-void KovtunMethodExecuterFileLogger::onGravityCenterCalculated(const QPointF & gravityCenter, const double error, const KovtunQRectF & rectangle)
+void ExecuterFileLogger::onGravityCenterCalculated(const QPointF & gravityCenter, const double error, const MyQRectF & rectangle)
 {
     output +=
             "rect name: "
@@ -30,12 +33,12 @@ void KovtunMethodExecuterFileLogger::onGravityCenterCalculated(const QPointF & g
             + "\n";
 }
 
-void KovtunMethodExecuterFileLogger::onColorGathered(const QColor & color, const KovtunQRectF & rectangle)
+void ExecuterFileLogger::onColorGathered(const QColor & color, const MyQRectF & rectangle)
 {
     output += "rect name: " + rectangle.getName() + ";\tcolor:\t\t(" + QString::number(color.red()) + ", " + QString::number(color.green()) + ", " + QString::number(color.blue()) + ");\n";
 }
 
-void KovtunMethodExecuterFileLogger::onStepFinished()
+void ExecuterFileLogger::onStepFinished()
 {
     const QString folderName(QDir::currentPath() + QDir::separator() + "Logs");
     const QDir folder(folderName);
@@ -67,7 +70,9 @@ void KovtunMethodExecuterFileLogger::onStepFinished()
     output.clear();
 }
 
-void KovtunMethodExecuterFileLogger::onReset()
+void ExecuterFileLogger::onReset()
 {
     stepIndex = 0;
+}
+
 }

@@ -2,6 +2,8 @@
 #include <QtTest>
 #include "../../main/cppsrc/ClosedContour.h"
 
+using namespace KovtunMethod;
+
 class TestContour : public QObject
 {
     Q_OBJECT

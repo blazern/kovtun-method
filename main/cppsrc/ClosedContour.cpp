@@ -1,5 +1,8 @@
 #include "ClosedContour.h"
 
+namespace KovtunMethod
+{
+
 ClosedContour::ClosedContour() :
     points(),
     south(0),
@@ -128,4 +131,6 @@ bool ClosedContour::containsInside(const QPointF & point) const
     }
 
     return (intersectionsCount % 2) == 1;
+}
+
 }

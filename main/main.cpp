@@ -1,14 +1,16 @@
 #include "qtquick2controlsapplicationviewer.h"
-#include "cppsrc/KovtunMethodPainter.h"
-#include "cppsrc/KovtunMethodExecuter.h"
-#include "cppsrc/KovtunMethodExecuterQmlInterface.h"
-#include "cppsrc/KovtunMethodExecuterFileLogger.h"
+#include "cppsrc/Painter.h"
+#include "cppsrc/Executer.h"
+#include "cppsrc/ExecuterQmlInterface.h"
+#include "cppsrc/ExecuterFileLogger.h"
 #include <QtQml>
+
+using namespace KovtunMethod;
 
 int main(int argc, char *argv[])
 {
-    qmlRegisterType<KovtunMethodPainter>("KovtunMethod", 1, 0, "KovtunMethodPainter");
-    qmlRegisterType<KovtunMethodExecuterQmlInterface>("KovtunMethod", 1, 0, "KovtunMethodExecuterQmlInterface");
+    qmlRegisterType<Painter>("KovtunMethod", 1, 0, "KovtunMethodPainter");
+    qmlRegisterType<ExecuterQmlInterface>("KovtunMethod", 1, 0, "KovtunMethodExecuterQmlInterface");
 
     Application app(argc, argv);
 
@@ -35,20 +37,20 @@ int main(int argc, char *argv[])
     contour.addPoint(QPointF(100,100));
     contour.addPoint(QPointF(0,100));
 
-    KovtunMethodExecuter kovtunMethodExecuter(contour);
+    Executer kovtunMethodExecuter(contour);
 
-    KovtunMethodExecuterFileLogger fileLogger;
+    ExecuterFileLogger fileLogger;
     kovtunMethodExecuter.addListener(fileLogger);
 
     QtQuick2ControlsApplicationViewer viewer;
     viewer.setMainQmlFile(QStringLiteral("qml/kovtun-method/main.qml"));
     viewer.show();
 
-    KovtunMethodPainter * const kovtunMethodPainter =
-            dynamic_cast<KovtunMethodPainter*>(viewer.getObject("kovtunMethodPainter"));
+    Painter * const kovtunMethodPainter =
+            dynamic_cast<Painter*>(viewer.getObject("kovtunMethodPainter"));
 
-    KovtunMethodExecuterQmlInterface * const kovtunMethodQmlInterface =
-            dynamic_cast<KovtunMethodExecuterQmlInterface*>(viewer.getObject("kovtunMethodExecuter"));
+    ExecuterQmlInterface * const kovtunMethodQmlInterface =
+            dynamic_cast<ExecuterQmlInterface*>(viewer.getObject("kovtunMethodExecuter"));
 
     if (kovtunMethodPainter != nullptr && kovtunMethodQmlInterface != nullptr)
     {

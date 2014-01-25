@@ -3,16 +3,19 @@
 
 #include <QObject>
 #include <QFutureWatcher>
-#include "KovtunMethodExecuter.h"
-#include "KovtunMethodPainter.h"
+#include "Executer.h"
+#include "Painter.h"
 
-class KovtunMethodExecuterQmlInterface : public QObject
+namespace KovtunMethod
+{
+
+class ExecuterQmlInterface : public QObject
 {
     Q_OBJECT
 public:
-    explicit KovtunMethodExecuterQmlInterface(QObject * parent = 0);
+    explicit ExecuterQmlInterface(QObject * parent = 0);
 
-    void setKovtunMethodExecuter(KovtunMethodExecuter & kovtunMethodExecuter);
+    void setKovtunMethodExecuter(Executer & kovtunMethodExecuter);
 
     Q_INVOKABLE void performNextStep();
     Q_INVOKABLE void reset();
@@ -28,7 +31,7 @@ private slots:
     void onStepPerformed();
 
 private:
-    KovtunMethodExecuter * kovtunMethodExecuter;
+    Executer * kovtunMethodExecuter;
 
     bool inProgress;
 
@@ -36,5 +39,7 @@ private:
 
     void performNextStepNotConcurrently();
 };
+
+}
 
 #endif // KOVTUNMETHODEXECUTERQMLINTERFACE_H

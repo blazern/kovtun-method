@@ -1,6 +1,9 @@
 #include "RectangleToolKit.h"
 #include <QDebug>
 
+namespace KovtunMethod
+{
+
 bool RectangleToolKit::isAnyPointOfRectangleInsideOfContour(const ClosedContour & contour, const QRectF & rectangle)
 {
     if (contour.containsInside(rectangle.topLeft()) || contour.containsInside(rectangle.topRight())
@@ -243,4 +246,6 @@ bool RectangleToolKit::doTopAndBottomSidesTouchEeachOtherRespectively(const QRec
     }
 
     return false;
+}
+
 }

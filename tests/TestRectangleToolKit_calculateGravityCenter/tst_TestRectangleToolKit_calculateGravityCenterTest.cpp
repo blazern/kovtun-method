@@ -5,6 +5,8 @@
 #include "../../main/cppsrc/ClosedContour.h"
 #include "../../main/cppsrc/RectangleToolKit.h"
 
+using namespace KovtunMethod;
+
 class TestRectangleToolKit_calculateGravityCenterTest : public QObject
 {
     Q_OBJECT

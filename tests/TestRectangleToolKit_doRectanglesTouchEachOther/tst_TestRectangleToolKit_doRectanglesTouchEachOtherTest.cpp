@@ -3,6 +3,8 @@
 
 #include "../../main/cppsrc/RectangleToolKit.h"
 
+using namespace KovtunMethod;
+
 class TestRectangleToolKit_doRectanglesTouchEachOtherTest : public QObject
 {
     Q_OBJECT

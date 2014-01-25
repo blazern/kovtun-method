@@ -1,11 +1,14 @@
 #include "ColorsDictionary.h"
 #include <QDebug>
 
+namespace KovtunMethod
+{
+
 ColorsDictionary::ColorsDictionary()
 {
 }
 
-const QColor ColorsDictionary::getColorFor(const KovtunQRectF & rectangle) const
+const QColor ColorsDictionary::getColorFor(const MyQRectF & rectangle) const
 {
     QColor neighborColor;
     const bool anyNeighborIsColored = getAnyNeighborColor(rectangle, neighborColor);
@@ -20,13 +23,13 @@ const QColor ColorsDictionary::getColorFor(const KovtunQRectF & rectangle) const
     }
 }
 
-bool ColorsDictionary::getAnyNeighborColor(const KovtunQRectF & rectangle, QColor & color) const
+bool ColorsDictionary::getAnyNeighborColor(const MyQRectF & rectangle, QColor & color) const
 {
-    for (KovtunQRectF::neighborsIterator iterator = rectangle.neighborsBegin();
+    for (MyQRectF::neighborsIterator iterator = rectangle.neighborsBegin();
          iterator != rectangle.neighborsEnd();
          iterator++)
     {
-        const KovtunQRectF & neighbor = **iterator;
+        const MyQRectF & neighbor = **iterator;
 
         if (neighbor.isColorInitialized())
         {
@@ -36,4 +39,6 @@ bool ColorsDictionary::getAnyNeighborColor(const KovtunQRectF & rectangle, QColo
     }
 
     return false;
+}
+
 }

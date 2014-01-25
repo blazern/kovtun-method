@@ -3,21 +3,24 @@
 
 #include <QQuickPaintedItem>
 #include <QPen>
-#include "KovtunMethodExecuter.h"
+#include "Executer.h"
 
-class KovtunMethodPainter : public QQuickPaintedItem
+namespace KovtunMethod
+{
+
+class Painter : public QQuickPaintedItem
 {
     Q_OBJECT
 
 public:
-    explicit KovtunMethodPainter(QQuickItem * parent = 0);
+    explicit Painter(QQuickItem * parent = 0);
 
     virtual void paint(QPainter * const painter) final override;
 
-    void setKovtunMethodExecuter(const KovtunMethodExecuter & kovtunMethodExecuter);
+    void setKovtunMethodExecuter(const Executer & kovtunMethodExecuter);
 
 private:
-    const KovtunMethodExecuter * kovtunMethodExecuter;
+    const Executer * kovtunMethodExecuter;
     const int offsetFromItemEdges;   // Отступ от краёв области рисования
     QPen pen;
 
@@ -26,5 +29,7 @@ private:
     void drawActiveRectangles(QPainter * const painter);
     void drawFilledRectangles(QPainter * const painter);
 };
+
+}
 
 #endif // KOVTUNMETHODPAINTER_H

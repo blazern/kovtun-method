@@ -1,8 +1,11 @@
-#include "KovtunMethodPainter.h"
+#include "Painter.h"
 #include <QPainter>
 #include <QDebug>
 
-KovtunMethodPainter::KovtunMethodPainter(QQuickItem * parent) :
+namespace KovtunMethod
+{
+
+Painter::Painter(QQuickItem * parent) :
     QQuickPaintedItem(parent),
     kovtunMethodExecuter(nullptr),
     offsetFromItemEdges(20),
@@ -10,7 +13,7 @@ KovtunMethodPainter::KovtunMethodPainter(QQuickItem * parent) :
 {
 }
 
-void KovtunMethodPainter::paint(QPainter * const painter)
+void Painter::paint(QPainter * const painter)
 {
     const double scale = calculateScale();
     painter->scale(scale, scale);
@@ -25,7 +28,7 @@ void KovtunMethodPainter::paint(QPainter * const painter)
     }
 }
 
-void KovtunMethodPainter::drawContour(QPainter * const painter, const double scale)
+void Painter::drawContour(QPainter * const painter, const double scale)
 {
     pen.setColor("black");
     pen.setWidthF(3 / scale);
@@ -42,7 +45,7 @@ void KovtunMethodPainter::drawContour(QPainter * const painter, const double sca
     }
 }
 
-void KovtunMethodPainter::drawActiveRectangles(QPainter * const painter)
+void Painter::drawActiveRectangles(QPainter * const painter)
 {
     pen.setColor("gray");
     painter->setPen(pen);
@@ -53,11 +56,11 @@ void KovtunMethodPainter::drawActiveRectangles(QPainter * const painter)
     }
 }
 
-void KovtunMethodPainter::drawFilledRectangles(QPainter * const painter)
+void Painter::drawFilledRectangles(QPainter * const painter)
 {
     for (int index = 0; index < kovtunMethodExecuter->getFilledRectanglesCount(); index++)
     {
-        const KovtunQRectF & filledRectangle = kovtunMethodExecuter->getFilledRectangle(index);
+        const MyQRectF & filledRectangle = kovtunMethodExecuter->getFilledRectangle(index);
 
         const QColor color = filledRectangle.getColor();
 
@@ -68,12 +71,12 @@ void KovtunMethodPainter::drawFilledRectangles(QPainter * const painter)
     }
 }
 
-void KovtunMethodPainter::setKovtunMethodExecuter(const KovtunMethodExecuter & kovtunMethodExecuter)
+void Painter::setKovtunMethodExecuter(const Executer & kovtunMethodExecuter)
 {
     this->kovtunMethodExecuter = &kovtunMethodExecuter;
 }
 
-double KovtunMethodPainter::calculateScale() const
+double Painter::calculateScale() const
 {
     const ClosedContour & contour = kovtunMethodExecuter->getContour();
     if (contour.getPointsCount() > 0)
@@ -103,4 +106,6 @@ double KovtunMethodPainter::calculateScale() const
     }
 
     return 1;
+}
+
 }

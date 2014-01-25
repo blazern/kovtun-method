@@ -1,8 +1,10 @@
 #include <QString>
 #include <QtTest>
 
-#include "../../main/cppsrc/KovtunMethodExecuter.h"
+#include "../../main/cppsrc/Executer.h"
 #include "../../main/cppsrc/ClosedContour.h"
+
+using namespace KovtunMethod;
 
 class TestKovtunMethodExecuterTest : public QObject
 {
@@ -20,7 +22,7 @@ private:
     QPointF topLeftPoint;
     QPointF bottomRightPoint;
     ClosedContour contour;
-    KovtunMethodExecuter * kovtunMethodExecuter;
+    Executer * kovtunMethodExecuter;
 };
 
 TestKovtunMethodExecuterTest::TestKovtunMethodExecuterTest() :
@@ -40,7 +42,7 @@ TestKovtunMethodExecuterTest::TestKovtunMethodExecuterTest() :
 
 void TestKovtunMethodExecuterTest::initTestCase()
 {
-    kovtunMethodExecuter = new KovtunMethodExecuter(contour);
+    kovtunMethodExecuter = new Executer(contour);
 }
 
 void TestKovtunMethodExecuterTest::cleanupTestCase()

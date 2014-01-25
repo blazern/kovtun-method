@@ -4,6 +4,8 @@
 #include "../../main/cppsrc/RectangleToolKit.h"
 #include "../../main/cppsrc/ClosedContour.h"
 
+using namespace KovtunMethod;
+
 class TestRectangleToolKit_isAnyPointOfAnyLineOfContourInsideOfRectangleTest : public QObject
 {
     Q_OBJECT
