@@ -12,90 +12,152 @@ ApplicationWindow {
     Item {
         id: content
         anchors.fill: parent
+        anchors.topMargin: 5
+        anchors.rightMargin: 5
+        anchors.bottomMargin: 5
+        anchors.leftMargin: 5
 
-        Button {
-            id: performStepButton
-            anchors.verticalCenter: parent.verticalCenter
-            text: "Шаг вперед"
-            action: Action {
-                onTriggered: {
-                    loadingText.visible = true;
-                    kovtunMethodExecuter.setUnitsDimension(unitsDimensionTextField.text);
-                    kovtunMethodExecuter.performNextStep();
+        Item {
+            id: controls
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.right: parent.right
+//            anchors.bottom: errorText.bottom
+            height: parent.height / 8
+
+            Button {
+                id: performStepButton
+                anchors.left: parent.left
+                text: "Шаг вперед"
+                action: Action {
+                    onTriggered: {
+                        loadingText.visible = true;
+                        kovtunMethodExecuter.setUnitsDimension(unitsDimensionTextField.text);
+                        kovtunMethodExecuter.performNextStep();
+                    }
                 }
             }
-        }
 
-        Button {
-            id: resetButton
-            anchors.top: performStepButton.bottom
-            text: "Сбросить"
-            action: Action {
-                onTriggered: {
-                    kovtunMethodExecuter.reset();
-                    errorValue.text = "0";
+            Button {
+                id: resetButton
+                anchors.left: performStepButton.right
+                anchors.leftMargin: 10
+                text: "Сбросить"
+                action: Action {
+                    onTriggered: {
+                        kovtunMethodExecuter.reset();
+                        errorValue.text = "0";
+                        activeRectanglesCountValue.text = "0";
+                        filledRectanglesCountValue.text = "0";
+                    }
                 }
             }
-        }
 
-        Text {
-            id: unitsDimensionText
-            anchors.top: resetButton.bottom
-            text: "Размерность юнитов:"
-        }
-
-        TextField {
-            id: unitsDimensionTextField
-            anchors.top: unitsDimensionText.bottom
-
-            onAccepted: {
-                kovtunMethodExecuter.setUnitsDimension(text);
+            Text {
+                id: unitsDimensionText
+                anchors.left: resetButton.right
+                anchors.leftMargin: 40
+                anchors.verticalCenter: resetButton.verticalCenter
+                text: "Размерность юнитов:"
             }
 
-            Component.onCompleted: {
-                text = kovtunMethodExecuter.getUnitsDimension();
+            TextField {
+                id: unitsDimensionTextField
+                anchors.left: unitsDimensionText.right
+                anchors.leftMargin: 10
+                onAccepted: {
+                    kovtunMethodExecuter.setUnitsDimension(text);
+                }
+                Component.onCompleted: {
+                    text = kovtunMethodExecuter.getUnitsDimension();
+                }
             }
+
+            Text {
+                id: errorText
+                text: "погрешность вычисления центров тяжести:"
+                anchors.top: performStepButton.bottom
+                anchors.topMargin: 10
+            }
+
+            Text {
+                id: errorValue
+                text: "0"
+                anchors.left: errorText.right
+                anchors.leftMargin: 10
+                anchors.verticalCenter: errorText.verticalCenter
+            }
+
+            Text {
+                id: activeRectanglesCountText
+                text: "число незаграшенных прямоугольников:"
+                anchors.top: errorText.bottom
+            }
+
+            Text {
+                id: activeRectanglesCountValue
+                text: "0"
+                anchors.left: activeRectanglesCountText.right
+                anchors.leftMargin: 10
+                anchors.verticalCenter: activeRectanglesCountText.verticalCenter
+            }
+
+            Text {
+                id: filledRectanglesCountText
+                text: "число заграшенных прямоугольников:"
+                anchors.top: activeRectanglesCountText.bottom
+            }
+
+            Text {
+                id: filledRectanglesCountValue
+                text: "0"
+                anchors.left: filledRectanglesCountText.right
+                anchors.leftMargin: 10
+                anchors.verticalCenter: filledRectanglesCountText.verticalCenter
+            }
+
         }
 
-        KovtunMethodPainter {
-            id: kovtunMethodPainter
-            anchors.left: performStepButton.right
-            anchors.leftMargin: 10
-            height: parent.height
-            width: parent.width - x
-            objectName: "kovtunMethodPainter"
-        }
-
-        Text {
-            id: loadingText
-            text: "Подождите, выполняются расчёты..."
-            color: "red"
-            font.pointSize: 0.035 * kovtunMethodPainter.width
-            anchors.centerIn: kovtunMethodPainter
-            visible: false
-        }
-
-        Text {
-            id: errorText
-            text: "погрешность:"
+        Item {
+            id: result
+            anchors.top: controls.bottom
+            anchors.topMargin: 10
+            anchors.left: parent.left
+            anchors.right: parent.right
             anchors.bottom: parent.bottom
-        }
 
-        Text {
-            id: errorValue
-            text: "0"
-            anchors.left: errorText.right
-            y: errorText.y
+            KovtunMethodPainter {
+                id: kovtunMethodPainter
+                anchors.fill: parent
+                anchors.topMargin: 5
+                anchors.rightMargin: 5
+                anchors.bottomMargin: 5
+                anchors.leftMargin: 5
+                objectName: "kovtunMethodPainter"
+            }
+
+            Text {
+                id: loadingText
+                text: "Подождите, выполняются расчёты..."
+                color: "red"
+                font.pointSize: 0.035 * kovtunMethodPainter.width
+                anchors.centerIn: kovtunMethodPainter
+                visible: false
+            }
         }
     }
 
     KovtunMethodExecuterQmlInterface {
         id: kovtunMethodExecuter
-        onExecutionReset: kovtunMethodPainter.update();
+        onExecutionReset: {
+            kovtunMethodPainter.update();
+        }
         onStepPerformed: {
             kovtunMethodPainter.update();
             loadingText.visible = false;
             errorValue.text = getCurrentError();
+            activeRectanglesCountValue.text = getActiveRectanglesCount();
+            filledRectanglesCountValue.text = getFilledRectanglesCount();
         }
         objectName: "kovtunMethodExecuter"
     }

@@ -22,6 +22,8 @@ public:
     Q_INVOKABLE void setUnitsDimension(const int dimension) const;
     Q_INVOKABLE int getUnitsDimension() const;
     Q_INVOKABLE double getCurrentError() const;
+    Q_INVOKABLE double getActiveRectanglesCount() const;
+    Q_INVOKABLE double getFilledRectanglesCount() const;
 
 signals:
     void stepPerformed();

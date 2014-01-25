@@ -70,6 +70,30 @@ double ExecuterQmlInterface::getCurrentError() const
     }
 }
 
+double ExecuterQmlInterface::getActiveRectanglesCount() const
+{
+    if (kovtunMethodExecuter != nullptr)
+    {
+        return kovtunMethodExecuter->getActiveRectanglesCount();
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+double ExecuterQmlInterface::getFilledRectanglesCount() const
+{
+    if (kovtunMethodExecuter != nullptr)
+    {
+        return kovtunMethodExecuter->getFilledRectanglesCount();
+    }
+    else
+    {
+        return -1;
+    }
+}
+
 void ExecuterQmlInterface::onStepPerformed()
 {
     inProgress = false;
