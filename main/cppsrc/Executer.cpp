@@ -26,7 +26,7 @@ void Executer::performNextStep()
         count = 0;
         calculateFirstActiveRectangle();
 
-        firstRectangleArea = activeRectangles[0]->getSquare();
+        firstRectangleArea = activeRectangles[0]->getArea();
     }
     else
     {
@@ -57,7 +57,7 @@ void Executer::calculateNewActiveRectangles()
         const QPointF & gravityCenter = gravityCenterWithError.first;
         const double error = gravityCenterWithError.second;
 
-        errors << (error * (activeRectangle->getSquare() / firstRectangleArea)) / (activeRectangles.size() + filledRectangles.size());
+        errors << (error * (activeRectangle->getArea() / firstRectangleArea)) / (activeRectangles.size() + filledRectangles.size());
 
         for (auto & listener : listeners)
         {
@@ -146,7 +146,7 @@ void Executer::makeNeighbors(QVector<QSharedPointer<MyQRectF> > & futureNeighbor
     {
         for (int secondIndex = firstIndex + 1; secondIndex < futureNeighbors.size(); secondIndex++)
         {
-            MyQRectF::makeNeighbors(futureNeighbors[firstIndex], futureNeighbors[secondIndex]);
+            futureNeighbors[firstIndex]->addNeighbor(*futureNeighbors[secondIndex]);
         }
     }
 }
@@ -184,15 +184,11 @@ bool Executer::tryToFill(QSharedPointer<MyQRectF> & rectangle)
 
 void Executer::shareNeighbors(QSharedPointer<MyQRectF> & source, QSharedPointer<MyQRectF> & destination) const
 {
-    for (MyQRectF::neighborsIterator iterator = source->neighborsBegin();
-         iterator != source->neighborsEnd();
-         iterator++)
+    for (const auto & sourcesNeighbor : source->getNeighborhood())
     {
-        QSharedPointer<MyQRectF> sourcesNeighbor = *iterator;
-
         if (RectangleToolKit::doRectanglesTouchEachOther(*sourcesNeighbor, *destination))
         {
-            MyQRectF::makeNeighbors(sourcesNeighbor, destination);
+            destination->addNeighbor(*sourcesNeighbor);
         }
     }
 }

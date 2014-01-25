@@ -25,15 +25,11 @@ const QColor ColorsDictionary::getColorFor(const MyQRectF & rectangle) const
 
 bool ColorsDictionary::getAnyNeighborColor(const MyQRectF & rectangle, QColor & color) const
 {
-    for (MyQRectF::neighborsIterator iterator = rectangle.neighborsBegin();
-         iterator != rectangle.neighborsEnd();
-         iterator++)
+    for (const auto & neighbor : rectangle.getNeighborhood())
     {
-        const MyQRectF & neighbor = **iterator;
-
-        if (neighbor.isColorInitialized())
+        if (neighbor->isColorInitialized())
         {
-            color = neighbor.getColor();
+            color = neighbor->getColor();
             return true;
         }
     }

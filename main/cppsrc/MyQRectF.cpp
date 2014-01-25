@@ -4,7 +4,41 @@
 namespace KovtunMethod
 {
 
-MyQRectF::MyQRectF(const QPointF & topLeft, const QPointF & bottomRight, const QString & name, const QPointF * parentsGravityCenter, const QPointF * grandParentsGravityCenter) :
+MyQRectF::MyQRectF(const MyQRectF & other) :
+    QRectF(other),
+    name(other.name),
+    neighbors(other.neighbors),
+    color(other.color),
+    colorInitialized(other.colorInitialized),
+    parentsGravityCenter(copy(other.parentsGravityCenter)),
+    grandParentsGravityCenter(copy(other.grandParentsGravityCenter))
+{
+}
+
+MyQRectF::~MyQRectF()
+{
+    for (auto & neighbor : neighbors)
+    {
+        neighbor->neighbors.remove(this);
+    }
+
+    if (parentsGravityCenter != nullptr)
+    {
+        delete parentsGravityCenter;
+    }
+
+    if (grandParentsGravityCenter != nullptr)
+    {
+        delete grandParentsGravityCenter;
+    }
+}
+
+MyQRectF::MyQRectF(
+        const QPointF & topLeft,
+        const QPointF & bottomRight,
+        const QString & name,
+        const QPointF * parentsGravityCenter,
+        const QPointF * grandParentsGravityCenter) :
     QRectF(topLeft, bottomRight),
     name(name),
     neighbors(),
@@ -15,7 +49,14 @@ MyQRectF::MyQRectF(const QPointF & topLeft, const QPointF & bottomRight, const Q
 {
 }
 
-MyQRectF::MyQRectF(const qreal x, const qreal y, const qreal width, const qreal height, const QString & name, const QPointF * parentsGravityCenter, const QPointF * grandParentsGravityCenter) :
+MyQRectF::MyQRectF(
+        const qreal x,
+        const qreal y,
+        const qreal width,
+        const qreal height,
+        const QString & name,
+        const QPointF * parentsGravityCenter,
+        const QPointF * grandParentsGravityCenter) :
     QRectF(x, y, width, height),
     name(name),
     neighbors(),
@@ -31,15 +72,10 @@ QPointF * MyQRectF::copy(const QPointF * point) const
     return point == nullptr ? nullptr : new QPointF(*point);
 }
 
-void MyQRectF::makeNeighbors(QSharedPointer<MyQRectF> & firstRectangle, QSharedPointer<MyQRectF> & secondRectangle)
+void MyQRectF::addNeighbor(MyQRectF & other)
 {
-    firstRectangle->addNeighbor(secondRectangle);
-    secondRectangle->addNeighbor(firstRectangle);
-}
-
-void MyQRectF::addNeighbor(const QSharedPointer<MyQRectF> & other)
-{
-    neighbors.insert(other);
+    neighbors.insert(&other);
+    other.neighbors.insert(this);
 }
 
 const QColor MyQRectF::getColor() const
@@ -59,3 +95,8 @@ bool MyQRectF::isColorInitialized() const
 }
 
 }
+
+//uint qHash(const KovtunMethod::MyQRectF & rectangle)
+//{
+//    return qHash(rectangle.getName());
+//}
