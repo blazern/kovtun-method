@@ -41,8 +41,8 @@ public:
     void setColor(const QColor & color);
     bool isColorInitialized() const;
 
-    const QPointF * getParentsGravityCenter() const         { return parentsGravityCenter; }
-    const QPointF * getGrandParentsGravityCenter() const    { return grandParentsGravityCenter; }
+    const QPointF * getParentsGravityCenter() const { return parentsGravityCenter; }
+    const QPointF * getGrandParentsGravityCenter() const { return grandParentsGravityCenter; }
 
     inline double getArea() const { return width() * height(); }
 

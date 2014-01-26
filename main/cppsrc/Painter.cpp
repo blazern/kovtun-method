@@ -9,8 +9,10 @@ Painter::Painter(QQuickItem * parent) :
     QQuickPaintedItem(parent),
     kovtunMethodExecuter(nullptr),
     offsetFromItemEdges(20),
-    pen()
+    pen(),
+    filledRectanglesLinesAreVisible(false)
 {
+    pen.setJoinStyle(Qt::MiterJoin);
 }
 
 void Painter::paint(QPainter * const painter)
@@ -18,12 +20,11 @@ void Painter::paint(QPainter * const painter)
     const double scale = calculateScale();
     painter->scale(scale, scale);
     painter->translate(offsetFromItemEdges / scale, offsetFromItemEdges / scale);
-    pen.setWidthF(1 / scale);
 
     if (kovtunMethodExecuter != nullptr)
     {
-        drawActiveRectangles(painter);
-        drawFilledRectangles(painter);
+        drawActiveRectangles(painter, scale);
+        drawFilledRectangles(painter, scale);
         drawContour(painter, scale);
     }
 }
@@ -45,9 +46,10 @@ void Painter::drawContour(QPainter * const painter, const double scale)
     }
 }
 
-void Painter::drawActiveRectangles(QPainter * const painter)
+void Painter::drawActiveRectangles(QPainter * const painter, const double scale)
 {
     pen.setColor("gray");
+    pen.setWidthF(1 / scale);
     painter->setPen(pen);
 
     for (int index = 0; index < kovtunMethodExecuter->getActiveRectanglesCount(); index++)
@@ -56,8 +58,14 @@ void Painter::drawActiveRectangles(QPainter * const painter)
     }
 }
 
-void Painter::drawFilledRectangles(QPainter * const painter)
+void Painter::drawFilledRectangles(QPainter * const painter, const double scale)
 {
+    if (filledRectanglesLinesAreVisible)
+    {
+        pen.setColor("grey");
+    }
+    pen.setWidthF(1 / scale);
+
     for (int index = 0; index < kovtunMethodExecuter->getFilledRectanglesCount(); index++)
     {
         const MyQRectF & filledRectangle = kovtunMethodExecuter->getFilledRectangle(index);
@@ -65,7 +73,11 @@ void Painter::drawFilledRectangles(QPainter * const painter)
         const QColor color = filledRectangle.getColor();
 
         painter->setBrush(color);
-        painter->setPen(color);
+        if (!filledRectanglesLinesAreVisible)
+        {
+            pen.setColor(color);
+        }
+        painter->setPen(pen);
 
         painter->drawRect(filledRectangle);
     }
@@ -74,6 +86,11 @@ void Painter::drawFilledRectangles(QPainter * const painter)
 void Painter::setKovtunMethodExecuter(const Executer & kovtunMethodExecuter)
 {
     this->kovtunMethodExecuter = &kovtunMethodExecuter;
+}
+
+void Painter::setFilledRectanglesLinesVisibility(const bool visible)
+{
+    filledRectanglesLinesAreVisible = visible;
 }
 
 double Painter::calculateScale() const

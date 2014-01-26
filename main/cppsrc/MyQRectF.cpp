@@ -98,5 +98,5 @@ bool MyQRectF::isColorInitialized() const
 
 //uint qHash(const KovtunMethod::MyQRectF & rectangle)
 //{
-//    return qHash(rectangle.getName());
+// return qHash(rectangle.getName());
 //}

@@ -19,15 +19,18 @@ public:
 
     void setKovtunMethodExecuter(const Executer & kovtunMethodExecuter);
 
+    Q_INVOKABLE void setFilledRectanglesLinesVisibility(const bool visible);
+
 private:
     const Executer * kovtunMethodExecuter;
     const int offsetFromItemEdges;   // Отступ от краёв области рисования
     QPen pen;
+    bool filledRectanglesLinesAreVisible;
 
     double calculateScale() const;
     void drawContour(QPainter * const painter, const double scale);
-    void drawActiveRectangles(QPainter * const painter);
-    void drawFilledRectangles(QPainter * const painter);
+    void drawActiveRectangles(QPainter * const painter, const double scale);
+    void drawFilledRectangles(QPainter * const painter, const double scale);
 };
 
 }

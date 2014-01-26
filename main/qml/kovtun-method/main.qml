@@ -72,6 +72,17 @@ ApplicationWindow {
                 }
             }
 
+            CheckBox {
+                id: filledRectanglesLinesVisibilityCheckBox
+                anchors.left: unitsDimensionTextField.right
+                anchors.leftMargin: 10
+                text: "Видимые линии"
+                onClicked: {
+                    kovtunMethodPainter.setFilledRectanglesLinesVisibility(checked);
+                    kovtunMethodPainter.update();
+                }
+            }
+
             Text {
                 id: errorText
                 text: "погрешность вычисления центров тяжести:"
