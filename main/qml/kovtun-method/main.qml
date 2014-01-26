@@ -22,7 +22,7 @@ ApplicationWindow {
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.right: parent.right
-            height: parent.height / 8
+            height: filledRectanglesCountText.y + filledRectanglesCountText.height
 
             Button {
                 id: performStepButton
@@ -33,6 +33,7 @@ ApplicationWindow {
                         loadingText.visible = true;
                         kovtunMethodExecuter.setUnitsDimension(unitsDimensionTextField.text);
                         kovtunMethodExecuter.performNextStep();
+                        stepIndexValue.stepIndex++;
                     }
                 }
             }
@@ -48,6 +49,7 @@ ApplicationWindow {
                         errorValue.text = "0";
                         activeRectanglesCountValue.text = "0";
                         filledRectanglesCountValue.text = "0";
+                        stepIndexValue.stepIndex = 0;
                     }
                 }
             }
@@ -84,10 +86,26 @@ ApplicationWindow {
             }
 
             Text {
-                id: errorText
-                text: "погрешность вычисления центров тяжести:"
+                id: stepIndexText
+                text: "номер шага:"
                 anchors.top: performStepButton.bottom
                 anchors.topMargin: 10
+            }
+
+            Text {
+                id: stepIndexValue
+                text: stepIndex
+                anchors.left: stepIndexText.right
+                anchors.leftMargin: 10
+                anchors.verticalCenter: stepIndexText.verticalCenter
+                property int stepIndex: 0
+            }
+
+
+            Text {
+                id: errorText
+                text: "погрешность вычисления центров тяжести:"
+                anchors.top: stepIndexText.bottom
             }
 
             Text {
