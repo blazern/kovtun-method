@@ -15,6 +15,7 @@ Executer::Executer(const ClosedContour & contour) :
     activeRectangles(),
     filledRectangles(),
     aboutToGetFilledRectangles(),
+    gravityCenters(),
     unitDimension(defaultUnitDimension),
     colorDictionary(),
     errors(),
@@ -60,6 +61,8 @@ void Executer::calculateNewActiveRectangles()
         const QPair<QPointF, double> gravityCenterWithError = RectangleToolKit::calculateGravityCenter(contour, *activeRectangle, unitDimension);
         const QPointF & gravityCenter = gravityCenterWithError.first;
         const double error = gravityCenterWithError.second;
+
+        gravityCenters << gravityCenter;
 
         errors << (error * (activeRectangle->getArea() / firstRectangleArea)) / (activeRectangles.size() + filledRectangles.size());
 
@@ -253,6 +256,7 @@ void Executer::reset()
     activeRectangles.clear();
     filledRectangles.clear();
     aboutToGetFilledRectangles.clear();
+    gravityCenters.clear();
     errors.clear();
 
     for (auto & listener : listeners)

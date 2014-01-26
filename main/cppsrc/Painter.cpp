@@ -24,6 +24,7 @@ void Painter::paint(QPainter * const painter)
     if (kovtunMethodExecuter != nullptr)
     {
         drawActiveRectangles(painter, scale);
+        drawGravityCenters(painter, scale);
         drawFilledRectangles(painter, scale);
         drawContour(painter, scale);
     }
@@ -55,6 +56,18 @@ void Painter::drawActiveRectangles(QPainter * const painter, const double scale)
     for (int index = 0; index < kovtunMethodExecuter->getActiveRectanglesCount(); index++)
     {
         painter->drawRect(kovtunMethodExecuter->getActiveRectangle(index));
+    }
+}
+
+void Painter::drawGravityCenters(QPainter * const painter, const double scale)
+{
+    pen.setColor("black");
+    pen.setWidthF(2 / scale);
+    painter->setPen(pen);
+
+    for (int index = 0; index < kovtunMethodExecuter->getGravityCentersCount(); index++)
+    {
+        painter->drawPoint(kovtunMethodExecuter->getGravityCenter(index));
     }
 }
 

@@ -25,16 +25,19 @@ public:
     void performNextStep();
     void reset();
 
-    void setUnitsDimension(const int dimension)                                     { unitDimension = dimension; }
-    int getUnitsDimension() const                                                   { return unitDimension; }
+    void setUnitsDimension(const int dimension) { unitDimension = dimension; }
+    int getUnitsDimension() const { return unitDimension; }
 
-    inline const ClosedContour & getContour() const                                 { return contour; }
+    inline const ClosedContour & getContour() const { return contour; }
 
     const MyQRectF & getActiveRectangle(const int index) const;
     int getActiveRectanglesCount() const;
 
-    inline const MyQRectF & getFilledRectangle(const int index) const           { return *filledRectangles[index]; }
-    inline int getFilledRectanglesCount() const                                     { return filledRectangles.size(); }
+    inline const MyQRectF & getFilledRectangle(const int index) const { return *filledRectangles[index]; }
+    inline int getFilledRectanglesCount() const { return filledRectangles.size(); }
+
+    inline const QPointF & getGravityCenter(const int index) const { return gravityCenters[index]; }
+    inline int getGravityCentersCount() const { return gravityCenters.size(); }
 
     double getCurrentError() const;
 
@@ -48,6 +51,7 @@ private:
     QVector<QSharedPointer<MyQRectF> > activeRectangles;
     QVector<QSharedPointer<MyQRectF> > filledRectangles;
     QVector<QSharedPointer<MyQRectF> > aboutToGetFilledRectangles;
+    QVector<QPointF> gravityCenters;
     int unitDimension;
     ColorsDictionary colorDictionary;
     QVector<double> errors;

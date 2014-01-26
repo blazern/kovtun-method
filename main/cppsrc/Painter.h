@@ -30,6 +30,7 @@ private:
     double calculateScale() const;
     void drawContour(QPainter * const painter, const double scale);
     void drawActiveRectangles(QPainter * const painter, const double scale);
+    void drawGravityCenters(QPainter * const painter, const double scale);
     void drawFilledRectangles(QPainter * const painter, const double scale);
 };
 
