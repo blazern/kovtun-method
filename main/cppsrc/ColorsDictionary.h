@@ -16,6 +16,7 @@ public:
     ColorsDictionary & operator=(const ColorsDictionary &) = delete;
 
     const QColor getColorFor(const MyQRectF & rectangle);
+    const QColor getColorFor(const QVector<QSharedPointer<MyQRectF> > & rectangles);
 
 private:
     static const int COLOR_MAX = 200;

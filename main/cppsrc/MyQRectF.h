@@ -20,7 +20,8 @@ public:
             const QPointF & bottomRight,
             const QString & name,
             const QPointF * parentsGravityCenter,
-            const QPointF * grandParentsGravityCenter);
+            const QPointF * grandParentsGravityCenter,
+            const bool ancestryHaveGravityCenterBeyondContour);
     explicit MyQRectF(
             const qreal x,
             const qreal y,
@@ -28,7 +29,8 @@ public:
             const qreal height,
             const QString & name,
             const QPointF * parentsGravityCenter,
-            const QPointF * grandParentsGravityCenter);
+            const QPointF * grandParentsGravityCenter,
+            const bool ancestryHaveGravityCenterBeyondContour);
 
     typedef QSet<MyQRectF*> Neighborhood;
 
@@ -41,8 +43,10 @@ public:
     void setColor(const QColor & color);
     bool isColorInitialized() const;
 
-    const QPointF * getParentsGravityCenter() const { return parentsGravityCenter; }
-    const QPointF * getGrandParentsGravityCenter() const { return grandParentsGravityCenter; }
+    inline const QPointF * getParentsGravityCenter() const { return parentsGravityCenter; }
+    inline const QPointF * getGrandParentsGravityCenter() const { return grandParentsGravityCenter; }
+
+    inline bool doesAncestryHaveGravityCenterBeyondContour() const { return ancestryHaveGravityCenterBeyondContour; }
 
     inline double getArea() const { return width() * height(); }
 
@@ -53,6 +57,7 @@ private:
     bool colorInitialized;
     const QPointF * parentsGravityCenter;
     const QPointF * grandParentsGravityCenter;
+    const bool ancestryHaveGravityCenterBeyondContour;
 
     QPointF * copy(const QPointF * point) const;
 };

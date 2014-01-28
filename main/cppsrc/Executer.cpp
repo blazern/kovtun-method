@@ -93,6 +93,17 @@ void Executer::calculateNewActiveRectangles()
 
 QSharedPointer<MyQRectF> Executer::createTopLeftRectangleFrom(const MyQRectF & parent, const QPointF & parentGravityCenter) const
 {
+    bool ancestryHaveGravityCenterBeyondContour = false;
+
+    if (parent.doesAncestryHaveGravityCenterBeyondContour())
+    {
+        ancestryHaveGravityCenterBeyondContour = true;
+    }
+    else if (!contour.containsInside(parentGravityCenter))
+    {
+        ancestryHaveGravityCenterBeyondContour = true;
+    }
+
     return QSharedPointer<MyQRectF>(
                 new MyQRectF(
                     parent.left(),
@@ -101,11 +112,23 @@ QSharedPointer<MyQRectF> Executer::createTopLeftRectangleFrom(const MyQRectF & p
                     parentGravityCenter.y() - parent.top(),
                     parent.getName() + " 2",
                     &parentGravityCenter,
-                    parent.getParentsGravityCenter()));
+                    parent.getParentsGravityCenter(),
+                    ancestryHaveGravityCenterBeyondContour));
 }
 
 QSharedPointer<MyQRectF> Executer::createTopRightRectangleFrom(const MyQRectF & parent, const QPointF & parentGravityCenter) const
 {
+    bool ancestryHaveGravityCenterBeyondContour = false;
+
+    if (parent.doesAncestryHaveGravityCenterBeyondContour())
+    {
+        ancestryHaveGravityCenterBeyondContour = true;
+    }
+    else if (!contour.containsInside(parentGravityCenter))
+    {
+        ancestryHaveGravityCenterBeyondContour = true;
+    }
+
     return QSharedPointer<MyQRectF>(
                 new MyQRectF(
                     parentGravityCenter.x(),
@@ -114,11 +137,23 @@ QSharedPointer<MyQRectF> Executer::createTopRightRectangleFrom(const MyQRectF & 
                     parentGravityCenter.y() - parent.top(),
                     parent.getName() + " 1",
                     &parentGravityCenter,
-                    parent.getParentsGravityCenter()));
+                    parent.getParentsGravityCenter(),
+                    ancestryHaveGravityCenterBeyondContour));
 }
 
 QSharedPointer<MyQRectF> Executer::createBottomRightRectangleFrom(const MyQRectF & parent, const QPointF & parentGravityCenter) const
 {
+    bool ancestryHaveGravityCenterBeyondContour = false;
+
+    if (parent.doesAncestryHaveGravityCenterBeyondContour())
+    {
+        ancestryHaveGravityCenterBeyondContour = true;
+    }
+    else if (!contour.containsInside(parentGravityCenter))
+    {
+        ancestryHaveGravityCenterBeyondContour = true;
+    }
+
     return QSharedPointer<MyQRectF>(
                 new MyQRectF(
                     parentGravityCenter.x(),
@@ -127,11 +162,23 @@ QSharedPointer<MyQRectF> Executer::createBottomRightRectangleFrom(const MyQRectF
                     parent.bottom() - parentGravityCenter.y(),
                     parent.getName() + " 4",
                     &parentGravityCenter,
-                    parent.getParentsGravityCenter()));
+                    parent.getParentsGravityCenter(),
+                    ancestryHaveGravityCenterBeyondContour));
 }
 
 QSharedPointer<MyQRectF> Executer::createBottomLeftRectangleFrom(const MyQRectF & parent, const QPointF & parentGravityCenter) const
 {
+    bool ancestryHaveGravityCenterBeyondContour = false;
+
+    if (parent.doesAncestryHaveGravityCenterBeyondContour())
+    {
+        ancestryHaveGravityCenterBeyondContour = true;
+    }
+    else if (!contour.containsInside(parentGravityCenter))
+    {
+        ancestryHaveGravityCenterBeyondContour = true;
+    }
+
     return QSharedPointer<MyQRectF>(
                 new MyQRectF(
                     parent.left(),
@@ -140,7 +187,8 @@ QSharedPointer<MyQRectF> Executer::createBottomLeftRectangleFrom(const MyQRectF 
                     parent.bottom() - parentGravityCenter.y(),
                     parent.getName() + " 3",
                     &parentGravityCenter,
-                    parent.getParentsGravityCenter()));
+                    parent.getParentsGravityCenter(),
+                    ancestryHaveGravityCenterBeyondContour));
 }
 
 void Executer::leaveOnlyAtLeastPartlyInsideOfContourRectangles(QVector<QSharedPointer<MyQRectF> > & rectangles, const ClosedContour & contour) const
@@ -201,7 +249,15 @@ void Executer::moveAndFillRectanglesWhichShouldBeFilled(
 
                 if (RectangleToolKit::doesLineIntersectRectangle(gravityCentersLine, *potentialRectangle))
                 {
-                    const QColor color = colorDictionary.getColorFor(*potentialRectangle);
+                    QColor color;
+                    if (!potentialRectangle->doesAncestryHaveGravityCenterBeyondContour())
+                    {
+                        color = colorDictionary.getColorFor(*potentialRectangle);
+                    }
+                    else
+                    {
+                        color = colorDictionary.getColorFor(potentialRectangles);
+                    }
                     potentialRectangle->setColor(color);
 
                     certainRectangles << potentialRectangle;
@@ -316,7 +372,8 @@ void Executer::calculateFirstActiveRectangle()
                                      QPointF(contour.getEast(), contour.getSouth()),
                                      "0",
                                      nullptr,
-                                     nullptr)));
+                                     nullptr,
+                                     false)));
 
     }
 #ifdef QT_DEBUG

@@ -41,6 +41,27 @@ const QColor ColorsDictionary::getColorFor(const MyQRectF & rectangle)
     }
 }
 
+const QColor ColorsDictionary::getColorFor(const QVector<QSharedPointer<MyQRectF> > & rectangles)
+{
+    QColor neighborColor;
+
+    for (const auto & rectangle : rectangles)
+    {
+        const bool anyNeighborIsColored = getAnyNeighborColor(*rectangle, neighborColor);
+
+        if (anyNeighborIsColored)
+        {
+            return neighborColor;
+        }
+    }
+
+    if (currentLetter >= alphabet.size())
+    {
+        currentLetter = 0;
+    }
+    return alphabet[currentLetter++];
+}
+
 bool ColorsDictionary::getAnyNeighborColor(const MyQRectF & rectangle, QColor & color) const
 {
     for (const auto & neighbor : rectangle.getNeighborhood())
