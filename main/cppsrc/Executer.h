@@ -36,9 +36,6 @@ public:
     inline const MyQRectF & getFilledRectangle(const int index) const { return *filledRectangles[index]; }
     inline int getFilledRectanglesCount() const { return filledRectangles.size(); }
 
-    inline const QPointF & getGravityCenter(const int index) const { return gravityCenters[index]; }
-    inline int getGravityCentersCount() const { return gravityCenters.size(); }
-
     double getCurrentError() const;
 
     inline void addListener(ExecuterListener & listener)                { listeners.insert(&listener); }
@@ -47,11 +44,11 @@ public:
     static const int defaultUnitDimension = 20;
 
 private:
+    bool executionStarted;
     const ClosedContour contour;
     QVector<QSharedPointer<MyQRectF> > activeRectangles;
     QVector<QSharedPointer<MyQRectF> > filledRectangles;
     QVector<QSharedPointer<MyQRectF> > aboutToGetFilledRectangles;
-    QVector<QPointF> gravityCenters;
     int unitDimension;
     ColorsDictionary colorDictionary;
     QVector<double> errors;

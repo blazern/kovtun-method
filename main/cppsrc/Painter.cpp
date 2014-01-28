@@ -65,9 +65,14 @@ void Painter::drawGravityCenters(QPainter * const painter, const double scale)
     pen.setWidthF(2 / scale);
     painter->setPen(pen);
 
-    for (int index = 0; index < kovtunMethodExecuter->getGravityCentersCount(); index++)
+    for (int index = 0; index < kovtunMethodExecuter->getActiveRectanglesCount(); index++)
     {
-        painter->drawPoint(kovtunMethodExecuter->getGravityCenter(index));
+        const MyQRectF & activeRectangle = kovtunMethodExecuter->getActiveRectangle(index);
+        const QPointF * const parentsGravityCenter = activeRectangle.getParentsGravityCenter();
+        if (parentsGravityCenter!= nullptr)
+        {
+            painter->drawPoint(*parentsGravityCenter);
+        }
     }
 }
 

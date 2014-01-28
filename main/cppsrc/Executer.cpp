@@ -5,17 +5,17 @@
 #include <QDebug>
 #endif
 
-//#define KOVTUN_FRACTAL_METHOD
+#define KOVTUN_FRACTAL_METHOD
 
 namespace KovtunMethod
 {
 
 Executer::Executer(const ClosedContour & contour) :
+    executionStarted(false),
     contour(contour),
     activeRectangles(),
     filledRectangles(),
     aboutToGetFilledRectangles(),
-    gravityCenters(),
     unitDimension(defaultUnitDimension),
     colorDictionary(),
     errors(),
@@ -25,8 +25,9 @@ Executer::Executer(const ClosedContour & contour) :
 
 void Executer::performNextStep()
 {
-    if (activeRectangles.size() == 0)
+    if (!executionStarted)
     {
+        executionStarted = true;
         calculateFirstActiveRectangle();
         firstRectangleArea = activeRectangles[0]->getArea();
     }
@@ -61,8 +62,6 @@ void Executer::calculateNewActiveRectangles()
         const QPair<QPointF, double> gravityCenterWithError = RectangleToolKit::calculateGravityCenter(contour, *activeRectangle, unitDimension);
         const QPointF & gravityCenter = gravityCenterWithError.first;
         const double error = gravityCenterWithError.second;
-
-        gravityCenters << gravityCenter;
 
         errors << (error * (activeRectangle->getArea() / firstRectangleArea)) / (activeRectangles.size() + filledRectangles.size());
 
@@ -253,10 +252,10 @@ void Executer::shareNeighbors(QSharedPointer<MyQRectF> & source, QSharedPointer<
 
 void Executer::reset()
 {
+    executionStarted = false;
     activeRectangles.clear();
     filledRectangles.clear();
     aboutToGetFilledRectangles.clear();
-    gravityCenters.clear();
     errors.clear();
 
     for (auto & listener : listeners)
