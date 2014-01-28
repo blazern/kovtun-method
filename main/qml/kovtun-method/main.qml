@@ -85,6 +85,17 @@ ApplicationWindow {
                 }
             }
 
+            CheckBox {
+                id: gravityCentersVisibilityCheckBox
+                anchors.left: filledRectanglesLinesVisibilityCheckBox.right
+                anchors.leftMargin: 10
+                text: "Видимые грав. центры"
+                onClicked: {
+                    kovtunMethodPainter.setGravityCentersVisibility(checked);
+                    kovtunMethodPainter.update();
+                }
+            }
+
             Text {
                 id: stepIndexText
                 text: "номер шага:"

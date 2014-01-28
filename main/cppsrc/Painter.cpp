@@ -10,7 +10,8 @@ Painter::Painter(QQuickItem * parent) :
     kovtunMethodExecuter(nullptr),
     offsetFromItemEdges(20),
     pen(),
-    filledRectanglesLinesAreVisible(false)
+    filledRectanglesLinesAreVisible(false),
+    gravityCentersAreVisible(false)
 {
     pen.setJoinStyle(Qt::MiterJoin);
 }
@@ -24,8 +25,11 @@ void Painter::paint(QPainter * const painter)
     if (kovtunMethodExecuter != nullptr)
     {
         drawActiveRectangles(painter, scale);
-        drawGravityCenters(painter, scale);
         drawFilledRectangles(painter, scale);
+        if (gravityCentersAreVisible)
+        {
+            drawGravityCenters(painter, scale);
+        }
         drawContour(painter, scale);
     }
 }
@@ -61,17 +65,24 @@ void Painter::drawActiveRectangles(QPainter * const painter, const double scale)
 
 void Painter::drawGravityCenters(QPainter * const painter, const double scale)
 {
-    pen.setColor("black");
-    pen.setWidthF(2 / scale);
-    painter->setPen(pen);
-
+    pen.setWidthF(5 / scale);
     for (int index = 0; index < kovtunMethodExecuter->getActiveRectanglesCount(); index++)
     {
         const MyQRectF & activeRectangle = kovtunMethodExecuter->getActiveRectangle(index);
         const QPointF * const parentsGravityCenter = activeRectangle.getParentsGravityCenter();
         if (parentsGravityCenter!= nullptr)
         {
+            pen.setColor("black");
+            painter->setPen(pen);
             painter->drawPoint(*parentsGravityCenter);
+        }
+
+        const QPointF * const grandParentGravityCenter = activeRectangle.getGrandParentsGravityCenter();
+        if (grandParentGravityCenter!= nullptr)
+        {
+            pen.setColor("red");
+            painter->setPen(pen);
+            painter->drawPoint(*grandParentGravityCenter);
         }
     }
 }
@@ -109,6 +120,11 @@ void Painter::setKovtunMethodExecuter(const Executer & kovtunMethodExecuter)
 void Painter::setFilledRectanglesLinesVisibility(const bool visible)
 {
     filledRectanglesLinesAreVisible = visible;
+}
+
+void Painter::setGravityCentersVisibility(const bool visible)
+{
+    gravityCentersAreVisible = visible;
 }
 
 double Painter::calculateScale() const

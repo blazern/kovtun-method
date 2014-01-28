@@ -38,7 +38,7 @@ public:
 
     double getCurrentError() const;
 
-    inline void addListener(ExecuterListener & listener)                { listeners.insert(&listener); }
+    inline void addListener(ExecuterListener & listener) { listeners.insert(&listener); }
     void removeListener(ExecuterListener & listener);
 
     static const int defaultUnitDimension = 20;

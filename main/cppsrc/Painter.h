@@ -20,12 +20,14 @@ public:
     void setKovtunMethodExecuter(const Executer & kovtunMethodExecuter);
 
     Q_INVOKABLE void setFilledRectanglesLinesVisibility(const bool visible);
+    Q_INVOKABLE void setGravityCentersVisibility(const bool visible);
 
 private:
     const Executer * kovtunMethodExecuter;
     const int offsetFromItemEdges;   // Отступ от краёв области рисования
     QPen pen;
     bool filledRectanglesLinesAreVisible;
+    bool gravityCentersAreVisible;
 
     double calculateScale() const;
     void drawContour(QPainter * const painter, const double scale);

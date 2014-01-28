@@ -5,7 +5,7 @@
 #include <QDebug>
 #endif
 
-#define KOVTUN_FRACTAL_METHOD
+//#define KOVTUN_FRACTAL_METHOD
 
 namespace KovtunMethod
 {
