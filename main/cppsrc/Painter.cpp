@@ -53,6 +53,34 @@ void Painter::drawContour(QPainter * const painter, const double scale)
 
 void Painter::drawActiveRectangles(QPainter * const painter, const double scale)
 {
+//    pen.setColor("gray");
+//    pen.setWidthF(1 / scale);
+//    painter->setPen(pen);
+
+//    const auto unitsDimension = kovtunMethodExecuter->getUnitsDimension();
+
+//    for (int index = 0; index < kovtunMethodExecuter->getActiveRectanglesCount(); index++)
+//    {
+//        pen.setColor("gray");
+//        painter->setPen(pen);
+//        auto width = kovtunMethodExecuter->getActiveRectangle(index).width() / unitsDimension;
+//        auto height = kovtunMethodExecuter->getActiveRectangle(index).height() / unitsDimension;
+
+//        for (auto horIndex = 0; horIndex < unitsDimension; horIndex++)
+//        {
+//            for (auto verIndex = 0; verIndex < unitsDimension; verIndex++)
+//            {
+//                const auto & active = kovtunMethodExecuter->getActiveRectangle(index);
+//                QRectF atata(active.left() + width * horIndex, active.top() + height * verIndex, width, height);
+//                painter->drawRect(atata);
+//            }
+//        }
+
+//        pen.setColor("red");
+//        painter->setPen(pen);
+//        painter->drawRect(kovtunMethodExecuter->getActiveRectangle(index));
+//    }
+
     pen.setColor("gray");
     pen.setWidthF(1 / scale);
     painter->setPen(pen);

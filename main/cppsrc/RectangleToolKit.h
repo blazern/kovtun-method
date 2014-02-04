@@ -25,12 +25,9 @@ public:
 
     static bool doesLineIntersectRectangle(const QLineF & line, const QRectF & rectangle);
 
-    static bool doLinesIntersectWithoutLyingOnEachOther(const QLineF & firstLine, const QLineF & secondLine);
+    static bool isLineADiagonalOfRectangle(const QLineF & line, const QRectF & rectangle);
 
-    // Возвращаемое значение для случая, когда контур не лежит в прямоугольнике (либо лежит на его границе), не определено
-    // Используйте isAnyPointOfAnyLineOfContourInsideOfRectangle() для проверки.
-    // Возвращает центр тяжести и погрешность вычислений.
-    static QPair<QPointF, double> calculateGravityCenter(const ClosedContour & contour, const QRectF & rectangle, const int maximumUnits = 20);
+    static bool doLinesIntersectWithoutLyingOnEachOther(const QLineF & firstLine, const QLineF & secondLine);
 
     // Имеется в виду только касание, т.е. вызов функции для пересекающихся прямо угольников вернёт false
     static bool doRectanglesTouchEachOther(const QRectF & firstRectangle, const QRectF & secondRectangle);

@@ -51,8 +51,8 @@ private:
     Neighborhood neighbors;
     QColor color;
     bool colorInitialized;
-    const QPointF * parentsGravityCenter;
-    const QPointF * grandParentsGravityCenter;
+    const QPointF * const parentsGravityCenter;
+    const QPointF * const grandParentsGravityCenter;
 
     QPointF * copy(const QPointF * point) const;
 };

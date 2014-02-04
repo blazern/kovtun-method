@@ -10,14 +10,14 @@ QT       += testlib
 
 QT       -= gui
 
-TARGET = tst_TestRectangleToolKit_calculateGravityCenterTest
+TARGET = tst_TestUnitsToolKit_calculateGravityCenterTest
 CONFIG   += console
 CONFIG   -= app_bundle
 
 TEMPLATE = app
 
 
-SOURCES += tst_TestRectangleToolKit_calculateGravityCenterTest.cpp
+SOURCES += tst_TestUnitsToolKit_calculateGravityCenterTest.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 DESTDIR = $$OUT_PWD/../../main

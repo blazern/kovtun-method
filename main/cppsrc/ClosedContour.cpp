@@ -118,8 +118,14 @@ bool ClosedContour::containsInside(const QPointF & point) const
 
         if (intersectType == QLineF::BoundedIntersection)
         {
-            const bool pointIsOnBound = intersectionPoint == point;
-            if (!pointIsOnBound)
+            const bool pointIsOnContoursBound = intersectionPoint == point;
+            const bool oneOfLinesPointIsSame =
+                    currentLine.p1() == lineToEast.p1()
+                    || currentLine.p2() == lineToEast.p1()
+                    || currentLine.p1() == lineToEast.p2()
+                    || currentLine.p2() == lineToEast.p2();
+
+            if (!pointIsOnContoursBound && !oneOfLinesPointIsSame)
             {
                 intersectionsCount++;
             }

@@ -10,7 +10,9 @@ SOURCES += \
     $$PWD/main/cppsrc/RectangleToolKit.cpp \
     $$PWD/main/cppsrc/MyQRectF.cpp \
     $$PWD/main/cppsrc/ColorsDictionary.cpp \
-    $$PWD/main/cppsrc/ExecuterFileLogger.cpp
+    $$PWD/main/cppsrc/ExecuterFileLogger.cpp \
+    $$PWD/main/cppsrc/UnitsToolKit.cpp \
+    $$PWD/main/cppsrc/Unit.cpp
 
 HEADERS += \
     $$PWD/main/cppsrc/Executer.h \
@@ -21,4 +23,7 @@ HEADERS += \
     $$PWD/main/cppsrc/MyQRectF.h \
     $$PWD/main/cppsrc/ColorsDictionary.h \
     $$PWD/main/cppsrc/ExecuterListener.h \
-    $$PWD/main/cppsrc/ExecuterFileLogger.h
+    $$PWD/main/cppsrc/ExecuterFileLogger.h \
+    $$PWD/main/cppsrc/NotSingleShape.h \
+    $$PWD/main/cppsrc/UnitsToolKit.h \
+    $$PWD/main/cppsrc/Unit.h

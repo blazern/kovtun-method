@@ -3,16 +3,16 @@
 #include <QCoreApplication>
 
 #include "../../main/cppsrc/ClosedContour.h"
-#include "../../main/cppsrc/RectangleToolKit.h"
+#include "../../main/cppsrc/UnitsToolKit.h"
 
 using namespace KovtunMethod;
 
-class TestRectangleToolKit_calculateGravityCenterTest : public QObject
+class TestUnitsToolKit_calculateGravityCenterTest : public QObject
 {
     Q_OBJECT
 
 public:
-    TestRectangleToolKit_calculateGravityCenterTest();
+    TestUnitsToolKit_calculateGravityCenterTest();
 
 private Q_SLOTS:
     void gravityCenterIsInCenterOfRectangleEqualToContour();
@@ -24,7 +24,7 @@ private:
     ClosedContour contour;
 };
 
-TestRectangleToolKit_calculateGravityCenterTest::TestRectangleToolKit_calculateGravityCenterTest() :
+TestUnitsToolKit_calculateGravityCenterTest::TestUnitsToolKit_calculateGravityCenterTest() :
     contour()
 {
     contour.addPoint(0, 0);
@@ -33,7 +33,7 @@ TestRectangleToolKit_calculateGravityCenterTest::TestRectangleToolKit_calculateG
     contour.addPoint(0, 10);
 }
 
-void TestRectangleToolKit_calculateGravityCenterTest::gravityCenterIsInCenterOfRectangleEqualToContour()
+void TestUnitsToolKit_calculateGravityCenterTest::gravityCenterIsInCenterOfRectangleEqualToContour()
 {
     const QRectF rectangle(0, 0, 10, 10);
 
@@ -41,9 +41,7 @@ void TestRectangleToolKit_calculateGravityCenterTest::gravityCenterIsInCenterOfR
 
     const double maxDiff = 0.0001;
 
-    const QPointF gravityCenter = RectangleToolKit::calculateGravityCenter(contour, rectangle, 200).first;
-
-//    qDebug() << gravityCenter;
+    const QPointF gravityCenter = UnitsToolKit::calculateGravityCenter(contour, rectangle, 20).first;
 
     const bool valueIsGood = abs(expectedGravityCenter.x() - gravityCenter.x()) < maxDiff
                             && abs(expectedGravityCenter.y() - gravityCenter.y()) < maxDiff;
@@ -51,7 +49,7 @@ void TestRectangleToolKit_calculateGravityCenterTest::gravityCenterIsInCenterOfR
     QVERIFY2(valueIsGood, "Почему-то центр гравитации квадрата не находится в его центре!");
 }
 
-void TestRectangleToolKit_calculateGravityCenterTest::gravityCenterIsInCenterOfRectangleLittleBiggerThanContour()
+void TestUnitsToolKit_calculateGravityCenterTest::gravityCenterIsInCenterOfRectangleLittleBiggerThanContour()
 {
     const QRectF rectangle(-1, -1, 12, 12);
 
@@ -59,9 +57,7 @@ void TestRectangleToolKit_calculateGravityCenterTest::gravityCenterIsInCenterOfR
 
     const double maxDiff = 0.0001;
 
-    const QPointF gravityCenter = RectangleToolKit::calculateGravityCenter(contour, rectangle, 200).first;
-
-//    qDebug() << gravityCenter;
+    const QPointF gravityCenter = UnitsToolKit::calculateGravityCenter(contour, rectangle, 20).first;
 
     const bool valueIsGood = abs(expectedGravityCenter.x() - gravityCenter.x()) < maxDiff
                             && abs(expectedGravityCenter.y() - gravityCenter.y()) < maxDiff;
@@ -69,7 +65,7 @@ void TestRectangleToolKit_calculateGravityCenterTest::gravityCenterIsInCenterOfR
     QVERIFY2(valueIsGood, "Почему-то центр гравитации квадрата не находится в его центре!");
 }
 
-void TestRectangleToolKit_calculateGravityCenterTest::rectangleTakesHalfOfContour()
+void TestUnitsToolKit_calculateGravityCenterTest::rectangleTakesHalfOfContour()
 {
     const QRectF rectangle(-5, 0, 10, 10);
 
@@ -77,9 +73,7 @@ void TestRectangleToolKit_calculateGravityCenterTest::rectangleTakesHalfOfContou
 
     const double maxDiff = 0.0001;
 
-    const QPointF gravityCenter = RectangleToolKit::calculateGravityCenter(contour, rectangle, 200).first;
-
-//    qDebug() << gravityCenter;
+    const QPointF gravityCenter = UnitsToolKit::calculateGravityCenter(contour, rectangle, 20).first;
 
     const bool valueIsGood = abs(expectedGravityCenter.x() - gravityCenter.x()) < maxDiff
                             && abs(expectedGravityCenter.y() - gravityCenter.y()) < maxDiff;
@@ -87,7 +81,7 @@ void TestRectangleToolKit_calculateGravityCenterTest::rectangleTakesHalfOfContou
     QVERIFY2(valueIsGood, "Почему-то центр гравитации квадрата не находится в его центре!");
 }
 
-void TestRectangleToolKit_calculateGravityCenterTest::rectangleTakesFourthOfContour()
+void TestUnitsToolKit_calculateGravityCenterTest::rectangleTakesFourthOfContour()
 {
     const QRectF rectangle(-5, -5, 10, 10);
 
@@ -95,9 +89,7 @@ void TestRectangleToolKit_calculateGravityCenterTest::rectangleTakesFourthOfCont
 
     const double maxDiff = 0.0001;
 
-    const QPointF gravityCenter = RectangleToolKit::calculateGravityCenter(contour, rectangle, 200).first;
-
-//    qDebug() << gravityCenter;
+    const QPointF gravityCenter = UnitsToolKit::calculateGravityCenter(contour, rectangle, 20).first;
 
     const bool valueIsGood = abs(expectedGravityCenter.x() - gravityCenter.x()) < maxDiff
                             && abs(expectedGravityCenter.y() - gravityCenter.y()) < maxDiff;
@@ -105,6 +97,6 @@ void TestRectangleToolKit_calculateGravityCenterTest::rectangleTakesFourthOfCont
     QVERIFY2(valueIsGood, "Почему-то центр гравитации квадрата не находится в его центре!");
 }
 
-QTEST_MAIN(TestRectangleToolKit_calculateGravityCenterTest)
+QTEST_MAIN(TestUnitsToolKit_calculateGravityCenterTest)
 
-#include "tst_TestRectangleToolKit_calculateGravityCenterTest.moc"
+#include "tst_TestUnitsToolKit_calculateGravityCenterTest.moc"

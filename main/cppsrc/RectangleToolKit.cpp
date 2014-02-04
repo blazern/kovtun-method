@@ -1,13 +1,18 @@
 #include "RectangleToolKit.h"
+
 #include <QDebug>
+#include <QPoint>
+#include "NotSingleShape.h"
 
 namespace KovtunMethod
 {
 
 bool RectangleToolKit::isAnyPointOfRectangleInsideOfContour(const ClosedContour & contour, const QRectF & rectangle)
 {
-    if (contour.containsInside(rectangle.topLeft()) || contour.containsInside(rectangle.topRight())
-        || contour.containsInside(rectangle.bottomLeft()) || contour.containsInside(rectangle.bottomRight()))
+    if (contour.containsInside(rectangle.topLeft())
+        || contour.containsInside(rectangle.topRight())
+        || contour.containsInside(rectangle.bottomLeft())
+        || contour.containsInside(rectangle.bottomRight()))
     {
         return true;
     }
@@ -84,6 +89,14 @@ bool RectangleToolKit::doesLineIntersectRectangle(const QLineF & line, const QRe
     }
 }
 
+bool RectangleToolKit::isLineADiagonalOfRectangle(const QLineF & line, const QRectF & rectangle)
+{
+    return ((line.p1() == rectangle.topLeft() && line.p2() == rectangle.bottomRight())
+            || (line.p1() == rectangle.bottomRight() && line.p2() == rectangle.topLeft())
+            || (line.p1() == rectangle.topRight() && line.p2() == rectangle.bottomLeft())
+            || (line.p1() == rectangle.bottomLeft() && line.p2() == rectangle.topRight()));
+}
+
 bool RectangleToolKit::rectangleContainsInside(const QRectF & rectangle, const QPointF & point)
 {
     if (rectangle.contains(point))
@@ -119,63 +132,6 @@ bool RectangleToolKit::doLinesIntersectWithoutLyingOnEachOther(const QLineF & fi
     }
 
     return false;
-}
-
-QPair<QPointF, double> RectangleToolKit::calculateGravityCenter(const ClosedContour & contour, const QRectF & rectangle, const int maximumUnits)
-{
-    qreal rectWidth = rectangle.width();
-    qreal rectHeight = rectangle.height();
-
-    qreal unitWidth = rectWidth / maximumUnits;
-    qreal unitHeight = rectHeight / maximumUnits;
-
-    QRectF unit;
-
-    QVector<QPointF> insideUnits;
-
-    int errorUnitsCount = 0;
-    int goodUnitsCount = 0;
-
-    for (int horIndex = 0; horIndex < maximumUnits; horIndex++)
-    {
-        const qreal newX = rectangle.left() + horIndex * unitWidth;
-        unit.setX(newX);
-
-        for (int vertIndex = 0; vertIndex < maximumUnits; vertIndex++)
-        {
-            const qreal newY = rectangle.top() + vertIndex * unitHeight;
-            unit.setY(newY);
-            unit.setWidth(unitWidth);
-            unit.setHeight(unitHeight);
-
-            if (isAnyPointOfRectangleInsideOfContour(contour, unit))
-            {
-                insideUnits.push_back(unit.center());
-                if (isAnyPointOfAnyLineOfContourInsideOfRectangle(contour, unit))
-                {
-                    errorUnitsCount++;
-                }
-                else
-                {
-                    goodUnitsCount++;
-                }
-            }
-        }
-    }
-
-    qreal averageX = 0;
-    qreal averageY = 0;
-    const int pointsCount = insideUnits.size();
-    for (const auto & point : insideUnits)
-    {
-        averageX += point.x() / pointsCount;
-        averageY += point.y() / pointsCount;
-    }
-
-    const QPointF gravityCenter(averageX, averageY);
-    const double error = goodUnitsCount > 0 ? (double ((double)errorUnitsCount / (double)goodUnitsCount)) : errorUnitsCount;
-
-    return QPair<QPointF, double>(gravityCenter, error);
 }
 
 bool RectangleToolKit::doRectanglesTouchEachOther(const QRectF & firstRectangle, const QRectF & secondRectangle)
