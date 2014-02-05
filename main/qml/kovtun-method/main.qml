@@ -68,6 +68,10 @@ ApplicationWindow {
                 anchors.leftMargin: 10
                 onAccepted: {
                     kovtunMethodExecuter.setUnitsDimension(text);
+
+                    if (unitsVisibilityCheckBox.checked) {
+                        kovtunMethodPainter.update();
+                    }
                 }
                 Component.onCompleted: {
                     text = kovtunMethodExecuter.getUnitsDimension();
@@ -92,6 +96,17 @@ ApplicationWindow {
                 text: "Видимые грав. центры"
                 onClicked: {
                     kovtunMethodPainter.setGravityCentersVisibility(checked);
+                    kovtunMethodPainter.update();
+                }
+            }
+
+            CheckBox {
+                id: unitsVisibilityCheckBox
+                anchors.left: gravityCentersVisibilityCheckBox.right
+                anchors.leftMargin: 10
+                text: "Показать юниты"
+                onClicked: {
+                    kovtunMethodPainter.setUnitsVisibility(checked);
                     kovtunMethodPainter.update();
                 }
             }

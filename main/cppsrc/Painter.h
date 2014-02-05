@@ -21,6 +21,7 @@ public:
 
     Q_INVOKABLE void setFilledRectanglesLinesVisibility(const bool visible);
     Q_INVOKABLE void setGravityCentersVisibility(const bool visible);
+    Q_INVOKABLE void setUnitsVisibility(const bool visible);
 
 private:
     const Executer * kovtunMethodExecuter;
@@ -28,6 +29,7 @@ private:
     QPen pen;
     bool filledRectanglesLinesAreVisible;
     bool gravityCentersAreVisible;
+    bool unitsAreVisible;
 
     double calculateScale() const;
     void drawContour(QPainter * const painter, const double scale);
