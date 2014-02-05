@@ -15,7 +15,7 @@ namespace KovtunMethod
 Executer::Executer(const ClosedContour & contour) :
     executionStarted(false),
     contour(contour),
-    activeRectangles(),
+    currentActiveRectangles(),
     filledRectangles(),
     aboutToGetFilledRectangles(),
     unitDimension(defaultUnitDimension),
@@ -27,11 +27,16 @@ Executer::Executer(const ClosedContour & contour) :
 
 void Executer::performNextStep()
 {
+    for (auto & listener : listeners)
+    {
+        listener->onStepStarted();
+    }
+
     if (!executionStarted)
     {
         executionStarted = true;
         calculateFirstActiveRectangle();
-        firstRectangleArea = activeRectangles[0]->getArea();
+        firstRectangleArea = currentActiveRectangles[0]->getArea();
     }
     else
     {
@@ -57,9 +62,9 @@ void Executer::calculateNewActiveRectangles()
 {
     QVector<QSharedPointer<MyQRectF> > newActiveRectangles;
     
-    for (int index = 0; index < activeRectangles.size(); index++)
+    for (int index = 0; index < currentActiveRectangles.size(); index++)
     {
-        QSharedPointer<MyQRectF> & activeRectangle = activeRectangles[index];
+        QSharedPointer<MyQRectF> & activeRectangle = currentActiveRectangles[index];
 
         QPair<QPointF, double> gravityCenterWithError;
 
@@ -75,7 +80,12 @@ void Executer::calculateNewActiveRectangles()
 
             for (const auto & dividedRectangle : dividedRectangles)
             {
-                activeRectangles.insert(index + 1, dividedRectangle);
+                currentActiveRectangles.insert(index + 1, dividedRectangle);
+            }
+
+            for (auto & listener : listeners)
+            {
+                listener->onActiveRectangleProcessed();
             }
 
             continue;
@@ -84,7 +94,7 @@ void Executer::calculateNewActiveRectangles()
         const QPointF & gravityCenter = gravityCenterWithError.first;
         const double error = gravityCenterWithError.second;
         
-        errors << (error * (activeRectangle->getArea() / firstRectangleArea)) / (activeRectangles.size() + filledRectangles.size());
+        errors << (error * (activeRectangle->getArea() / firstRectangleArea)) / (currentActiveRectangles.size() + filledRectangles.size());
         
         for (auto & listener : listeners)
         {
@@ -106,10 +116,15 @@ void Executer::calculateNewActiveRectangles()
         moveAndFillRectanglesWhichShouldBeFilled(potentialActiveRectangles, aboutToGetFilledRectangles);
         
         newActiveRectangles << potentialActiveRectangles;
+
+        for (auto & listener : listeners)
+        {
+            listener->onActiveRectangleProcessed();
+        }
     }
     
-    activeRectangles.clear();
-    activeRectangles << newActiveRectangles;
+    currentActiveRectangles.clear();
+    currentActiveRectangles << newActiveRectangles;
 }
 
 QSharedPointer<MyQRectF> Executer::createTopLeftRectangleFrom(const MyQRectF & parent, const QPointF & parentGravityCenter) const
@@ -274,7 +289,7 @@ void Executer::shareNeighbors(QSharedPointer<MyQRectF> & source, QSharedPointer<
 void Executer::reset()
 {
     executionStarted = false;
-    activeRectangles.clear();
+    currentActiveRectangles.clear();
     filledRectangles.clear();
     aboutToGetFilledRectangles.clear();
     errors.clear();
@@ -287,20 +302,25 @@ void Executer::reset()
 
 const MyQRectF & Executer::getActiveRectangle(const int index) const
 {
-    if (index < activeRectangles.size())
+    if (index < currentActiveRectangles.size())
     {
-        return *activeRectangles[index];
+        return *currentActiveRectangles[index];
     }
     else
     {
-        const int realIndex = index - activeRectangles.size();
+        const int realIndex = index - currentActiveRectangles.size();
         return *aboutToGetFilledRectangles[realIndex];
     }
 }
 
 int Executer::getActiveRectanglesCount() const
 {
-    return activeRectangles.size() + aboutToGetFilledRectangles.size();
+    return currentActiveRectangles.size() + aboutToGetFilledRectangles.size();
+}
+
+int Executer::getCurrentActiveRectanglesCount() const
+{
+    return currentActiveRectangles.size();
 }
 
 double Executer::getCurrentError() const
@@ -331,7 +351,7 @@ void Executer::calculateFirstActiveRectangle()
 {
     if (contour.getPointsCount() > 0)
     {
-        activeRectangles.push_back(
+        currentActiveRectangles.push_back(
                     QSharedPointer<MyQRectF>(
                         new MyQRectF(QPointF(contour.getWest(), contour.getNorth()),
                                      QPointF(contour.getEast(), contour.getSouth()),

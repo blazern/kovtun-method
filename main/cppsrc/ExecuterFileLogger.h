@@ -11,6 +11,11 @@ class ExecuterFileLogger : public ExecuterListener
 public:
     explicit ExecuterFileLogger();
 
+protected:
+    virtual void onActiveRectangleProcessed() final override {}
+
+    virtual void onStepStarted() final override {}
+
     virtual void onGravityCenterCalculated(const QPointF & gravityCenter, const double error, const MyQRectF & rectangle) final override;
 
     virtual void onColorGathered(const QColor & color, const MyQRectF & rectangle) final override;

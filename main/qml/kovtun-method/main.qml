@@ -178,7 +178,7 @@ ApplicationWindow {
             anchors.topMargin: 10
             anchors.left: parent.left
             anchors.right: parent.right
-            anchors.bottom: parent.bottom
+            anchors.bottom: progressBar.top
 
             KovtunMethodPainter {
                 id: kovtunMethodPainter
@@ -198,6 +198,15 @@ ApplicationWindow {
                 anchors.centerIn: kovtunMethodPainter
                 visible: false
             }
+        }
+
+        ProgressBar {
+            id: progressBar
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+
+            value: executerProgressWatcher.progress
         }
     }
 

@@ -3,6 +3,7 @@
 #include "cppsrc/Executer.h"
 #include "cppsrc/ExecuterQmlInterface.h"
 #include "cppsrc/ExecuterFileLogger.h"
+#include "cppsrc/ExecuterProgressWatcher.h"
 #include <QtQml>
 #include <QTime>
 
@@ -45,7 +46,11 @@ int main(int argc, char *argv[])
     ExecuterFileLogger fileLogger;
     kovtunMethodExecuter.addListener(fileLogger);
 
+    ExecuterProgressWatcher progressWatcher(kovtunMethodExecuter);
+    kovtunMethodExecuter.addListener(progressWatcher);
+
     QtQuick2ControlsApplicationViewer viewer;
+    viewer.setContextProperty("executerProgressWatcher", &progressWatcher);
     viewer.setMainQmlFile(QStringLiteral("qml/kovtun-method/main.qml"));
     viewer.show();
 

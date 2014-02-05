@@ -32,6 +32,7 @@ public:
 
     const MyQRectF & getActiveRectangle(const int index) const;
     int getActiveRectanglesCount() const;
+    int getCurrentActiveRectanglesCount() const;
 
     inline const MyQRectF & getFilledRectangle(const int index) const { return *filledRectangles[index]; }
     inline int getFilledRectanglesCount() const { return filledRectangles.size(); }
@@ -46,7 +47,7 @@ public:
 private:
     bool executionStarted;
     const ClosedContour contour;
-    QVector<QSharedPointer<MyQRectF> > activeRectangles;
+    QVector<QSharedPointer<MyQRectF> > currentActiveRectangles;
     QVector<QSharedPointer<MyQRectF> > filledRectangles;
     QVector<QSharedPointer<MyQRectF> > aboutToGetFilledRectangles;
     int unitDimension;

@@ -12,7 +12,8 @@ SOURCES += \
     $$PWD/main/cppsrc/ColorsDictionary.cpp \
     $$PWD/main/cppsrc/ExecuterFileLogger.cpp \
     $$PWD/main/cppsrc/UnitsToolKit.cpp \
-    $$PWD/main/cppsrc/Unit.cpp
+    $$PWD/main/cppsrc/Unit.cpp \
+    $$PWD/main/cppsrc/ExecuterProgressWatcher.cpp
 
 HEADERS += \
     $$PWD/main/cppsrc/Executer.h \
@@ -26,4 +27,5 @@ HEADERS += \
     $$PWD/main/cppsrc/ExecuterFileLogger.h \
     $$PWD/main/cppsrc/NotSingleShape.h \
     $$PWD/main/cppsrc/UnitsToolKit.h \
-    $$PWD/main/cppsrc/Unit.h
+    $$PWD/main/cppsrc/Unit.h \
+    $$PWD/main/cppsrc/ExecuterProgressWatcher.h
