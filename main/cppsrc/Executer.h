@@ -10,6 +10,7 @@
 #include <QRectF>
 #include <QSharedPointer>
 #include <QSet>
+#include <QPair>
 
 namespace KovtunMethod
 {
@@ -70,6 +71,10 @@ private:
     void moveAndFillRectanglesWhichShouldBeFilled(
             QVector<QSharedPointer<MyQRectF> > & potentialRectangles,
             QVector<QSharedPointer<MyQRectF> > & certainRectangles);
+    QPair<bool, QColor> findAndFillKeyRectangle(
+            QVector<QSharedPointer<MyQRectF> > & potentialRectangles,
+            QVector<QSharedPointer<MyQRectF> > & certainRectangles);
+    void fillInternalRectangles(QVector<QSharedPointer<MyQRectF> > & potentialRectangles, QVector<QSharedPointer<MyQRectF> > & filledRectangles, const QColor & color);
 };
 
 }

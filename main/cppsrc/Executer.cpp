@@ -215,64 +215,78 @@ void Executer::moveAndFillRectanglesWhichShouldBeFilled(
         QVector<QSharedPointer<MyQRectF> > & potentialRectangles,
         QVector<QSharedPointer<MyQRectF> > & certainRectangles)
 {
-#ifndef KOVTUN_FRACTAL_METHOD
+
+#ifdef KOVTUN_FRACTAL_METHOD
+    findAndFillKeyRectangle(potentialRectangles, certainRectangles);
+#else
+    const QPair<bool, QColor> fillingResult = findAndFillKeyRectangle(potentialRectangles, certainRectangles);
+
+    const bool keyRectangleFilled = fillingResult.first;
+
+    if (keyRectangleFilled)
+    {
+        fillInternalRectangles(potentialRectangles, certainRectangles, fillingResult.second);
+    }
+#endif
+}
+
+QPair<bool, QColor> Executer::findAndFillKeyRectangle(QVector<QSharedPointer<MyQRectF> > & potentialRectangles, QVector<QSharedPointer<MyQRectF> > & certainRectangles)
+{
     bool keyRectangleFilled = false;
     QColor keyRectangleColor;
-#endif
+
     for (auto iterator = potentialRectangles.begin(); iterator != potentialRectangles.end(); iterator++)
     {
         const QSharedPointer<MyQRectF> & potentialRectangle = *iterator;
-        
+
         const QPointF * gravityCenterOfParent = potentialRectangle->getParentsGravityCenter();
         const QPointF * gravityCenterOfGrandParent = potentialRectangle->getGrandParentsGravityCenter();
-        
+
         if (gravityCenterOfParent == nullptr || gravityCenterOfGrandParent == nullptr)
         {
             break;
         }
-        
+
         if (RectangleToolKit::isRectangleInsideOfContour(contour, *potentialRectangle))
         {
             const QLineF gravityCentersLine(*gravityCenterOfGrandParent, *gravityCenterOfParent);
-            
+
             if (RectangleToolKit::isLineADiagonalOfRectangle(gravityCentersLine, *potentialRectangle))
             {
                 const QColor color = colorDictionary.getColorFor(*potentialRectangle);
                 potentialRectangle->setColor(color);
-                
+
                 certainRectangles << potentialRectangle;
-                
-#ifndef KOVTUN_FRACTAL_METHOD
+
                 keyRectangleFilled = true;
                 keyRectangleColor = color;
-#endif
-                
+
                 potentialRectangles.erase(iterator);
                 break;
             }
         }
     }
-    
-#ifndef KOVTUN_FRACTAL_METHOD
-    if (keyRectangleFilled)
+
+    return QPair<bool, QColor>(keyRectangleFilled, keyRectangleColor);
+}
+
+void Executer::fillInternalRectangles(QVector<QSharedPointer<MyQRectF> > & candidates, QVector<QSharedPointer<MyQRectF> > & filledRectangles, const QColor & color)
+{
+    for (auto iterator = candidates.begin(); iterator != candidates.end();)
     {
-        for (auto iterator = potentialRectangles.begin(); iterator != potentialRectangles.end();)
+        QSharedPointer<MyQRectF> potentialRectangle = *iterator;
+        if (RectangleToolKit::isRectangleInsideOfContour(contour, *potentialRectangle))
         {
-            QSharedPointer<MyQRectF> potentialRectangle = *iterator;
-            if (RectangleToolKit::isRectangleInsideOfContour(contour, *potentialRectangle))
-            {
-                potentialRectangle->setColor(keyRectangleColor);
-                certainRectangles << potentialRectangle;
-                
-                iterator = potentialRectangles.erase(iterator);
-            }
-            else
-            {
-                iterator++;
-            }
+            potentialRectangle->setColor(color);
+            filledRectangles << potentialRectangle;
+
+            iterator = candidates.erase(iterator);
+        }
+        else
+        {
+            iterator++;
         }
     }
-#endif
 }
 
 void Executer::shareNeighbors(QSharedPointer<MyQRectF> & source, QSharedPointer<MyQRectF> & destination) const
