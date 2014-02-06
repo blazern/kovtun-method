@@ -293,7 +293,7 @@ void Executer::shareNeighbors(QSharedPointer<MyQRectF> & source, QSharedPointer<
 {
     for (auto & sourcesNeighbor : source->getNeighborhood())
     {
-        if (RectangleToolKit::doRectanglesTouchEachOther(*sourcesNeighbor, *destination))
+        if (RectangleToolKit::doRectanglesTouchEachOther(*sourcesNeighbor, *destination) || sourcesNeighbor->intersects(*destination))
         {
             sourcesNeighbor->addNeighbor(*destination);
         }
