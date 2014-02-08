@@ -12,7 +12,8 @@ bool RectangleToolKit::isAnyPointOfRectangleInsideOfContour(const ClosedContour 
     if (contour.containsInside(rectangle.topLeft())
         || contour.containsInside(rectangle.topRight())
         || contour.containsInside(rectangle.bottomLeft())
-        || contour.containsInside(rectangle.bottomRight()))
+        || contour.containsInside(rectangle.bottomRight())
+        || contour.containsInside(rectangle.center()))
     {
         return true;
     }
