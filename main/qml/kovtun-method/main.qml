@@ -33,7 +33,6 @@ ApplicationWindow {
                         loadingText.visible = true;
                         kovtunMethodExecuter.setUnitsDimension(unitsDimensionTextField.text);
                         kovtunMethodExecuter.performNextStep();
-                        stepIndexValue.stepIndex++;
                     }
                 }
             }
@@ -46,10 +45,6 @@ ApplicationWindow {
                 action: Action {
                     onTriggered: {
                         kovtunMethodExecuter.reset();
-                        errorValue.text = "0";
-                        activeRectanglesCountValue.text = "0";
-                        filledRectanglesCountValue.text = "0";
-                        stepIndexValue.stepIndex = 0;
                     }
                 }
             }
@@ -144,7 +139,7 @@ ApplicationWindow {
 
             Text {
                 id: activeRectanglesCountText
-                text: "число незаграшенных прямоугольников:"
+                text: "число незакрашенных прямоугольников:"
                 anchors.top: errorText.bottom
             }
 
@@ -214,6 +209,10 @@ ApplicationWindow {
         id: kovtunMethodExecuter
         onExecutionReset: {
             kovtunMethodPainter.update();
+            stepIndexValue.stepIndex = 0;
+            errorValue.text = "0";
+            activeRectanglesCountValue.text = "0";
+            filledRectanglesCountValue.text = "0";
         }
         onStepPerformed: {
             kovtunMethodPainter.update();
@@ -221,6 +220,7 @@ ApplicationWindow {
             errorValue.text = getCurrentError();
             activeRectanglesCountValue.text = getActiveRectanglesCount();
             filledRectanglesCountValue.text = getFilledRectanglesCount();
+            stepIndexValue.stepIndex++;
         }
         objectName: "kovtunMethodExecuter"
     }
