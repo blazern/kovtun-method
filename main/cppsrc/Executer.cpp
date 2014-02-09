@@ -251,7 +251,7 @@ QPair<bool, QColor> Executer::findAndFillKeyRectangle(QVector<QSharedPointer<MyQ
         {
             const QLineF gravityCentersLine(*gravityCenterOfGrandParent, *gravityCenterOfParent);
 
-            if (RectangleToolKit::isLineADiagonalOfRectangle(gravityCentersLine, *potentialRectangle))
+            if (RectangleToolKit::isAnyPointOfLineInsideOfRectangle(gravityCentersLine, *potentialRectangle))
             {
                 const QColor color = colorDictionary.getColorFor(*potentialRectangle);
                 potentialRectangle->setColor(color);

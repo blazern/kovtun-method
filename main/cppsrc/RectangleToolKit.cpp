@@ -66,9 +66,17 @@ bool RectangleToolKit::isRectangleInsideOfContour(const ClosedContour & contour,
     return false;
 }
 
+bool RectangleToolKit::isAnyPointOfLineInsideOfRectangle(const QLineF & line, const QRectF & rectangle)
+{
+    const QPointF linesCenter((line.x1() + line.x2()) / 2, (line.y1() + line.y2()) / 2);
+
+    return
+            rectangle.contains(linesCenter) ||
+            doesLineIntersectRectangle(line, rectangle);
+}
+
 bool RectangleToolKit::doesLineIntersectRectangle(const QLineF & line, const QRectF & rectangle)
 {
-    // Дублирование кода функции isAnyPointOfAnyLineOfContourInsideOfRectangle()
     const QLineF northLine(rectangle.topLeft(), rectangle.topRight());
     const QLineF eastLine(rectangle.topRight(), rectangle.bottomRight());
     const QLineF southLine(rectangle.bottomRight(), rectangle.bottomLeft());

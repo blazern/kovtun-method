@@ -23,6 +23,8 @@ public:
 
     static bool isRectangleInsideOfContour(const ClosedContour & contour, const QRectF & rectangle);
 
+    static bool isAnyPointOfLineInsideOfRectangle(const QLineF & line, const QRectF & rectangle);
+
     static bool doesLineIntersectRectangle(const QLineF & line, const QRectF & rectangle);
 
     static bool isLineADiagonalOfRectangle(const QLineF & line, const QRectF & rectangle);
