@@ -1,5 +1,6 @@
 #include "ExecuterQmlInterface.h"
 #include <QtConcurrent/QtConcurrent>
+#include <QVector>
 
 namespace KovtunMethod
 {
@@ -87,6 +88,31 @@ double ExecuterQmlInterface::getFilledRectanglesCount() const
     if (kovtunMethodExecuter != nullptr)
     {
         return kovtunMethodExecuter->getFilledRectanglesCount();
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+int ExecuterQmlInterface::getUsedColorsCount() const
+{
+    if (kovtunMethodExecuter != nullptr)
+    {
+        QVector<QColor> usedColors;
+
+        for (int index = 0; index < kovtunMethodExecuter->getFilledRectanglesCount(); index++)
+        {
+            const MyQRectF & currentFilledRectangle = kovtunMethodExecuter->getFilledRectangle(index);
+            const QColor & currentColor = currentFilledRectangle.getColor();
+
+            if (!usedColors.contains(currentColor))
+            {
+                usedColors.push_back(currentColor);
+            }
+        }
+
+        return usedColors.size();
     }
     else
     {

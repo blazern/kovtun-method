@@ -24,6 +24,7 @@ public:
     Q_INVOKABLE double getCurrentError() const;
     Q_INVOKABLE double getActiveRectanglesCount() const;
     Q_INVOKABLE double getFilledRectanglesCount() const;
+    Q_INVOKABLE int getUsedColorsCount() const;
 
 signals:
     void stepPerformed();

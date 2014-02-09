@@ -1,6 +1,8 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Dialogs 1.0
+import QtQuick.Window 2.1
+import QtQuick.Layouts 1.0
 import KovtunMethod 1.0
 
 ApplicationWindow {
@@ -8,6 +10,11 @@ ApplicationWindow {
     title: qsTr("Kovtun method")
     width: 640
     height: 480
+
+    ExecutionDataWindow {
+        id: executionDataWindow
+        visible: false
+    }
 
     Item {
         id: content
@@ -22,7 +29,7 @@ ApplicationWindow {
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.right: parent.right
-            height: filledRectanglesCountText.y + filledRectanglesCountText.height
+            height: stepIndexText.y + stepIndexText.height
 
             Button {
                 id: performStepButton
@@ -31,7 +38,8 @@ ApplicationWindow {
                 action: Action {
                     onTriggered: {
                         loadingText.visible = true;
-                        kovtunMethodExecuter.setUnitsDimension(unitsDimensionTextField.text);
+                        executionControls.invalidate();
+                        kovtunMethodExecuter.setUnitsDimension(executionControls.unitsDimension);
                         kovtunMethodExecuter.performNextStep();
                     }
                 }
@@ -49,59 +57,23 @@ ApplicationWindow {
                 }
             }
 
-            Text {
-                id: unitsDimensionText
+            ExecutionAdditionalControls {
+                id: executionControls
                 anchors.left: resetButton.right
-                anchors.leftMargin: 40
-                anchors.verticalCenter: resetButton.verticalCenter
-                text: "Размерность юнитов:"
-            }
+                anchors.leftMargin: 20
 
-            TextField {
-                id: unitsDimensionTextField
-                anchors.left: unitsDimensionText.right
-                anchors.leftMargin: 10
-                onAccepted: {
-                    kovtunMethodExecuter.setUnitsDimension(text);
-
-                    if (unitsVisibilityCheckBox.checked) {
-                        kovtunMethodPainter.update();
-                    }
-                }
-                Component.onCompleted: {
-                    text = kovtunMethodExecuter.getUnitsDimension();
-                }
-            }
-
-            CheckBox {
-                id: filledRectanglesLinesVisibilityCheckBox
-                anchors.left: unitsDimensionTextField.right
-                anchors.leftMargin: 10
-                text: "Видимые линии"
-                onClicked: {
-                    kovtunMethodPainter.setFilledRectanglesLinesVisibility(checked);
+                onFilledRectanglesLinesVisibleChanged: {
+                    kovtunMethodPainter.setFilledRectanglesLinesVisibility(filledRectanglesLinesVisible);
                     kovtunMethodPainter.update();
                 }
-            }
 
-            CheckBox {
-                id: gravityCentersVisibilityCheckBox
-                anchors.left: filledRectanglesLinesVisibilityCheckBox.right
-                anchors.leftMargin: 10
-                text: "Видимые грав. центры"
-                onClicked: {
-                    kovtunMethodPainter.setGravityCentersVisibility(checked);
+                onGravityCentersVisibleChanged: {
+                    kovtunMethodPainter.setGravityCentersVisibility(gravityCentersVisible);
                     kovtunMethodPainter.update();
                 }
-            }
 
-            CheckBox {
-                id: unitsVisibilityCheckBox
-                anchors.left: gravityCentersVisibilityCheckBox.right
-                anchors.leftMargin: 10
-                text: "Показать юниты"
-                onClicked: {
-                    kovtunMethodPainter.setUnitsVisibility(checked);
+                onUnitsVisibleChanged: {
+                    kovtunMethodPainter.setUnitsVisibility(unitsVisible);
                     kovtunMethodPainter.update();
                 }
             }
@@ -122,49 +94,18 @@ ApplicationWindow {
                 property int stepIndex: 0
             }
 
-
-            Text {
-                id: errorText
-                text: "погрешность вычисления центров тяжести:"
-                anchors.top: stepIndexText.bottom
-            }
-
-            Text {
-                id: errorValue
-                text: "0"
-                anchors.left: errorText.right
+            Button {
+                id: showExecutionDataButton
+                anchors.left: stepIndexValue.right
                 anchors.leftMargin: 10
-                anchors.verticalCenter: errorText.verticalCenter
+                anchors.verticalCenter: stepIndexValue.verticalCenter
+                text: "Данные"
+                action: Action {
+                    onTriggered: {
+                        executionDataWindow.visible = !executionDataWindow.visible;
+                    }
+                }
             }
-
-            Text {
-                id: activeRectanglesCountText
-                text: "число незакрашенных прямоугольников:"
-                anchors.top: errorText.bottom
-            }
-
-            Text {
-                id: activeRectanglesCountValue
-                text: "0"
-                anchors.left: activeRectanglesCountText.right
-                anchors.leftMargin: 10
-                anchors.verticalCenter: activeRectanglesCountText.verticalCenter
-            }
-
-            Text {
-                id: filledRectanglesCountText
-                text: "число заграшенных прямоугольников:"
-                anchors.top: activeRectanglesCountText.bottom
-            }
-
-            Text {
-                id: filledRectanglesCountValue
-                text: "0"
-                anchors.left: filledRectanglesCountText.right
-                anchors.leftMargin: 10
-                anchors.verticalCenter: filledRectanglesCountText.verticalCenter
-            }
-
         }
 
         Item {
@@ -210,16 +151,17 @@ ApplicationWindow {
         onExecutionReset: {
             kovtunMethodPainter.update();
             stepIndexValue.stepIndex = 0;
-            errorValue.text = "0";
-            activeRectanglesCountValue.text = "0";
-            filledRectanglesCountValue.text = "0";
+            executionDataWindow.error = 0;
+            executionDataWindow.activeRectanglesCount = 0;
+            executionDataWindow.filledRectanglesCount = 0;
         }
         onStepPerformed: {
             kovtunMethodPainter.update();
             loadingText.visible = false;
-            errorValue.text = getCurrentError();
-            activeRectanglesCountValue.text = getActiveRectanglesCount();
-            filledRectanglesCountValue.text = getFilledRectanglesCount();
+            executionDataWindow.error = getCurrentError();
+            executionDataWindow.activeRectanglesCount = getActiveRectanglesCount();
+            executionDataWindow.filledRectanglesCount = getFilledRectanglesCount();
+            executionDataWindow.usedColorsCount = getUsedColorsCount();
             stepIndexValue.stepIndex++;
         }
         objectName: "kovtunMethodExecuter"
