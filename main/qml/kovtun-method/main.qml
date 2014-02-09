@@ -60,7 +60,7 @@ ApplicationWindow {
             ExecutionAdditionalControls {
                 id: executionControls
                 anchors.left: resetButton.right
-                anchors.leftMargin: 20
+                anchors.leftMargin: 30
 
                 onFilledRectanglesLinesVisibleChanged: {
                     kovtunMethodPainter.setFilledRectanglesLinesVisibility(filledRectanglesLinesVisible);
@@ -155,6 +155,10 @@ ApplicationWindow {
             executionDataWindow.activeRectanglesCount = 0;
             executionDataWindow.filledRectanglesCount = 0;
         }
+        onStepStartedPerforming: {
+            executionControls.onStepStartedPerforming();
+        }
+
         onStepPerformed: {
             kovtunMethodPainter.update();
             loadingText.visible = false;
@@ -163,6 +167,7 @@ ApplicationWindow {
             executionDataWindow.filledRectanglesCount = getFilledRectanglesCount();
             executionDataWindow.usedColorsCount = getUsedColorsCount();
             stepIndexValue.stepIndex++;
+            executionControls.onStepPerformed();
         }
         objectName: "kovtunMethodExecuter"
     }

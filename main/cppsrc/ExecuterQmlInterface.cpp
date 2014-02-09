@@ -24,6 +24,7 @@ void ExecuterQmlInterface::performNextStep()
 {
     if (kovtunMethodExecuter != nullptr && !inProgress)
     {
+        emit stepStartedPerforming();
         inProgress = true;
         futureWatcher.setFuture(QtConcurrent::run(this, &ExecuterQmlInterface::performNextStepNotConcurrently));
     }

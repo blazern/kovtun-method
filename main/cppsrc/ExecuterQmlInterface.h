@@ -27,6 +27,7 @@ public:
     Q_INVOKABLE int getUsedColorsCount() const;
 
 signals:
+    void stepStartedPerforming();
     void stepPerformed();
     void executionReset();
 

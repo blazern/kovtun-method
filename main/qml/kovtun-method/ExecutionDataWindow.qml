@@ -8,7 +8,6 @@ Window {
     title: qsTr("Данные")
     width: content.width
     height: content.height
-    flags: Qt.WindowStaysOnTopHint
 
     property double error: 0
     property int activeRectanglesCount: 0
