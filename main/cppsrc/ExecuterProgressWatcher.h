@@ -13,6 +13,8 @@ class ExecuterProgressWatcher : public QObject, public ExecuterListener
     Q_PROPERTY(double progress READ getProgress NOTIFY progressChanged)
 
 public:
+    ExecuterProgressWatcher(const ExecuterProgressWatcher &) = delete;
+    ExecuterProgressWatcher & operator=(const ExecuterProgressWatcher &) = delete;
     explicit ExecuterProgressWatcher(const Executer & executer, QObject * parent = 0);
 
     Q_INVOKABLE double getProgress() const { return lastProgress; }

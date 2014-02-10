@@ -38,7 +38,7 @@ Window {
             }
 
             ExecutionDataItem {
-                dataDescription: "число незакрашенных прямоугольников:"
+                dataDescription: "число закрашенных прямоугольников:"
                 dataValue: filledRectanglesCount
             }
 

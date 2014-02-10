@@ -78,7 +78,7 @@ void MyQRectF::addNeighbor(MyQRectF & other)
     other.neighbors.insert(this);
 }
 
-const QColor MyQRectF::getColor() const
+const QColor & MyQRectF::getColor() const
 {
     return color;
 }

@@ -1,15 +1,30 @@
 #ifndef KOVTUNMETHODEXECUTERFILELOGGER_H
 #define KOVTUNMETHODEXECUTERFILELOGGER_H
 
+#include <QHash>
+#include <QColor>
 #include "ExecuterListener.h"
+#include "Executer.h"
 
 namespace KovtunMethod
 {
 
 class ExecuterFileLogger : public ExecuterListener
 {
+    struct FilledRectanglesInfo
+    {
+        FilledRectanglesInfo() : rectanglesCount(0), rectanglesArea(0) {}
+        FilledRectanglesInfo(const int rectanglesCount, const double rectanglesArea) :
+            rectanglesCount(rectanglesCount), rectanglesArea(rectanglesArea) {}
+
+        int rectanglesCount;
+        double rectanglesArea;
+    };
+
 public:
-    explicit ExecuterFileLogger();
+    ExecuterFileLogger(const ExecuterFileLogger &) = delete;
+    ExecuterFileLogger & operator=(const ExecuterFileLogger &) = delete;
+    explicit ExecuterFileLogger(const Executer & executer);
 
 protected:
     virtual void onActiveRectangleProcessed() final override {}
@@ -25,8 +40,16 @@ protected:
     virtual void onReset() final override;
 
 private:
+    const Executer & executer;
     int stepIndex;
     QString output;
+    QVector<QColor> filledRectanglesColors;
+    QVector<FilledRectanglesInfo> filledRectanglesInfo;
+
+    const QString toString(const QColor & color) const;
+    void gatherAdditionalColorInformation();
+    void fillAdditionalColorInformationFields();
+    const QString getAdditionalColorsInformationString() const;
 };
 
 }

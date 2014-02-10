@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 
     Executer kovtunMethodExecuter(contour);
 
-    ExecuterFileLogger fileLogger;
+    ExecuterFileLogger fileLogger(kovtunMethodExecuter);
     kovtunMethodExecuter.addListener(fileLogger);
 
     ExecuterProgressWatcher progressWatcher(kovtunMethodExecuter);

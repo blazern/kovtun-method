@@ -37,7 +37,7 @@ public:
 
     inline const QString & getName() const { return name; }
 
-    const QColor getColor() const;
+    const QColor & getColor() const;
     void setColor(const QColor & color);
     bool isColorInitialized() const;
 
