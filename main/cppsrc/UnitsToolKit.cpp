@@ -175,7 +175,7 @@ QVector<QSharedPointer<MyQRectF> > UnitsToolKit::getDescribingRectanglesFrom(con
         describingRectangles.push_back(QSharedPointer<MyQRectF>(new MyQRectF(
                                                       QPointF(west, north),
                                                       QPointF(east, south),
-                                                      rectangle.getName() + "part" + QString::number(describingRectangles.size()),
+                                                      rectangle.getName() + "part" + QString::number(describingRectangles.size() + 1),
                                                       rectangle.getParentsGravityCenter(),
                                                       rectangle.getGrandParentsGravityCenter())));
 

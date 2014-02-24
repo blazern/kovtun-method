@@ -18,7 +18,7 @@ Executer::Executer(const ClosedContour & contour) :
     currentActiveRectangles(),
     filledRectangles(),
     aboutToGetFilledRectangles(),
-    unitDimension(defaultUnitDimension),
+    unitDimension(DEFAULT_UNITS_DIMENSION),
     colorDictionary(),
     errors(),
     firstRectangleArea(-1)

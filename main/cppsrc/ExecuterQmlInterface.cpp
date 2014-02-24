@@ -56,7 +56,7 @@ int ExecuterQmlInterface::getUnitsDimension() const
     }
     else
     {
-        return Executer::defaultUnitDimension;
+        return Executer::DEFAULT_UNITS_DIMENSION;
     }
 }
 

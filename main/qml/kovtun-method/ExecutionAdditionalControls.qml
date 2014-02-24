@@ -65,14 +65,14 @@ Item {
         }
 
         CheckBox {
-            text: "Видимые линии"
+            text: "Показать линии"
             onClicked: {
                 filledRectanglesLinesVisible = checked;
             }
         }
 
         CheckBox {
-            text: "Видимые грав. центры"
+            text: "Показать грав. центры"
             onClicked: {
                 gravityCentersVisible = checked;
             }

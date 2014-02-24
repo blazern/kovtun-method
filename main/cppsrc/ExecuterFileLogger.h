@@ -24,9 +24,10 @@ class ExecuterFileLogger : public ExecuterListener
 public:
     ExecuterFileLogger(const ExecuterFileLogger &) = delete;
     ExecuterFileLogger & operator=(const ExecuterFileLogger &) = delete;
-    explicit ExecuterFileLogger(const Executer & executer);
+    explicit ExecuterFileLogger();
 
-protected:
+    void setKovtunMethodExecuter(const Executer & executer);
+
     virtual void onActiveRectangleProcessed() final override {}
 
     virtual void onStepStarted() final override {}
@@ -40,7 +41,7 @@ protected:
     virtual void onReset() final override;
 
 private:
-    const Executer & executer;
+    const Executer * executer;
     int stepIndex;
     QString output;
     QVector<QColor> filledRectanglesColors;

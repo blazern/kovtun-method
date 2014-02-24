@@ -43,7 +43,7 @@ public:
     inline void addListener(ExecuterListener & listener) { listeners.insert(&listener); }
     void removeListener(ExecuterListener & listener);
 
-    static const int defaultUnitDimension = 50;
+    static const int DEFAULT_UNITS_DIMENSION = 50;
 
 private:
     bool executionStarted;

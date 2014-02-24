@@ -12,9 +12,9 @@
 namespace KovtunMethod
 {
 
-ExecuterFileLogger::ExecuterFileLogger(const Executer & executer) :
+ExecuterFileLogger::ExecuterFileLogger() :
     ExecuterListener(),
-    executer(executer),
+    executer(nullptr),
     stepIndex(1),
     output(),
     filledRectanglesColors(),
@@ -22,71 +22,93 @@ ExecuterFileLogger::ExecuterFileLogger(const Executer & executer) :
 {
 }
 
+void ExecuterFileLogger::setKovtunMethodExecuter(const Executer & executer)
+{
+    this->executer = &executer;
+}
+
 void ExecuterFileLogger::onGravityCenterCalculated(const QPointF & gravityCenter, const double error, const MyQRectF & rectangle)
 {
-    output +=
-            "rect name: "
-            + rectangle.getName()
-            + ";\tgravity center:\t("
-            + QString::number(gravityCenter.x())
-            + ", "
-            + QString::number(gravityCenter.y())
-            + ");\terror: "
-            + QString::number(error)
-            + "\n";
+    if (executer != nullptr)
+    {
+        output +=
+                "rect name: "
+                + rectangle.getName()
+                + ";\tgravity center:\t("
+                + QString::number(gravityCenter.x())
+                + ", "
+                + QString::number(gravityCenter.y())
+                + ");\terror: "
+                + QString::number(error)
+                + "\n";
+    }
+    else
+    {
+        output.clear();
+    }
 }
 
 void ExecuterFileLogger::onColorGathered(const QColor & color, const MyQRectF & rectangle)
 {
-    output +=
-            "rect name: "
-            + rectangle.getName()
-            + ";\tcolor:\t\t"
-            + toString(color)
-            + ";\n";
+    if (executer != nullptr)
+    {
+        output +=
+                "rect name: "
+                + rectangle.getName()
+                + ";\tcolor:\t\t"
+                + toString(color)
+                + ";\n";
+    }
+    else
+    {
+        output.clear();
+    }
 }
 
 const QString ExecuterFileLogger::toString(const QColor & color) const
 {
     return QString("("
-            + QString::number(color.red())
-            + ", "
-            + QString::number(color.green())
-            + ", "
-            + QString::number(color.blue())
-            + ")");
+                   + QString::number(color.red())
+                   + ", "
+                   + QString::number(color.green())
+                   + ", "
+                   + QString::number(color.blue())
+                   + ")");
 }
 
 void ExecuterFileLogger::onStepFinished()
 {
-    gatherAdditionalColorInformation();
-
-    const QString folderName(QDir::currentPath() + QDir::separator() + "Logs");
-    const QDir folder(folderName);
-
-    if (!folder.exists())
+    if (executer != nullptr)
     {
-        folder.mkdir(folderName);
-    }
+        gatherAdditionalColorInformation();
 
-    QString filename(folderName + QDir::separator());
-    filename += "log" + QString::number(stepIndex++) + ".txt";
+        const QString folderName(QDir::currentPath() + QDir::separator() + "Logs");
+        const QDir folder(folderName);
 
-    QFile file(filename);
+        if (!folder.exists())
+        {
+            folder.mkdir(folderName);
+        }
 
-    if (file.open(QIODevice::WriteOnly))
-    {
-        QTextStream stream(&file);
-        stream << QDateTime::currentDateTime().toString() << "\n\n";
-        stream << output.toLatin1();
-        file.close();
-    }
+        QString filename(folderName + QDir::separator());
+        filename += "log" + QString::number(stepIndex++) + ".txt";
+
+        QFile file(filename);
+
+        if (file.open(QIODevice::WriteOnly))
+        {
+            QTextStream stream(&file);
+            stream << QDateTime::currentDateTime().toString() << "\n\n";
+            stream << output.toLatin1();
+            file.close();
+        }
 #ifdef QT_DEBUG
-    else
-    {
-        qDebug() << "По какой-то причине файл лога не был создан!";
-    }
+        else
+        {
+            qDebug() << "По какой-то причине файл лога не был создан!";
+        }
 #endif
+    }
 
     output.clear();
     filledRectanglesColors.clear();
@@ -105,9 +127,9 @@ void ExecuterFileLogger::gatherAdditionalColorInformation()
 
 void ExecuterFileLogger::fillAdditionalColorInformationFields()
 {
-    for (int index = 0; index < executer.getFilledRectanglesCount(); index++)
+    for (int index = 0; index < executer->getFilledRectanglesCount(); index++)
     {
-        const MyQRectF & currentFilledRectangle = executer.getFilledRectangle(index);
+        const MyQRectF & currentFilledRectangle = executer->getFilledRectangle(index);
         const QColor & currentColor = currentFilledRectangle.getColor();
 
         if (filledRectanglesColors.contains(currentColor))

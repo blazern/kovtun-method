@@ -12,8 +12,9 @@ SOURCES += \
     $$PWD/main/cppsrc/ColorsDictionary.cpp \
     $$PWD/main/cppsrc/ExecuterFileLogger.cpp \
     $$PWD/main/cppsrc/UnitsToolKit.cpp \
-    $$PWD/main/cppsrc/Unit.cpp \
-    $$PWD/main/cppsrc/ExecuterProgressWatcher.cpp
+    $$PWD/main/cppsrc/ExecuterProgressWatcher.cpp \
+    $$PWD/main/cppsrc/ClosedContourParser.cpp \
+    $$PWD/main/cppsrc/ClosedContourSetterQmlInterface.cpp
 
 HEADERS += \
     $$PWD/main/cppsrc/Executer.h \
@@ -27,5 +28,6 @@ HEADERS += \
     $$PWD/main/cppsrc/ExecuterFileLogger.h \
     $$PWD/main/cppsrc/NotSingleShape.h \
     $$PWD/main/cppsrc/UnitsToolKit.h \
-    $$PWD/main/cppsrc/Unit.h \
-    $$PWD/main/cppsrc/ExecuterProgressWatcher.h
+    $$PWD/main/cppsrc/ExecuterProgressWatcher.h \
+    $$PWD/main/cppsrc/ClosedContourParser.h \
+    $$PWD/main/cppsrc/ClosedContourSetterQmlInterface.h

@@ -14,6 +14,13 @@ Window {
     property int filledRectanglesCount: 0
     property int usedColorsCount: 0
 
+    function reset() {
+        error = 0;
+        activeRectanglesCount = 0;
+        filledRectanglesCount = 0;
+        usedColorsCount = 0;
+    }
+
     MouseArea {
         anchors.fill: parent
         onClicked: {

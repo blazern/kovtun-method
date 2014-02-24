@@ -57,9 +57,21 @@ ApplicationWindow {
                 }
             }
 
+            Button {
+                id: chooseContour
+                anchors.left: resetButton.right
+                anchors.leftMargin: 10
+                text: "Выбрать контур"
+                action: Action {
+                    onTriggered: {
+                        fileDialog.visible = true;
+                    }
+                }
+            }
+
             ExecutionAdditionalControls {
                 id: executionControls
-                anchors.left: resetButton.right
+                anchors.left: chooseContour.right
                 anchors.leftMargin: 30
 
                 onFilledRectanglesLinesVisibleChanged: {
@@ -148,12 +160,12 @@ ApplicationWindow {
 
     KovtunMethodExecuterQmlInterface {
         id: kovtunMethodExecuter
+        objectName: "kovtunMethodExecuter"
+
         onExecutionReset: {
             kovtunMethodPainter.update();
             stepIndexValue.stepIndex = 0;
-            executionDataWindow.error = 0;
-            executionDataWindow.activeRectanglesCount = 0;
-            executionDataWindow.filledRectanglesCount = 0;
+            executionDataWindow.reset();
         }
         onStepStartedPerforming: {
             executionControls.onStepStartedPerforming();
@@ -169,6 +181,38 @@ ApplicationWindow {
             stepIndexValue.stepIndex++;
             executionControls.onStepPerformed();
         }
-        objectName: "kovtunMethodExecuter"
+    }
+
+    ClosedContourSetterQmlInterface {
+        id: closedContourSetter
+        objectName: "closedContourSetter"
+
+        onClosedContourIsSet: {
+            kovtunMethodPainter.update();
+            stepIndexValue.stepIndex = 0;
+            executionDataWindow.reset();
+        }
+
+        onErrorOccured: {
+            contourSettingErrorWindow.errorText = errorDescription;
+            contourSettingErrorWindow.visible = true;
+        }
+    }
+
+    FileDialog {
+        id: fileDialog
+        title: "JSON-контур"
+        onAccepted: {
+            closedContourSetter.setByFile(fileDialog.fileUrl);
+            visible = false;
+        }
+        onRejected: {
+            visible = false;
+        }
+    }
+
+    ContourSettingErrorWindow {
+        id: contourSettingErrorWindow
+        visible: false
     }
 }

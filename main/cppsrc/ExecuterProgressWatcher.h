@@ -15,14 +15,12 @@ class ExecuterProgressWatcher : public QObject, public ExecuterListener
 public:
     ExecuterProgressWatcher(const ExecuterProgressWatcher &) = delete;
     ExecuterProgressWatcher & operator=(const ExecuterProgressWatcher &) = delete;
-    explicit ExecuterProgressWatcher(const Executer & executer, QObject * parent = 0);
+    explicit ExecuterProgressWatcher(QObject * parent = 0);
+
+    void setKovtunMethodExecuter(const Executer & executer);
 
     Q_INVOKABLE double getProgress() const { return lastProgress; }
 
-signals:
-    void progressChanged();
-
-protected:
     virtual void onStepStarted() final override;
 
     virtual void onActiveRectangleProcessed() final override;
@@ -35,8 +33,11 @@ protected:
 
     virtual void onReset() final override;
 
+signals:
+    void progressChanged();
+
 private:
-    const Executer & executer;
+    const Executer * executer;
     double lastProgress;
     int lastActiveRectangleIndex;
 

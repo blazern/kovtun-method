@@ -2,12 +2,17 @@
 
 namespace KovtunMethod {
 
-ExecuterProgressWatcher::ExecuterProgressWatcher(const Executer & executer, QObject *parent) :
+ExecuterProgressWatcher::ExecuterProgressWatcher(QObject *parent) :
     QObject(parent),
-    executer(executer),
+    executer(nullptr),
     lastProgress(0),
     lastActiveRectangleIndex(0)
 {
+}
+
+void ExecuterProgressWatcher::setKovtunMethodExecuter(const Executer & executer)
+{
+    this->executer = &executer;
 }
 
 void ExecuterProgressWatcher::onStepStarted()
@@ -18,10 +23,13 @@ void ExecuterProgressWatcher::onStepStarted()
 
 void ExecuterProgressWatcher::onActiveRectangleProcessed()
 {
-    lastProgress = (double) lastActiveRectangleIndex / executer.getCurrentActiveRectanglesCount();
-    lastActiveRectangleIndex++;
+    if (executer != nullptr)
+    {
+        lastProgress = (double) lastActiveRectangleIndex / executer->getCurrentActiveRectanglesCount();
+        lastActiveRectangleIndex++;
 
-    emit progressChanged();
+        emit progressChanged();
+    }
 }
 
 void ExecuterProgressWatcher::onStepFinished()
