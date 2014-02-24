@@ -88,6 +88,14 @@ ApplicationWindow {
                     kovtunMethodPainter.setUnitsVisibility(unitsVisible);
                     kovtunMethodPainter.update();
                 }
+
+                onNeighborMethodExecutionChanged: {
+                    if (neighborMethodExecution) {
+                        kovtunMethodExecuter.setNeighborMethodExecution();
+                    } else {
+                        kovtunMethodExecuter.setFractalMethodEXecution();
+                    }
+                }
             }
 
             Text {

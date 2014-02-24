@@ -40,6 +40,11 @@ public:
 
     double getCurrentError() const;
 
+    void setNeighborMethodExecution();
+    void setFractalMethodEXecution();
+
+    bool isNeighborMethodSet() const { return neighborMethodIsSet; }
+
     inline void addListener(ExecuterListener & listener) { listeners.insert(&listener); }
     void removeListener(ExecuterListener & listener);
 
@@ -55,6 +60,7 @@ private:
     ColorsDictionary colorDictionary;
     QVector<double> errors;
     double firstRectangleArea;
+    bool neighborMethodIsSet;
 
     QSet<ExecuterListener *> listeners;
 

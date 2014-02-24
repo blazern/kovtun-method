@@ -26,6 +26,10 @@ public:
     Q_INVOKABLE double getFilledRectanglesCount() const;
     Q_INVOKABLE int getUsedColorsCount() const;
 
+    Q_INVOKABLE void setNeighborMethodExecution();
+    Q_INVOKABLE void setFractalMethodEXecution();
+    Q_INVOKABLE bool isNeighborMethodSet() const;
+
 signals:
     void stepStartedPerforming();
     void stepPerformed();

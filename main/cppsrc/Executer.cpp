@@ -7,8 +7,6 @@
 #include <QDebug>
 #endif
 
-//#define KOVTUN_FRACTAL_METHOD
-
 namespace KovtunMethod
 {
 
@@ -21,7 +19,8 @@ Executer::Executer(const ClosedContour & contour) :
     unitDimension(DEFAULT_UNITS_DIMENSION),
     colorDictionary(),
     errors(),
-    firstRectangleArea(-1)
+    firstRectangleArea(-1),
+    neighborMethodIsSet(false)
 {
 }
 
@@ -215,19 +214,21 @@ void Executer::moveAndFillRectanglesWhichShouldBeFilled(
         QVector<QSharedPointer<MyQRectF> > & potentialRectangles,
         QVector<QSharedPointer<MyQRectF> > & certainRectangles)
 {
-
-#ifdef KOVTUN_FRACTAL_METHOD
-    findAndFillKeyRectangle(potentialRectangles, certainRectangles);
-#else
-    const QPair<bool, QColor> fillingResult = findAndFillKeyRectangle(potentialRectangles, certainRectangles);
-
-    const bool keyRectangleFilled = fillingResult.first;
-
-    if (keyRectangleFilled)
+    if (!neighborMethodIsSet)
     {
-        fillInternalRectangles(potentialRectangles, certainRectangles, fillingResult.second);
+        findAndFillKeyRectangle(potentialRectangles, certainRectangles);
     }
-#endif
+    else
+    {
+        const QPair<bool, QColor> fillingResult = findAndFillKeyRectangle(potentialRectangles, certainRectangles);
+
+        const bool keyRectangleFilled = fillingResult.first;
+
+        if (keyRectangleFilled)
+        {
+            fillInternalRectangles(potentialRectangles, certainRectangles, fillingResult.second);
+        }
+    }
 }
 
 QPair<bool, QColor> Executer::findAndFillKeyRectangle(QVector<QSharedPointer<MyQRectF> > & potentialRectangles, QVector<QSharedPointer<MyQRectF> > & certainRectangles)
@@ -347,6 +348,18 @@ double Executer::getCurrentError() const
     }
     
     return resultError;
+}
+
+void Executer::setNeighborMethodExecution()
+{
+    neighborMethodIsSet = true;
+    reset();
+}
+
+void Executer::setFractalMethodEXecution()
+{
+    neighborMethodIsSet = false;
+    reset();
 }
 
 void Executer::removeListener(ExecuterListener & listener)

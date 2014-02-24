@@ -121,6 +121,29 @@ int ExecuterQmlInterface::getUsedColorsCount() const
     }
 }
 
+void ExecuterQmlInterface::setNeighborMethodExecution()
+{
+    if (kovtunMethodExecuter != nullptr)
+    {
+        kovtunMethodExecuter->setNeighborMethodExecution();
+        emit executionReset();
+    }
+}
+
+void ExecuterQmlInterface::setFractalMethodEXecution()
+{
+    if (kovtunMethodExecuter != nullptr)
+    {
+        kovtunMethodExecuter->setFractalMethodEXecution();
+        emit executionReset();
+    }
+}
+
+bool ExecuterQmlInterface::isNeighborMethodSet() const
+{
+    return kovtunMethodExecuter->isNeighborMethodSet();
+}
+
 void ExecuterQmlInterface::onStepPerformed()
 {
     inProgress = false;

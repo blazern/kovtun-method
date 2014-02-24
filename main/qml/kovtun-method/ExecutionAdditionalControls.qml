@@ -8,6 +8,7 @@ Item {
     property bool filledRectanglesLinesVisible: false
     property bool gravityCentersVisible: false
     property bool unitsVisible: false
+    property bool neighborMethodExecution: false
 
     function invalidate() {
         controls.unitsDimension = unitsDimensionText.text;
@@ -82,6 +83,13 @@ Item {
             text: "Показать юниты"
             onClicked: {
                 unitsVisible = checked;
+            }
+        }
+
+        CheckBox {
+            text: "Соседский метод"
+            onClicked: {
+                neighborMethodExecution = checked;
             }
         }
     }
