@@ -24,7 +24,7 @@ ClosedContour ClosedContourParser::parse(const QUrl & url)
 
 QJsonObject ClosedContourParser::parseJsonFile(const QUrl & url)
 {
-    const QString path = url.path();
+    const QString path = url.toLocalFile();
     QFile file(path);
 
     if (file.exists())
@@ -41,7 +41,7 @@ QJsonObject ClosedContourParser::parseJsonFile(const QUrl & url)
         {
             return document.object();
         }
-#       ifdef QT_DEBUG
+#ifdef QT_DEBUG
         else
         {
             throw std::invalid_argument(QString(
@@ -52,16 +52,16 @@ QJsonObject ClosedContourParser::parseJsonFile(const QUrl & url)
                                         + " в позиции: "
                                         + QString::number(jsonParseError.offset)).toStdString());
         }
-#       endif
+#endif
     }
-#   ifdef QT_DEBUG
+#ifdef QT_DEBUG
     else
     {
         throw std::invalid_argument("Парсинг файла с URL: "
                                     + url.toString().toStdString()
                                     + " невозможен, т.к. файл не существует");
     }
-#   endif
+#endif
 }
 
 ClosedContour ClosedContourParser::parse(const QString & json)
