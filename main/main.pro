@@ -2,7 +2,9 @@
 folder_01.source = qml/kovtun-method
 folder_01.target = qml
 folder_02.source = resources
-DEPLOYMENTFOLDERS = folder_01 + folder_02
+DEPLOYMENTFOLDERS += \
+    folder_01 \
+    folder_02
 
 # Application's name
 TARGET = kovtun-method

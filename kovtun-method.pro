@@ -4,8 +4,8 @@ SUBDIRS += \
     main \
     tests/TestKovtunMethodExecuter \
     tests/TestContour \
-    tests/TestRectangleToolKit_doLinesIntersectWithoutLyingOnEachOther \
-    tests/TestRectangleToolKit_isAnyPointOfAnyLineOfContourInsideOfRectangle \
-    tests/TestUnitsToolKit_calculateGravityCenter \
-    tests/TestRectangleToolKit_doRectanglesTouchEachOther \
-    tests/TestRectanglesToolKit_isAnyPointOfRectangleInsideOfContour
+    tests/TestRectangleToolKit1 \
+    tests/TestRectangleToolKit2 \
+    tests/TestUnitsToolKit \
+    tests/TestRectangleToolKit3 \
+    tests/TestRectanglesToolKit4
